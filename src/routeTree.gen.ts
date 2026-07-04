@@ -9,51 +9,377 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthedRouteImport } from './routes/_authed'
+import { Route as LayoutRouteRouteImport } from './routes/_layout/route'
+import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
+import { Route as ApiUploadthingRouteImport } from './routes/api/uploadthing'
+import { Route as ApiTempUploadRouteImport } from './routes/api/temp-upload'
+import { Route as AuthedCompleteProfileRouteImport } from './routes/_authed/complete-profile'
+import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthedDashboardRouteRouteImport } from './routes/_authed/dashboard/route'
+import { Route as LayoutProductsIndexRouteImport } from './routes/_layout/products/index'
+import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
+import { Route as LayoutProductsSlugRouteImport } from './routes/_layout/products/$slug'
+import { Route as AuthedDashboardTaxonomyRouteImport } from './routes/_authed/dashboard/taxonomy'
+import { Route as AuthedDashboardProductsIndexRouteImport } from './routes/_authed/dashboard/products/index'
+import { Route as AuthedDashboardProductsIdRouteImport } from './routes/_authed/dashboard/products/$id'
+import { Route as AuthedDashboardProductsNewIndexRouteImport } from './routes/_authed/dashboard/products/new/index'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AuthedRoute = AuthedRouteImport.update({
+  id: '/_authed',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LayoutRouteRoute = LayoutRouteRouteImport.update({
+  id: '/_layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LayoutIndexRoute = LayoutIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LayoutRouteRoute,
+} as any)
+const ApiUploadthingRoute = ApiUploadthingRouteImport.update({
+  id: '/api/uploadthing',
+  path: '/api/uploadthing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiTempUploadRoute = ApiTempUploadRouteImport.update({
+  id: '/api/temp-upload',
+  path: '/api/temp-upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthedCompleteProfileRoute = AuthedCompleteProfileRouteImport.update({
+  id: '/complete-profile',
+  path: '/complete-profile',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/_auth/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthedDashboardRouteRoute = AuthedDashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const LayoutProductsIndexRoute = LayoutProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
+  getParentRoute: () => LayoutRouteRoute,
+} as any)
+const AuthedDashboardIndexRoute = AuthedDashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthedDashboardRouteRoute,
+} as any)
+const LayoutProductsSlugRoute = LayoutProductsSlugRouteImport.update({
+  id: '/products/$slug',
+  path: '/products/$slug',
+  getParentRoute: () => LayoutRouteRoute,
+} as any)
+const AuthedDashboardTaxonomyRoute = AuthedDashboardTaxonomyRouteImport.update({
+  id: '/taxonomy',
+  path: '/taxonomy',
+  getParentRoute: () => AuthedDashboardRouteRoute,
+} as any)
+const AuthedDashboardProductsIndexRoute =
+  AuthedDashboardProductsIndexRouteImport.update({
+    id: '/products/',
+    path: '/products/',
+    getParentRoute: () => AuthedDashboardRouteRoute,
+  } as any)
+const AuthedDashboardProductsIdRoute =
+  AuthedDashboardProductsIdRouteImport.update({
+    id: '/products/$id',
+    path: '/products/$id',
+    getParentRoute: () => AuthedDashboardRouteRoute,
+  } as any)
+const AuthedDashboardProductsNewIndexRoute =
+  AuthedDashboardProductsNewIndexRouteImport.update({
+    id: '/products/new/',
+    path: '/products/new/',
+    getParentRoute: () => AuthedDashboardRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof LayoutIndexRoute
+  '/dashboard': typeof AuthedDashboardRouteRouteWithChildren
+  '/login': typeof AuthLoginRoute
+  '/complete-profile': typeof AuthedCompleteProfileRoute
+  '/api/temp-upload': typeof ApiTempUploadRoute
+  '/api/uploadthing': typeof ApiUploadthingRoute
+  '/dashboard/taxonomy': typeof AuthedDashboardTaxonomyRoute
+  '/products/$slug': typeof LayoutProductsSlugRoute
+  '/dashboard/': typeof AuthedDashboardIndexRoute
+  '/products/': typeof LayoutProductsIndexRoute
+  '/dashboard/products/$id': typeof AuthedDashboardProductsIdRoute
+  '/dashboard/products/': typeof AuthedDashboardProductsIndexRoute
+  '/dashboard/products/new/': typeof AuthedDashboardProductsNewIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof LayoutIndexRoute
+  '/login': typeof AuthLoginRoute
+  '/complete-profile': typeof AuthedCompleteProfileRoute
+  '/api/temp-upload': typeof ApiTempUploadRoute
+  '/api/uploadthing': typeof ApiUploadthingRoute
+  '/dashboard/taxonomy': typeof AuthedDashboardTaxonomyRoute
+  '/products/$slug': typeof LayoutProductsSlugRoute
+  '/dashboard': typeof AuthedDashboardIndexRoute
+  '/products': typeof LayoutProductsIndexRoute
+  '/dashboard/products/$id': typeof AuthedDashboardProductsIdRoute
+  '/dashboard/products': typeof AuthedDashboardProductsIndexRoute
+  '/dashboard/products/new': typeof AuthedDashboardProductsNewIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_layout': typeof LayoutRouteRouteWithChildren
+  '/_authed': typeof AuthedRouteWithChildren
+  '/_authed/dashboard': typeof AuthedDashboardRouteRouteWithChildren
+  '/_auth/login': typeof AuthLoginRoute
+  '/_authed/complete-profile': typeof AuthedCompleteProfileRoute
+  '/api/temp-upload': typeof ApiTempUploadRoute
+  '/api/uploadthing': typeof ApiUploadthingRoute
+  '/_layout/': typeof LayoutIndexRoute
+  '/_authed/dashboard/taxonomy': typeof AuthedDashboardTaxonomyRoute
+  '/_layout/products/$slug': typeof LayoutProductsSlugRoute
+  '/_authed/dashboard/': typeof AuthedDashboardIndexRoute
+  '/_layout/products/': typeof LayoutProductsIndexRoute
+  '/_authed/dashboard/products/$id': typeof AuthedDashboardProductsIdRoute
+  '/_authed/dashboard/products/': typeof AuthedDashboardProductsIndexRoute
+  '/_authed/dashboard/products/new/': typeof AuthedDashboardProductsNewIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/complete-profile'
+    | '/api/temp-upload'
+    | '/api/uploadthing'
+    | '/dashboard/taxonomy'
+    | '/products/$slug'
+    | '/dashboard/'
+    | '/products/'
+    | '/dashboard/products/$id'
+    | '/dashboard/products/'
+    | '/dashboard/products/new/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/complete-profile'
+    | '/api/temp-upload'
+    | '/api/uploadthing'
+    | '/dashboard/taxonomy'
+    | '/products/$slug'
+    | '/dashboard'
+    | '/products'
+    | '/dashboard/products/$id'
+    | '/dashboard/products'
+    | '/dashboard/products/new'
+  id:
+    | '__root__'
+    | '/_layout'
+    | '/_authed'
+    | '/_authed/dashboard'
+    | '/_auth/login'
+    | '/_authed/complete-profile'
+    | '/api/temp-upload'
+    | '/api/uploadthing'
+    | '/_layout/'
+    | '/_authed/dashboard/taxonomy'
+    | '/_layout/products/$slug'
+    | '/_authed/dashboard/'
+    | '/_layout/products/'
+    | '/_authed/dashboard/products/$id'
+    | '/_authed/dashboard/products/'
+    | '/_authed/dashboard/products/new/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  LayoutRouteRoute: typeof LayoutRouteRouteWithChildren
+  AuthedRoute: typeof AuthedRouteWithChildren
+  AuthLoginRoute: typeof AuthLoginRoute
+  ApiTempUploadRoute: typeof ApiTempUploadRoute
+  ApiUploadthingRoute: typeof ApiUploadthingRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_authed': {
+      id: '/_authed'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_layout': {
+      id: '/_layout'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_layout/': {
+      id: '/_layout/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof LayoutIndexRouteImport
+      parentRoute: typeof LayoutRouteRoute
+    }
+    '/api/uploadthing': {
+      id: '/api/uploadthing'
+      path: '/api/uploadthing'
+      fullPath: '/api/uploadthing'
+      preLoaderRoute: typeof ApiUploadthingRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/api/temp-upload': {
+      id: '/api/temp-upload'
+      path: '/api/temp-upload'
+      fullPath: '/api/temp-upload'
+      preLoaderRoute: typeof ApiTempUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed/complete-profile': {
+      id: '/_authed/complete-profile'
+      path: '/complete-profile'
+      fullPath: '/complete-profile'
+      preLoaderRoute: typeof AuthedCompleteProfileRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed/dashboard': {
+      id: '/_authed/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthedDashboardRouteRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_layout/products/': {
+      id: '/_layout/products/'
+      path: '/products'
+      fullPath: '/products/'
+      preLoaderRoute: typeof LayoutProductsIndexRouteImport
+      parentRoute: typeof LayoutRouteRoute
+    }
+    '/_authed/dashboard/': {
+      id: '/_authed/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthedDashboardIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_layout/products/$slug': {
+      id: '/_layout/products/$slug'
+      path: '/products/$slug'
+      fullPath: '/products/$slug'
+      preLoaderRoute: typeof LayoutProductsSlugRouteImport
+      parentRoute: typeof LayoutRouteRoute
+    }
+    '/_authed/dashboard/taxonomy': {
+      id: '/_authed/dashboard/taxonomy'
+      path: '/taxonomy'
+      fullPath: '/dashboard/taxonomy'
+      preLoaderRoute: typeof AuthedDashboardTaxonomyRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/products/': {
+      id: '/_authed/dashboard/products/'
+      path: '/products'
+      fullPath: '/dashboard/products/'
+      preLoaderRoute: typeof AuthedDashboardProductsIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/products/$id': {
+      id: '/_authed/dashboard/products/$id'
+      path: '/products/$id'
+      fullPath: '/dashboard/products/$id'
+      preLoaderRoute: typeof AuthedDashboardProductsIdRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/products/new/': {
+      id: '/_authed/dashboard/products/new/'
+      path: '/products/new'
+      fullPath: '/dashboard/products/new/'
+      preLoaderRoute: typeof AuthedDashboardProductsNewIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
     }
   }
 }
 
+interface LayoutRouteRouteChildren {
+  LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutProductsSlugRoute: typeof LayoutProductsSlugRoute
+  LayoutProductsIndexRoute: typeof LayoutProductsIndexRoute
+}
+
+const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
+  LayoutIndexRoute: LayoutIndexRoute,
+  LayoutProductsSlugRoute: LayoutProductsSlugRoute,
+  LayoutProductsIndexRoute: LayoutProductsIndexRoute,
+}
+
+const LayoutRouteRouteWithChildren = LayoutRouteRoute._addFileChildren(
+  LayoutRouteRouteChildren,
+)
+
+interface AuthedDashboardRouteRouteChildren {
+  AuthedDashboardTaxonomyRoute: typeof AuthedDashboardTaxonomyRoute
+  AuthedDashboardIndexRoute: typeof AuthedDashboardIndexRoute
+  AuthedDashboardProductsIdRoute: typeof AuthedDashboardProductsIdRoute
+  AuthedDashboardProductsIndexRoute: typeof AuthedDashboardProductsIndexRoute
+  AuthedDashboardProductsNewIndexRoute: typeof AuthedDashboardProductsNewIndexRoute
+}
+
+const AuthedDashboardRouteRouteChildren: AuthedDashboardRouteRouteChildren = {
+  AuthedDashboardTaxonomyRoute: AuthedDashboardTaxonomyRoute,
+  AuthedDashboardIndexRoute: AuthedDashboardIndexRoute,
+  AuthedDashboardProductsIdRoute: AuthedDashboardProductsIdRoute,
+  AuthedDashboardProductsIndexRoute: AuthedDashboardProductsIndexRoute,
+  AuthedDashboardProductsNewIndexRoute: AuthedDashboardProductsNewIndexRoute,
+}
+
+const AuthedDashboardRouteRouteWithChildren =
+  AuthedDashboardRouteRoute._addFileChildren(AuthedDashboardRouteRouteChildren)
+
+interface AuthedRouteChildren {
+  AuthedDashboardRouteRoute: typeof AuthedDashboardRouteRouteWithChildren
+  AuthedCompleteProfileRoute: typeof AuthedCompleteProfileRoute
+}
+
+const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedDashboardRouteRoute: AuthedDashboardRouteRouteWithChildren,
+  AuthedCompleteProfileRoute: AuthedCompleteProfileRoute,
+}
+
+const AuthedRouteWithChildren =
+  AuthedRoute._addFileChildren(AuthedRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  LayoutRouteRoute: LayoutRouteRouteWithChildren,
+  AuthedRoute: AuthedRouteWithChildren,
+  AuthLoginRoute: AuthLoginRoute,
+  ApiTempUploadRoute: ApiTempUploadRoute,
+  ApiUploadthingRoute: ApiUploadthingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

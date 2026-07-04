@@ -8,6 +8,11 @@ import tailwindcss from '@tailwindcss/vite'
 import { cloudflare } from '@cloudflare/vite-plugin'
 
 const config = defineConfig({
+  build: {
+    rollupOptions: {
+      external: ['cloudflare:workers'],
+    },
+  },
   resolve: { tsconfigPaths: true },
   plugins: [
     devtools(),
