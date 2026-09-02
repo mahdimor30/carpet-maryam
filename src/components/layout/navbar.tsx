@@ -1,24 +1,32 @@
 import { CATEGORIES, toFaNumber } from '@/lib/data'
 import { Link } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
-import { Menu, Search, ShoppingBag, X, LogIn, LayoutDashboard } from 'lucide-react'
+import {
+  Menu,
+  Search,
+  ShoppingBag,
+  X,
+  LogIn,
+  LayoutDashboard,
+} from 'lucide-react'
 import { useCart } from '@/feature/home/components/cart-provider'
 import { CartDrawer } from '@/feature/home/components/cart-drawer'
 import { getCurrentUserFn } from '@/feature/auth/serverFn/get-user-cuemt'
-
-const NAV_LINKS = [
-  { to: '/', label: 'خانه' },
-  { to: '/products', label: 'فروشگاه' },
-]
+import Logo from './logo'
+import Navigation from './navigation'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
-  const [user, setUser] = useState<{ id: number; name?: string | null; role: string } | null | undefined>(undefined)
+  const [user, setUser] = useState<
+    { id: number; name?: string | null; role: string } | null | undefined
+  >(undefined)
   const { count } = useCart()
 
   useEffect(() => {
-    getCurrentUserFn().then(setUser).catch(() => setUser(null))
+    getCurrentUserFn()
+      .then(setUser)
+      .catch(() => setUser(null))
   }, [])
 
   const isLoggedIn = user != null
@@ -27,40 +35,8 @@ export default function Navbar() {
     <>
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-          {/* لوگو */}
-          <Link to="/" className="flex items-center gap-2.5">
-            <img
-              src="/logo.png"
-              alt="فرش مریم"
-              width={150}
-              height={80}
-              className="object-contain"
-            />
-          </Link>
-
-          {/* لینک‌های دسکتاپ */}
-          <nav className="hidden items-center gap-1 md:flex">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
-              >
-                {link.label}
-              </Link>
-            ))}
-            {CATEGORIES.slice(0, 4).map((cat) => (
-              <Link
-                key={cat.slug}
-                to="/products"
-                search={{ cat: cat.slug }}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
-              >
-                {cat.name}
-              </Link>
-            ))}
-          </nav>
-
+          <Logo />
+          <Navigation />
           {/* اکشن‌ها */}
           <div className="flex items-center gap-1.5">
             <Link

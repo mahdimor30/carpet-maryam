@@ -3,9 +3,27 @@
 import { useState } from 'react'
 import { Menu, Bell, Search } from 'lucide-react'
 import { DashboardSidebar } from './dashboard-sidebar'
+import { useRouterState } from '@tanstack/react-router'
+import { OverviewSkeleton } from '@/feature/dashboard/components/skeletons/overview-skeleton'
+import { TableSkeleton } from '@/feature/dashboard/components/skeletons/table-skeleton'
+import { FormSkeleton } from '@/feature/dashboard/components/skeletons/form-skeleton'
+import { TaxonomySkeleton } from '@/feature/dashboard/components/skeletons/taxonomy-skeleton'
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { status, location } = useRouterState({ select: (s) => ({ status: s.status, location: s.location }) })
+  const isLoading = status === 'pending'
+  const targetPath = isLoading && location ? location.pathname.replace(/\/$/, '') || '/' : ''
+
+  const Skeleton = isLoading
+    ? targetPath.startsWith('/dashboard/products/new') || targetPath.startsWith('/dashboard/products/') && !targetPath.startsWith('/dashboard/products')
+      ? FormSkeleton
+      : targetPath.startsWith('/dashboard/products')
+        ? TableSkeleton
+        : targetPath.startsWith('/dashboard/taxonomy')
+          ? TaxonomySkeleton
+          : OverviewSkeleton
+    : null
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -49,7 +67,9 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">{children}</main>
+        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+          {isLoading && Skeleton ? <Skeleton /> : children}
+        </main>
       </div>
     </div>
   )

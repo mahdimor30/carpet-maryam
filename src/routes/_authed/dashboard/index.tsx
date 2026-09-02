@@ -1,7 +1,12 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { getProducts } from '@/feature/products/serverFun/get-products'
 
 export const Route = createFileRoute('/_authed/dashboard/')({
   component: DashboardPage,
+  async loader() {
+    const products = await getProducts()
+    return { products }
+  },
   head: () => ({
     meta: [
       { title: 'نمای کلی | فرش مریم' },
@@ -21,6 +26,7 @@ const STATS = [
 ]
 
 function DashboardPage() {
+  const { products } = Route.useLoaderData()
   return (
     <div className="mx-auto max-w-6xl">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -71,7 +77,7 @@ function DashboardPage() {
           <ArrowLeft className="h-4 w-4" />
         </Link>
       </div>
-      <ProductsTable limit={4} />
+      <ProductsTable products={products} limit={4} />
     </div>
   )
 }

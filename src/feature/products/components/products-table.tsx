@@ -2,12 +2,27 @@
 
 import { Pencil, Eye, EyeOff } from 'lucide-react'
 import { formatToman, toFa } from '@/lib/dashboard-data'
-import { Link, useLoaderData } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 
-export function ProductsTable({ limit }: { limit?: number }) {
-  const { products: rows } = useLoaderData({
-    from: '/_authed/dashboard/products/',
-  })
+interface ProductRow {
+  id: number
+  name: string
+  slug: string
+  categories: string[]
+  variants: number
+  minPrice: number
+  totalStock: number
+  isActive: boolean
+}
+
+export function ProductsTable({
+  limit,
+  products,
+}: {
+  limit?: number
+  products?: ProductRow[]
+}) {
+  const rows = products ?? []
 
   const displayedRows = limit ? rows.slice(0, limit) : rows
 

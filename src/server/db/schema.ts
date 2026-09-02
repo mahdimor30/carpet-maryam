@@ -67,6 +67,7 @@ export const categories = sqliteTable('categories', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   name: text('name').notNull(), // مثلا: گبه، ماشینی، دستباف
   slug: text('slug').notNull().unique(), // برای URL: /category/gabbeh
+  image: text('image'), // عکس دسته‌بندی
   createdAt: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
 })
 
@@ -74,6 +75,7 @@ export const designs = sqliteTable('designs', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   name: text('name').notNull(), // مثلا: سنتی، مدرن، گبه
   slug: text('slug').notNull().unique(),
+  image: text('image'),
   createdAt: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
 })
 
@@ -81,6 +83,7 @@ export const materials = sqliteTable('materials', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   name: text('name').notNull(), // مثلا: اکریلیک، نایلون، ابریشم
   slug: text('slug').notNull().unique(),
+  image: text('image'),
   createdAt: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
 })
 

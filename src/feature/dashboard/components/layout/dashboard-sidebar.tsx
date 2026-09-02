@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import {
   LayoutDashboard,
   Package,
@@ -10,19 +11,32 @@ import {
   Users,
   Store,
   X,
+  ChevronDown,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Link } from '@tanstack/react-router'
+import { Link, useLocation } from '@tanstack/react-router'
 
 const NAV = [
   { to: '/dashboard', label: 'نمای کلی', icon: LayoutDashboard, exact: true },
-  { to: '/dashboard/products', label: 'محصولات', icon: Package },
-  { to: '/dashboard/products/new', label: 'افزودن محصول', icon: PlusCircle },
+  {
+    label: 'محصولات',
+    icon: Package,
+    children: [
+      { to: '/dashboard/products', label: 'همه محصولات', exact: true },
+      { to: '/dashboard/products/new', label: 'افزودن محصول', icon: PlusCircle, exact: true },
+    ],
+  },
   { to: '/dashboard/taxonomy', label: 'دسته و طرح', icon: Tags },
   { to: '/dashboard/orders', label: 'سفارش‌ها', icon: ShoppingCart },
   { to: '/dashboard/inquiries', label: 'استعلام‌ها', icon: MessageSquare },
   { to: '/dashboard/users', label: 'کاربران', icon: Users },
 ] as const
+
+function isActive(path: string, target: string, exact?: boolean) {
+  const p = path.replace(/\/$/, '') || '/'
+  const t = target.replace(/\/$/, '') || '/'
+  return exact ? p === t : p.startsWith(t)
+}
 
 export function DashboardSidebar({
   open,
@@ -31,11 +45,10 @@ export function DashboardSidebar({
   open: boolean
   onClose: () => void
 }) {
-  // const {pathname} = useRouter()
+  const { pathname } = useLocation()
 
   return (
     <>
-      {/* پوشش موبایل */}
       {open && (
         <div
           className="fixed inset-0 z-40 bg-foreground/40 lg:hidden"
@@ -74,15 +87,23 @@ export function DashboardSidebar({
         <nav className="flex-1 overflow-y-auto px-3 py-4">
           <ul className="flex flex-col gap-1">
             {NAV.map((item) => {
-              const active = false // TODO: fix active state
-              // const active = item.exact
-              //   ? pathname === item.href
-              //   : pathname.startsWith(item.href)
+              if ('children' in item) {
+                return (
+                  <NavGroup
+                    key={item.label}
+                    item={item as typeof item & { children: { to: string; label: string; icon?: any }[] }}
+                    pathname={pathname}
+                    onClose={onClose}
+                  />
+                )
+              }
+              const active = isActive(pathname, (item as any).to, (item as any).exact)
               const Icon = item.icon
+              const to = (item as any).to as string
               return (
-                <li key={item.to}>
+                <li key={to}>
                   <Link
-                    to={item.to as string}
+                    to={to}
                     onClick={onClose}
                     className={cn(
                       'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
@@ -111,5 +132,66 @@ export function DashboardSidebar({
         </div>
       </aside>
     </>
+  )
+}
+
+function NavGroup({
+  item,
+  pathname,
+  onClose,
+}: {
+  item: { label: string; icon: any; children: { to: string; label: string; icon?: any }[] }
+  pathname: string
+  onClose: () => void
+}) {
+  const hasActiveChild = isActive(pathname, item.children[0].to)
+  const [expanded, setExpanded] = useState(() => hasActiveChild)
+  const Icon = item.icon
+
+  return (
+    <li>
+      <button
+        onClick={() => setExpanded((v) => !v)}
+        className={cn(
+          'flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
+          hasActiveChild
+            ? 'bg-primary/10 text-primary'
+            : 'text-sidebar-foreground/70 hover:bg-secondary hover:text-sidebar-foreground',
+        )}
+      >
+        <Icon className="h-4.5 w-4.5 shrink-0" />
+        <span className="flex-1 text-right">{item.label}</span>
+        <ChevronDown
+          className={cn(
+            'h-4 w-4 transition-transform',
+            expanded && 'rotate-180',
+          )}
+        />
+      </button>
+      {expanded && (
+        <ul className="mr-3 mt-1 flex flex-col gap-0.5 border-r border-sidebar-border pr-2">
+          {item.children.map((child) => {
+            const active = isActive(pathname, child.to, (child as any).exact)
+            return (
+              <li key={child.to}>
+                <Link
+                  to={child.to}
+                  onClick={onClose}
+                  className={cn(
+                    'flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors',
+                    active
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-sidebar-foreground/70 hover:bg-secondary hover:text-sidebar-foreground',
+                  )}
+                >
+                  {child.icon && <child.icon className="h-4 w-4 shrink-0" />}
+                  {child.label}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      )}
+    </li>
   )
 }

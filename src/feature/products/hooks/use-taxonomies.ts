@@ -2,6 +2,7 @@ import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/r
 import { getTaxonomies } from '../serverFun/get-taxonomies'
 import { createTaxonomy } from '../serverFun/create-taxonomy'
 import { deleteTaxonomy } from '../serverFun/delete-taxonomy'
+import { updateTaxonomy } from '../serverFun/update-taxonomy'
 
 export const queryTaxonomies = queryOptions({
   queryKey: ['taxonomies'],
@@ -13,8 +14,19 @@ export const useTaxonomies = () => useQuery(queryTaxonomies)
 export const useCreateTaxonomy = () => {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (value: { type: 'category' | 'design' | 'material'; name: string; slug: string }) =>
+    mutationFn: async (value: { type: 'category' | 'design' | 'material'; name: string; slug: string; image?: string | null }) =>
       createTaxonomy({ data: value }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['taxonomies'] })
+    },
+  })
+}
+
+export const useUpdateTaxonomy = () => {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (value: { type: 'category' | 'design' | 'material'; id: number; name: string; slug: string; image?: string | null }) =>
+      updateTaxonomy({ data: value }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['taxonomies'] })
     },

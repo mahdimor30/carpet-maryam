@@ -11,16 +11,16 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as LayoutRouteRouteImport } from './routes/_layout/route'
-import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
-import { Route as ApiUploadthingRouteImport } from './routes/api/uploadthing'
-import { Route as ApiTempUploadRouteImport } from './routes/api/temp-upload'
-import { Route as AuthedCompleteProfileRouteImport } from './routes/_authed/complete-profile'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthedCompleteProfileRouteImport } from './routes/_authed/complete-profile'
 import { Route as AuthedDashboardRouteRouteImport } from './routes/_authed/dashboard/route'
-import { Route as LayoutProductsIndexRouteImport } from './routes/_layout/products/index'
+import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
+import { Route as ApiTempUploadRouteImport } from './routes/api/temp-upload'
+import { Route as ApiUploadthingRouteImport } from './routes/api/uploadthing'
 import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
-import { Route as LayoutProductsSlugRouteImport } from './routes/_layout/products/$slug'
 import { Route as AuthedDashboardTaxonomyRouteImport } from './routes/_authed/dashboard/taxonomy'
+import { Route as LayoutProductsIndexRouteImport } from './routes/_layout/products/index'
+import { Route as LayoutProductsSlugRouteImport } from './routes/_layout/products/$slug'
 import { Route as AuthedDashboardProductsIndexRouteImport } from './routes/_authed/dashboard/products/index'
 import { Route as AuthedDashboardProductsIdRouteImport } from './routes/_authed/dashboard/products/$id'
 import { Route as AuthedDashboardProductsNewIndexRouteImport } from './routes/_authed/dashboard/products/new/index'
@@ -33,19 +33,9 @@ const LayoutRouteRoute = LayoutRouteRouteImport.update({
   id: '/_layout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LayoutIndexRoute = LayoutIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => LayoutRouteRoute,
-} as any)
-const ApiUploadthingRoute = ApiUploadthingRouteImport.update({
-  id: '/api/uploadthing',
-  path: '/api/uploadthing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiTempUploadRoute = ApiTempUploadRouteImport.update({
-  id: '/api/temp-upload',
-  path: '/api/temp-upload',
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/_auth/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthedCompleteProfileRoute = AuthedCompleteProfileRouteImport.update({
@@ -53,35 +43,45 @@ const AuthedCompleteProfileRoute = AuthedCompleteProfileRouteImport.update({
   path: '/complete-profile',
   getParentRoute: () => AuthedRoute,
 } as any)
-const AuthLoginRoute = AuthLoginRouteImport.update({
-  id: '/_auth/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthedDashboardRouteRoute = AuthedDashboardRouteRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthedRoute,
 } as any)
-const LayoutProductsIndexRoute = LayoutProductsIndexRouteImport.update({
-  id: '/products/',
-  path: '/products/',
+const LayoutIndexRoute = LayoutIndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => LayoutRouteRoute,
+} as any)
+const ApiTempUploadRoute = ApiTempUploadRouteImport.update({
+  id: '/api/temp-upload',
+  path: '/api/temp-upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiUploadthingRoute = ApiUploadthingRouteImport.update({
+  id: '/api/uploadthing',
+  path: '/api/uploadthing',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthedDashboardIndexRoute = AuthedDashboardIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthedDashboardRouteRoute,
 } as any)
-const LayoutProductsSlugRoute = LayoutProductsSlugRouteImport.update({
-  id: '/products/$slug',
-  path: '/products/$slug',
-  getParentRoute: () => LayoutRouteRoute,
-} as any)
 const AuthedDashboardTaxonomyRoute = AuthedDashboardTaxonomyRouteImport.update({
   id: '/taxonomy',
   path: '/taxonomy',
   getParentRoute: () => AuthedDashboardRouteRoute,
+} as any)
+const LayoutProductsIndexRoute = LayoutProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
+  getParentRoute: () => LayoutRouteRoute,
+} as any)
+const LayoutProductsSlugRoute = LayoutProductsSlugRouteImport.update({
+  id: '/products/$slug',
+  path: '/products/$slug',
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
 const AuthedDashboardProductsIndexRoute =
   AuthedDashboardProductsIndexRouteImport.update({
@@ -222,25 +222,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_layout/': {
-      id: '/_layout/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof LayoutIndexRouteImport
-      parentRoute: typeof LayoutRouteRoute
-    }
-    '/api/uploadthing': {
-      id: '/api/uploadthing'
-      path: '/api/uploadthing'
-      fullPath: '/api/uploadthing'
-      preLoaderRoute: typeof ApiUploadthingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/temp-upload': {
-      id: '/api/temp-upload'
-      path: '/api/temp-upload'
-      fullPath: '/api/temp-upload'
-      preLoaderRoute: typeof ApiTempUploadRouteImport
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authed/complete-profile': {
@@ -250,13 +236,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedCompleteProfileRouteImport
       parentRoute: typeof AuthedRoute
     }
-    '/_auth/login': {
-      id: '/_auth/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authed/dashboard': {
       id: '/_authed/dashboard'
       path: '/dashboard'
@@ -264,12 +243,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedDashboardRouteRouteImport
       parentRoute: typeof AuthedRoute
     }
-    '/_layout/products/': {
-      id: '/_layout/products/'
-      path: '/products'
-      fullPath: '/products/'
-      preLoaderRoute: typeof LayoutProductsIndexRouteImport
+    '/_layout/': {
+      id: '/_layout/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutIndexRouteImport
       parentRoute: typeof LayoutRouteRoute
+    }
+    '/api/temp-upload': {
+      id: '/api/temp-upload'
+      path: '/api/temp-upload'
+      fullPath: '/api/temp-upload'
+      preLoaderRoute: typeof ApiTempUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/uploadthing': {
+      id: '/api/uploadthing'
+      path: '/api/uploadthing'
+      fullPath: '/api/uploadthing'
+      preLoaderRoute: typeof ApiUploadthingRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authed/dashboard/': {
       id: '/_authed/dashboard/'
@@ -278,19 +271,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedDashboardIndexRouteImport
       parentRoute: typeof AuthedDashboardRouteRoute
     }
-    '/_layout/products/$slug': {
-      id: '/_layout/products/$slug'
-      path: '/products/$slug'
-      fullPath: '/products/$slug'
-      preLoaderRoute: typeof LayoutProductsSlugRouteImport
-      parentRoute: typeof LayoutRouteRoute
-    }
     '/_authed/dashboard/taxonomy': {
       id: '/_authed/dashboard/taxonomy'
       path: '/taxonomy'
       fullPath: '/dashboard/taxonomy'
       preLoaderRoute: typeof AuthedDashboardTaxonomyRouteImport
       parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_layout/products/': {
+      id: '/_layout/products/'
+      path: '/products'
+      fullPath: '/products/'
+      preLoaderRoute: typeof LayoutProductsIndexRouteImport
+      parentRoute: typeof LayoutRouteRoute
+    }
+    '/_layout/products/$slug': {
+      id: '/_layout/products/$slug'
+      path: '/products/$slug'
+      fullPath: '/products/$slug'
+      preLoaderRoute: typeof LayoutProductsSlugRouteImport
+      parentRoute: typeof LayoutRouteRoute
     }
     '/_authed/dashboard/products/': {
       id: '/_authed/dashboard/products/'
