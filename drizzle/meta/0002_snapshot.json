@@ -1,9 +1,209 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "7e1d3c5a-6f2a-4a61-9b4d-3d7d4e8c2a11",
-  "prevId": "c26d168b-5ce2-4bb3-94ff-8c2e460f9492",
+  "id": "e8cfa66b-db15-4750-8a10-d96142ab9a6d",
+  "prevId": "79f6110d-88c3-47d3-8d03-a84694da966a",
   "tables": {
+    "users": {
+      "name": "users",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "phone": {
+          "name": "phone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'customer'"
+        },
+        "password_hash": {
+          "name": "password_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "otp_code": {
+          "name": "otp_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "otp_expires_at": {
+          "name": "otp_expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "otp_attempts": {
+          "name": "otp_attempts",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "phone_verified_at": {
+          "name": "phone_verified_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "users_phone_unique": {
+          "name": "users_phone_unique",
+          "columns": [
+            "phone"
+          ],
+          "isUnique": true
+        },
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "columns": [
+            "email"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "sessions": {
+      "name": "sessions",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_agent": {
+          "name": "user_agent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ip_address": {
+          "name": "ip_address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "sessions_token_unique": {
+          "name": "sessions_token_unique",
+          "columns": [
+            "token"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "sessions_user_id_users_id_fk": {
+          "name": "sessions_user_id_users_id_fk",
+          "tableFrom": "sessions",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "categories": {
       "name": "categories",
       "columns": {
@@ -28,15 +228,6 @@
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-=======
         "image": {
           "name": "image",
           "type": "text",
@@ -50,7 +241,6 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
         }
       },
       "indexes": {
@@ -91,15 +281,6 @@
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-=======
         "image": {
           "name": "image",
           "type": "text",
@@ -113,7 +294,6 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
         }
       },
       "indexes": {
@@ -130,110 +310,6 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-<<<<<<< HEAD
-    "inquiries": {
-      "name": "inquiries",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "message": {
-          "name": "message",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "product_id": {
-          "name": "product_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "variant_id": {
-          "name": "variant_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'new'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "inquiries_user_id_users_id_fk": {
-          "name": "inquiries_user_id_users_id_fk",
-          "tableFrom": "inquiries",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "inquiries_product_id_products_id_fk": {
-          "name": "inquiries_product_id_products_id_fk",
-          "tableFrom": "inquiries",
-          "tableTo": "products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        },
-        "inquiries_variant_id_product_variants_id_fk": {
-          "name": "inquiries_variant_id_product_variants_id_fk",
-          "tableFrom": "inquiries",
-          "tableTo": "product_variants",
-          "columnsFrom": [
-            "variant_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-=======
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
     "materials": {
       "name": "materials",
       "columns": {
@@ -258,15 +334,6 @@
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-=======
         "image": {
           "name": "image",
           "type": "text",
@@ -280,7 +347,6 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
         }
       },
       "indexes": {
@@ -297,13 +363,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-<<<<<<< HEAD
-    "order_items": {
-      "name": "order_items",
-=======
     "products": {
       "name": "products",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
       "columns": {
         "id": {
           "name": "id",
@@ -312,10 +373,6 @@
           "notNull": true,
           "autoincrement": true
         },
-<<<<<<< HEAD
-        "order_id": {
-          "name": "order_id",
-=======
         "name": {
           "name": "name",
           "type": "text",
@@ -417,14 +474,11 @@
         },
         "created_at": {
           "name": "created_at",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-=======
         "updated_at": {
           "name": "updated_at",
           "type": "integer",
@@ -575,7 +629,6 @@
           "notNull": true,
           "autoincrement": true
         },
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
         "variant_id": {
           "name": "variant_id",
           "type": "integer",
@@ -583,10 +636,6 @@
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "quantity": {
-          "name": "quantity",
-=======
         "url": {
           "name": "url",
           "type": "text",
@@ -618,18 +667,10 @@
         },
         "sort_order": {
           "name": "sort_order",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-<<<<<<< HEAD
-          "default": 1
-        },
-        "unit_price": {
-          "name": "unit_price",
-          "type": "real",
-=======
           "default": 0
         },
         "is_primary": {
@@ -643,7 +684,6 @@
         "created_at": {
           "name": "created_at",
           "type": "integer",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -651,28 +691,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-<<<<<<< HEAD
-        "order_items_order_id_orders_id_fk": {
-          "name": "order_items_order_id_orders_id_fk",
-          "tableFrom": "order_items",
-          "tableTo": "orders",
-          "columnsFrom": [
-            "order_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "order_items_variant_id_product_variants_id_fk": {
-          "name": "order_items_variant_id_product_variants_id_fk",
-          "tableFrom": "order_items",
-=======
         "variant_images_variant_id_product_variants_id_fk": {
           "name": "variant_images_variant_id_product_variants_id_fk",
           "tableFrom": "variant_images",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "tableTo": "product_variants",
           "columnsFrom": [
             "variant_id"
@@ -680,94 +701,7 @@
           "columnsTo": [
             "id"
           ],
-<<<<<<< HEAD
-          "onDelete": "restrict",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "orders": {
-      "name": "orders",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "shipping_address": {
-          "name": "shipping_address",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "customer_note": {
-          "name": "customer_note",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "total_amount": {
-          "name": "total_amount",
-          "type": "real",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'pending'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "orders_user_id_users_id_fk": {
-          "name": "orders_user_id_users_id_fk",
-          "tableFrom": "orders",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-=======
           "onDelete": "cascade",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "onUpdate": "no action"
         }
       },
@@ -952,133 +886,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-<<<<<<< HEAD
-    "product_variants": {
-      "name": "product_variants",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "product_id": {
-          "name": "product_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "dimension": {
-          "name": "dimension",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "color": {
-          "name": "color",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "color_hex": {
-          "name": "color_hex",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "sku": {
-          "name": "sku",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "price": {
-          "name": "price",
-          "type": "real",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "compare_at_price": {
-          "name": "compare_at_price",
-          "type": "real",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "stock": {
-          "name": "stock",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": 0
-        },
-        "is_active": {
-          "name": "is_active",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        }
-      },
-      "indexes": {
-        "product_variants_sku_unique": {
-          "name": "product_variants_sku_unique",
-          "columns": [
-            "sku"
-          ],
-          "isUnique": true
-        }
-      },
-      "foreignKeys": {
-        "product_variants_product_id_products_id_fk": {
-          "name": "product_variants_product_id_products_id_fk",
-          "tableFrom": "product_variants",
-          "tableTo": "products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "products": {
-      "name": "products",
-=======
     "factories": {
       "name": "factories",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
       "columns": {
         "id": {
           "name": "id",
@@ -1101,10 +910,6 @@
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "description": {
-          "name": "description",
-=======
         "phone": {
           "name": "phone",
           "type": "text",
@@ -1149,7 +954,6 @@
         },
         "notes": {
           "name": "notes",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -1165,26 +969,6 @@
         },
         "created_at": {
           "name": "created_at",
-<<<<<<< HEAD
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        }
-      },
-      "indexes": {
-        "products_slug_unique": {
-          "name": "products_slug_unique",
-=======
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -1201,7 +985,6 @@
       "indexes": {
         "factories_slug_unique": {
           "name": "factories_slug_unique",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "columns": [
             "slug"
           ],
@@ -1213,13 +996,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-<<<<<<< HEAD
-    "sessions": {
-      "name": "sessions",
-=======
     "factory_products": {
       "name": "factory_products",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
       "columns": {
         "id": {
           "name": "id",
@@ -1228,166 +1006,26 @@
           "notNull": true,
           "autoincrement": true
         },
-<<<<<<< HEAD
-        "user_id": {
-          "name": "user_id",
-=======
         "factory_id": {
           "name": "factory_id",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "token": {
-          "name": "token",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "user_agent": {
-          "name": "user_agent",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "ip_address": {
-          "name": "ip_address",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        }
-      },
-      "indexes": {
-        "sessions_token_unique": {
-          "name": "sessions_token_unique",
-          "columns": [
-            "token"
-          ],
-          "isUnique": true
-        }
-      },
-      "foreignKeys": {
-        "sessions_user_id_users_id_fk": {
-          "name": "sessions_user_id_users_id_fk",
-          "tableFrom": "sessions",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "users": {
-      "name": "users",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "phone": {
-          "name": "phone",
-          "type": "text",
-=======
         "variant_id": {
           "name": "variant_id",
           "type": "integer",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "email": {
-          "name": "email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "role": {
-          "name": "role",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'customer'"
-        },
-        "password_hash": {
-          "name": "password_hash",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "otp_code": {
-          "name": "otp_code",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "otp_expires_at": {
-          "name": "otp_expires_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "otp_attempts": {
-          "name": "otp_attempts",
-=======
         "can_weave": {
           "name": "can_weave",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-<<<<<<< HEAD
-          "default": 0
-        },
-        "phone_verified_at": {
-          "name": "phone_verified_at",
-=======
           "default": false
         },
         "weaving_days": {
@@ -1399,7 +1037,6 @@
         },
         "notes": {
           "name": "notes",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -1415,110 +1052,30 @@
         },
         "created_at": {
           "name": "created_at",
-<<<<<<< HEAD
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
+          "notNull": true,
+          "autoincrement": false
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {
-        "users_phone_unique": {
-          "name": "users_phone_unique",
+        "factory_product_factory_variant_unique": {
+          "name": "factory_product_factory_variant_unique",
           "columns": [
-            "phone"
-          ],
-          "isUnique": true
-        },
-        "users_email_unique": {
-          "name": "users_email_unique",
-          "columns": [
-            "email"
+            "factory_id",
+            "variant_id"
           ],
           "isUnique": true
         }
       },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "variant_images": {
-      "name": "variant_images",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "variant_id": {
-          "name": "variant_id",
-=======
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "updated_at": {
-          "name": "updated_at",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-<<<<<<< HEAD
-        },
-        "url": {
-          "name": "url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "alt": {
-          "name": "alt",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "sort_order": {
-          "name": "sort_order",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": 0
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-=======
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
-        }
-      },
-      "indexes": {},
       "foreignKeys": {
-<<<<<<< HEAD
-        "variant_images_variant_id_product_variants_id_fk": {
-          "name": "variant_images_variant_id_product_variants_id_fk",
-          "tableFrom": "variant_images",
-=======
         "factory_products_factory_id_factories_id_fk": {
           "name": "factory_products_factory_id_factories_id_fk",
           "tableFrom": "factory_products",
@@ -1535,7 +1092,6 @@
         "factory_products_variant_id_product_variants_id_fk": {
           "name": "factory_products_variant_id_product_variants_id_fk",
           "tableFrom": "factory_products",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "tableTo": "product_variants",
           "columnsFrom": [
             "variant_id"
@@ -1551,13 +1107,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-<<<<<<< HEAD
-    "rubika_ingest_batches": {
-      "name": "rubika_ingest_batches",
-=======
     "factory_inventory": {
       "name": "factory_inventory",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
       "columns": {
         "id": {
           "name": "id",
@@ -1566,24 +1117,13 @@
           "notNull": true,
           "autoincrement": true
         },
-<<<<<<< HEAD
-        "chat_id": {
-          "name": "chat_id",
-          "type": "text",
-=======
         "factory_product_id": {
           "name": "factory_product_id",
           "type": "integer",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "caption": {
-          "name": "caption",
-          "type": "text",
-=======
         "quantity": {
           "name": "quantity",
           "type": "integer",
@@ -1603,26 +1143,12 @@
         "checked_at": {
           "name": "checked_at",
           "type": "integer",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'pending'"
-        },
-        "error": {
-          "name": "error",
-=======
         "notes": {
           "name": "notes",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -1630,99 +1156,6 @@
         },
         "created_at": {
           "name": "created_at",
-<<<<<<< HEAD
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "rubika_ingest_images": {
-      "name": "rubika_ingest_images",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "batch_id": {
-          "name": "batch_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "message_id": {
-          "name": "message_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "file_id": {
-          "name": "file_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "source_url": {
-          "name": "source_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "sort_order": {
-          "name": "sort_order",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "0"
-        },
-        "stored_url": {
-          "name": "stored_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "rubika_ingest_images_batch_id_rubika_ingest_batches_id_fk": {
-          "name": "rubika_ingest_images_batch_id_rubika_ingest_batches_id_fk",
-          "tableFrom": "rubika_ingest_images",
-          "tableTo": "rubika_ingest_batches",
-          "columnsFrom": [
-            "batch_id"
-=======
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -1752,7 +1185,6 @@
           "tableTo": "factory_products",
           "columnsFrom": [
             "factory_product_id"
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           ],
           "columnsTo": [
             "id"
@@ -1765,13 +1197,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-<<<<<<< HEAD
-    "product_drafts": {
-      "name": "product_drafts",
-=======
     "factory_quotes": {
       "name": "factory_quotes",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
       "columns": {
         "id": {
           "name": "id",
@@ -1780,10 +1207,6 @@
           "notNull": true,
           "autoincrement": true
         },
-<<<<<<< HEAD
-        "batch_id": {
-          "name": "batch_id",
-=======
         "factory_product_id": {
           "name": "factory_product_id",
           "type": "integer",
@@ -1807,110 +1230,27 @@
         },
         "valid_until": {
           "name": "valid_until",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'review'"
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "slug": {
-          "name": "slug",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-=======
         "quoted_by_user_id": {
           "name": "quoted_by_user_id",
           "type": "integer",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "analysis_json": {
-          "name": "analysis_json",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "source_caption": {
-          "name": "source_caption",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "confidence": {
-          "name": "confidence",
-          "type": "real",
-          "primaryKey": false,
-=======
         "notes": {
           "name": "notes",
           "type": "text",
           "primaryKey": false,
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "notNull": false,
           "autoincrement": false
         },
         "created_at": {
           "name": "created_at",
-<<<<<<< HEAD
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        }
-      },
-      "indexes": {
-        "product_drafts_slug_unique": {
-          "name": "product_drafts_slug_unique",
-          "columns": [
-            "slug"
-          ],
-          "isUnique": true
-        }
-      },
-      "foreignKeys": {
-        "product_drafts_batch_id_rubika_ingest_batches_id_fk": {
-          "name": "product_drafts_batch_id_rubika_ingest_batches_id_fk",
-          "tableFrom": "product_drafts",
-          "tableTo": "rubika_ingest_batches",
-          "columnsFrom": [
-            "batch_id"
-=======
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -1938,7 +1278,6 @@
           "tableTo": "users",
           "columnsFrom": [
             "quoted_by_user_id"
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           ],
           "columnsTo": [
             "id"
@@ -1951,13 +1290,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-<<<<<<< HEAD
-    "product_draft_images": {
-      "name": "product_draft_images",
-=======
     "orders": {
       "name": "orders",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
       "columns": {
         "id": {
           "name": "id",
@@ -1966,72 +1300,33 @@
           "notNull": true,
           "autoincrement": true
         },
-<<<<<<< HEAD
-        "draft_id": {
-          "name": "draft_id",
-=======
         "user_id": {
           "name": "user_id",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "url": {
-          "name": "url",
-=======
         "shipping_address": {
           "name": "shipping_address",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "kind": {
-          "name": "kind",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'source'"
-        },
-        "alt": {
-          "name": "alt",
-=======
         "customer_note": {
           "name": "customer_note",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "sort_order": {
-          "name": "sort_order",
-=======
         "total_amount": {
           "name": "total_amount",
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-<<<<<<< HEAD
-          "default": "0"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-=======
           "default": 0
         },
         "status": {
@@ -2055,19 +1350,10 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
         }
       },
       "indexes": {},
       "foreignKeys": {
-<<<<<<< HEAD
-        "product_draft_images_draft_id_product_drafts_id_fk": {
-          "name": "product_draft_images_draft_id_product_drafts_id_fk",
-          "tableFrom": "product_draft_images",
-          "tableTo": "product_drafts",
-          "columnsFrom": [
-            "draft_id"
-=======
         "orders_user_id_users_id_fk": {
           "name": "orders_user_id_users_id_fk",
           "tableFrom": "orders",
@@ -2148,15 +1434,12 @@
           "tableTo": "orders",
           "columnsFrom": [
             "order_id"
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
           ],
           "columnsTo": [
             "id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
-<<<<<<< HEAD
-=======
         },
         "order_items_variant_id_product_variants_id_fk": {
           "name": "order_items_variant_id_product_variants_id_fk",
@@ -2400,7 +1683,6 @@
           ],
           "onDelete": "set null",
           "onUpdate": "no action"
->>>>>>> 0235891 (feat: add database schema for e-commerce application)
         }
       },
       "compositePrimaryKeys": {},

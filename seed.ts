@@ -1,563 +1,606 @@
-import bcrypt from 'bcryptjs'
-import { getDb } from '@/db'
+// seed.ts
+
+import { drizzle } from 'drizzle-orm/d1'
+import { env } from 'cloudflare:workers'
 import {
   categories,
   designs,
-  inquiries,
   materials,
-  orderItems,
-  orders,
+  products,
+  productVariants,
   productCategories,
   productDesigns,
   productMaterials,
-  products,
-  productVariants,
-  users,
-  variantImages,
-} from '@/server/db/schema'
-import { createServerFn } from '@tanstack/react-start'
+  factories,
+  factoryProducts,
+  factoryInventory,
+  factoryQuotes,
+} from './src/server/db/schema'
 
-const db = getDb()
+const db = drizzle(env.carpet_maryam_db)
 
 async function seed() {
-  console.log('🌱 شروع seed...')
+  console.log('🌱 Starting seed...')
 
-  // ============================================================
-  // 1. کاربران
-  // ============================================================
-  const passwordHash = await bcrypt.hash('password123', 10)
+  // --------------------------------------------------
+  // Categories
+  // --------------------------------------------------
 
-  const [admin] = await db
-    .insert(users)
-    .values({
-      phone: '09120000001',
-      email: 'admin@farshgallery.ir',
-      name: 'مدیر سیستم',
-      role: 'admin',
-      passwordHash,
-      isActive: true,
-      phoneVerifiedAt: new Date().toISOString(),
-    })
-    .returning()
-
-  const [staff1] = await db
-    .insert(users)
-    .values({
-      phone: '09120000002',
-      email: 'staff1@farshgallery.ir',
-      name: 'علی محمدی',
-      role: 'staff',
-      passwordHash,
-      isActive: true,
-      phoneVerifiedAt: new Date().toISOString(),
-    })
-    .returning()
-
-  const [staff2] = await db
-    .insert(users)
-    .values({
-      phone: '09120000003',
-      email: 'staff2@farshgallery.ir',
-      name: 'فاطمه رضایی',
-      role: 'staff',
-      passwordHash,
-      isActive: true,
-      phoneVerifiedAt: new Date().toISOString(),
-    })
-    .returning()
-
-  const customers = await db
-    .insert(users)
-    .values([
-      {
-        phone: '09111111101',
-        name: 'رضا کریمی',
-        role: 'customer',
-        passwordHash,
-        isActive: true,
-        phoneVerifiedAt: new Date().toISOString(),
-      },
-      {
-        phone: '09111111102',
-        name: 'مریم احمدی',
-        role: 'customer',
-        passwordHash,
-        isActive: true,
-        phoneVerifiedAt: new Date().toISOString(),
-      },
-      {
-        phone: '09111111103',
-        name: 'حسین نوری',
-        role: 'customer',
-        passwordHash,
-        isActive: true,
-        phoneVerifiedAt: new Date().toISOString(),
-      },
-      {
-        phone: '09111111104',
-        name: 'زهرا صادقی',
-        role: 'customer',
-        passwordHash,
-        isActive: true,
-        phoneVerifiedAt: new Date().toISOString(),
-      },
-      {
-        phone: '09111111105',
-        name: 'امیر حسینی',
-        role: 'customer',
-        passwordHash,
-        isActive: true,
-        phoneVerifiedAt: new Date().toISOString(),
-      },
-    ])
-    .returning()
-
-  console.log('✅ کاربران ایجاد شدند')
-
-  // ============================================================
-  // 2. دسته‌بندی‌ها
-  // ============================================================
-  const categoriesData = await db
-    .insert(categories)
-    .values([
-      { name: 'گبه', slug: 'gabbeh' },
-      { name: 'فرش ماشینی', slug: 'machine-made' },
-      { name: 'فرش دستباف', slug: 'handmade' },
-      { name: 'پادری', slug: 'doormat' },
-      { name: 'موکت', slug: 'carpet-tile' },
-    ])
-    .returning()
-
-  console.log('✅ دسته‌بندی‌ها ایجاد شدند')
-
-  // ============================================================
-  // 3. طرح‌ها
-  // ============================================================
-  const designsData = await db
-    .insert(designs)
-    .values([
-      { name: 'سنتی', slug: 'traditional' },
-      { name: 'مدرن', slug: 'modern' },
-      { name: 'گبه‌ای', slug: 'gabbeh-style' },
-      { name: 'هندسی', slug: 'geometric' },
-      { name: 'فانتزی', slug: 'fantasy' },
-      { name: 'وینتیج', slug: 'vintage' },
-    ])
-    .returning()
-
-  console.log('✅ طرح‌ها ایجاد شدند')
-
-  // ============================================================
-  // 4. متریال‌ها
-  // ============================================================
-  const materialsData = await db
-    .insert(materials)
-    .values([
-      { name: 'اکریلیک', slug: 'acrylic' },
-      { name: 'پلی‌پروپیلن', slug: 'polypropylene' },
-      { name: 'پشم طبیعی', slug: 'wool' },
-      { name: 'ابریشم', slug: 'silk' },
-      { name: 'نایلون', slug: 'nylon' },
-    ])
-    .returning()
-
-  console.log('✅ متریال‌ها ایجاد شدند')
-
-  // ============================================================
-  // 5. محصولات (۲۰ عدد)
-  // ============================================================
-  const productsList = [
+  const categoryData = [
     {
-      name: 'فرش گبه لری ۱۲۰۰ شانه',
-      slug: 'gabbeh-lori-1200',
-      description:
-        'فرش گبه‌ای با طرح‌های قبیله‌ای لری، بافته‌شده با پشم طبیعی اعلا. مناسب نشیمن و اتاق خواب.',
-      categories: [0, 2], // گبه، دستباف
-      designs: [2], // گبه‌ای
-      materials: [2], // پشم طبیعی
+      name: 'فرش کلاسیک',
+      slug: 'classic',
     },
     {
-      name: 'فرش ماشینی وینتیج ۵۰۰ شانه',
-      slug: 'machine-vintage-500',
-      description:
-        'فرش ماشینی با طرح وینتیج، مناسب برای فضاهای کلاسیک و مدرن. رنگ‌آمیزی با رنگ‌های گیاهی.',
-      categories: [1],
-      designs: [5],
-      materials: [0],
+      name: 'فرش مدرن',
+      slug: 'modern',
     },
     {
-      name: 'فرش دستباف تبریز ۷۰ رج',
-      slug: 'tabriz-handmade-70',
-      description:
-        'فرش دستباف تبریز ۷۰ رج با طرح ترنج، ریسیده از ابریشم خالص. کیفیت صادراتی.',
-      categories: [2],
-      designs: [0],
-      materials: [3],
+      name: 'فرش سنتی',
+      slug: 'traditional',
     },
     {
-      name: 'فرش مدرن فانتزی اکریلیک',
-      slug: 'modern-fantasy-acrylic',
-      description:
-        'فرش ماشینی با طرح هندسی مدرن، ایده‌آل برای دکوراسیون مینیمال.',
-      categories: [1],
-      designs: [1, 3],
-      materials: [0],
-    },
-    {
-      name: 'گبه قشقایی دستباف',
-      slug: 'qashqai-gabbeh',
-      description:
-        'گبه اصیل قشقایی با نقوش حیوانی و گیاهی، ساخته شده توسط عشایر استان فارس.',
-      categories: [0, 2],
-      designs: [2, 0],
-      materials: [2],
-    },
-    {
-      name: 'فرش ماشینی ۷۰۰ شانه پلی‌پروپیلن',
-      slug: 'machine-700-pp',
-      description:
-        'فرش پرمقاومت ماشینی مناسب برای استفاده روزانه و ترافیک بالا.',
-      categories: [1],
-      designs: [1],
-      materials: [1],
-    },
-    {
-      name: 'فرش کرمان دستباف ترمه',
-      slug: 'kerman-termeh',
-      description:
-        'فرش دستباف کرمان با خامه‌کشی ریز و ظریف، نقشه گل‌وبوته اصیل.',
-      categories: [2],
-      designs: [0],
-      materials: [2, 3],
-    },
-    {
-      name: 'فرش مدرن ۱۰۰۰ شانه ابریشم‌نما',
-      slug: 'modern-1000-silk-look',
-      description:
-        'فرش ماشینی با درخشندگی ابریشم‌نما و طرح‌های معاصر. مناسب محیط‌های لوکس.',
-      categories: [1],
-      designs: [1],
-      materials: [4],
-    },
-    {
-      name: 'گبه لری سرمه‌ای',
-      slug: 'lori-gabbeh-navy',
-      description:
-        'گبه لری با زمینه سرمه‌ای عمیق و نقوش هندسی سنتی. بافت خشن اصیل.',
-      categories: [0],
-      designs: [2, 3],
-      materials: [2],
-    },
-    {
-      name: 'فرش سنتی اصفهان ۶۰ رج',
-      slug: 'isfahan-traditional-60',
-      description:
-        'فرش دستباف اصفهان با طرح اسلیمی و ختایی، مناسب فضاهای کلاسیک.',
-      categories: [2],
-      designs: [0],
-      materials: [2],
-    },
-    {
-      name: 'فرش هندسی مدرن نایلون',
-      slug: 'geometric-modern-nylon',
-      description:
-        'فرش ماشینی با نقش هندسی ساده، مناسب دفاتر و محیط‌های اداری.',
-      categories: [1],
-      designs: [3],
-      materials: [4],
-    },
-    {
-      name: 'پادری طرح گل برجسته',
-      slug: 'doormat-flower-relief',
-      description: 'پادری با طرح گل برجسته، ضد لغزش، مناسب ورودی منزل.',
-      categories: [3],
-      designs: [4],
-      materials: [1],
-    },
-    {
-      name: 'فرش ۵۰۰ شانه گل‌رز',
-      slug: 'machine-rose-500',
-      description: 'فرش ماشینی ۵۰۰ شانه با طرح گل‌رز، رنگ‌های گرم و دل‌نشین.',
-      categories: [1],
-      designs: [0],
-      materials: [0],
-    },
-    {
-      name: 'گبه رنگارنگ قبیله‌ای',
-      slug: 'tribal-gabbeh-colorful',
-      description: 'گبه قبیله‌ای با رنگ‌بندی شاد و نقوش اصیل، مناسب کودکان.',
-      categories: [0],
-      designs: [2],
-      materials: [2],
-    },
-    {
-      name: 'فرش دستباف نائین ۹ لا',
-      slug: 'nain-9la-handmade',
-      description:
-        'فرش معروف نائین ۹ لا با پرز کوتاه و دقت بالا، مناسب مجالس رسمی.',
-      categories: [2],
-      designs: [0],
-      materials: [2, 3],
-    },
-    {
-      name: 'موکت طرح سنگ طبیعی',
-      slug: 'carpet-tile-stone',
-      description: 'موکت با طرح سنگ طبیعی، مناسب سالن‌ها و راهروها.',
-      categories: [4],
-      designs: [1],
-      materials: [1],
-    },
-    {
-      name: 'فرش وینتیج پتینه ۱۲۰۰ شانه',
-      slug: 'vintage-patina-1200',
-      description:
-        'فرش ماشینی با پرداخت پتینه (شسته‌شده) که ظاهری کهنه و لوکس می‌دهد.',
-      categories: [1],
-      designs: [5],
-      materials: [0],
-    },
-    {
-      name: 'فرش بختیاری دستباف',
-      slug: 'bakhtiari-handmade',
-      description:
-        'فرش بختیاری اصیل با طرح باغ خشتی، بافته شده توسط عشایر چهارمحال.',
-      categories: [2],
-      designs: [0],
-      materials: [2],
-    },
-    {
-      name: 'پادری چرمی ساده',
-      slug: 'leather-doormat-simple',
-      description:
-        'پادری مدرن با رویه اکریلیک و پشت ضد لغزش، قابل شستشو در ماشین.',
-      categories: [3],
-      designs: [1],
-      materials: [0],
-    },
-    {
-      name: 'فرش ابریشم دستباف قم',
-      slug: 'qom-silk-handmade',
-      description:
-        'شاهکار فرشبافی قم، بافته‌شده از ابریشم خالص با تراکم ۸۰ رج. کیفیت موزه‌ای.',
-      categories: [2],
-      designs: [0],
-      materials: [3],
+      name: 'فرش اتاق کودک',
+      slug: 'children',
     },
   ]
 
-  // داده‌های variant برای هر محصول
-  const variantTemplates = [
-    {
-      dimension: '۶ متری (۲۰۰×۳۰۰)',
-      colors: [
-        { color: 'کرم', colorHex: '#F5F0DC', priceMultiplier: 1.0 },
-        { color: 'سرمه‌ای', colorHex: '#1B2A4A', priceMultiplier: 1.05 },
-      ],
-    },
-    {
-      dimension: '۹ متری (۳۰۰×۳۰۰)',
-      colors: [
-        { color: 'قرمز لاکی', colorHex: '#8B0000', priceMultiplier: 1.5 },
-        { color: 'طوسی', colorHex: '#808080', priceMultiplier: 1.45 },
-      ],
-    },
-    {
-      dimension: '۱۲ متری (۳۰۰×۴۰۰)',
-      colors: [{ color: 'فیلی', colorHex: '#C2B280', priceMultiplier: 2.0 }],
-    },
-  ]
-
-  const basePrices: Record<string, number> = {
-    'gabbeh-lori-1200': 8_500_000,
-    'machine-vintage-500': 3_200_000,
-    'tabriz-handmade-70': 45_000_000,
-    'modern-fantasy-acrylic': 2_800_000,
-    'qashqai-gabbeh': 12_000_000,
-    'machine-700-pp': 3_800_000,
-    'kerman-termeh': 38_000_000,
-    'modern-1000-silk-look': 5_500_000,
-    'lori-gabbeh-navy': 9_200_000,
-    'isfahan-traditional-60': 42_000_000,
-    'geometric-modern-nylon': 2_600_000,
-    'doormat-flower-relief': 450_000,
-    'machine-rose-500': 3_000_000,
-    'tribal-gabbeh-colorful': 10_500_000,
-    'nain-9la-handmade': 55_000_000,
-    'carpet-tile-stone': 1_200_000,
-    'vintage-patina-1200': 4_200_000,
-    'bakhtiari-handmade': 35_000_000,
-    'leather-doormat-simple': 380_000,
-    'qom-silk-handmade': 120_000_000,
+  for (const category of categoryData) {
+    await db
+      .insert(categories)
+      .values(category)
+      .onConflictDoNothing({
+        target: categories.slug,
+      })
   }
 
-  for (const p of productsList) {
-    // درج محصول
-    const [product] = await db
+  // --------------------------------------------------
+  // Designs
+  // --------------------------------------------------
+
+  const designData = [
+    {
+      name: 'افشان',
+      slug: 'afshan',
+    },
+    {
+      name: 'ترنج',
+      slug: 'toranj',
+    },
+    {
+      name: 'خشتی',
+      slug: 'kheshti',
+    },
+    {
+      name: 'وینتیج',
+      slug: 'vintage',
+    },
+    {
+      name: 'هندسی',
+      slug: 'geometric',
+    },
+  ]
+
+  for (const design of designData) {
+    await db
+      .insert(designs)
+      .values(design)
+      .onConflictDoNothing({
+        target: designs.slug,
+      })
+  }
+
+  // --------------------------------------------------
+  // Materials
+  // --------------------------------------------------
+
+  const materialData = [
+    {
+      name: 'اکریلیک هیت‌ست',
+      slug: 'acrylic-heatset',
+    },
+    {
+      name: 'پلی‌استر',
+      slug: 'polyester',
+    },
+    {
+      name: 'پلی‌پروپیلن',
+      slug: 'polypropylene',
+    },
+    {
+      name: 'پشم',
+      slug: 'wool',
+    },
+  ]
+
+  for (const material of materialData) {
+    await db
+      .insert(materials)
+      .values(material)
+      .onConflictDoNothing({
+        target: materials.slug,
+      })
+  }
+
+  // --------------------------------------------------
+  // Fetch IDs
+  // --------------------------------------------------
+
+  const categoryRows = await db.select().from(categories)
+  const designRows = await db.select().from(designs)
+  const materialRows = await db.select().from(materials)
+
+  const categoryId = (slug: string) =>
+    categoryRows.find((item) => item.slug === slug)?.id
+
+  const designId = (slug: string) =>
+    designRows.find((item) => item.slug === slug)?.id
+
+  const materialId = (slug: string) =>
+    materialRows.find((item) => item.slug === slug)?.id
+
+  // --------------------------------------------------
+  // Products
+  // --------------------------------------------------
+
+  const productData = [
+    {
+      name: 'فرش ماشینی افشان کرم',
+      slug: 'afshan-cream-700',
+      description:
+        'فرش ماشینی طرح افشان با زمینه کرم، مناسب دکوراسیون کلاسیک و مدرن.',
+      descriptionShort:
+        'فرش افشان کرم با طراحی کلاسیک و رنگ‌بندی گرم.',
+      brand: 'فرش مریم',
+      style: 'classic' as const,
+      shaneh: 700,
+      density: 2550,
+      yarn: 'اکریلیک هیت‌ست',
+      pileHeightMm: 10,
+      weightPerSquareMeterGrams: 2500,
+      weavingType: 'ماشینی',
+      warrantyMonths: 60,
+      isActive: true,
+    },
+
+    {
+      name: 'فرش ماشینی ترنج سرمه‌ای',
+      slug: 'toranj-navy-700',
+      description:
+        'فرش طرح ترنج با زمینه سرمه‌ای و حاشیه کلاسیک، مناسب سالن پذیرایی.',
+      descriptionShort:
+        'ترنج سرمه‌ای با ظاهر رسمی و لوکس.',
+      brand: 'فرش مریم',
+      style: 'classic' as const,
+      shaneh: 700,
+      density: 2550,
+      yarn: 'اکریلیک هیت‌ست',
+      pileHeightMm: 10,
+      weightPerSquareMeterGrams: 2500,
+      weavingType: 'ماشینی',
+      warrantyMonths: 60,
+      isActive: true,
+    },
+
+    {
+      name: 'فرش مدرن هندسی طوسی',
+      slug: 'modern-geometric-gray',
+      description:
+        'فرش مدرن با طرح هندسی و رنگ طوسی، مناسب دکوراسیون مینیمال.',
+      descriptionShort:
+        'فرش مدرن طوسی برای خانه‌های مینیمال.',
+      brand: 'فرش مریم',
+      style: 'modern' as const,
+      shaneh: 1200,
+      density: 3600,
+      yarn: 'اکریلیک هیت‌ست',
+      pileHeightMm: 9,
+      weightPerSquareMeterGrams: 2200,
+      weavingType: 'ماشینی',
+      warrantyMonths: 60,
+      isActive: true,
+    },
+
+    {
+      name: 'فرش وینتیج طوسی کرم',
+      slug: 'vintage-gray-cream',
+      description:
+        'فرش وینتیج با ترکیب طوسی و کرم، مناسب دکوراسیون مدرن و نئوکلاسیک.',
+      descriptionShort:
+        'وینتیج طوسی کرم با ظاهر خاص و امروزی.',
+      brand: 'فرش مریم',
+      style: 'fancy' as const,
+      shaneh: 1200,
+      density: 3600,
+      yarn: 'پلی‌استر',
+      pileHeightMm: 8,
+      weightPerSquareMeterGrams: 2100,
+      weavingType: 'ماشینی',
+      warrantyMonths: 36,
+      isActive: true,
+    },
+
+    {
+      name: 'فرش سنتی خشتی لاکی',
+      slug: 'traditional-kheshti-red',
+      description:
+        'فرش سنتی با طرح خشتی و رنگ لاکی، مناسب دکوراسیون سنتی و کلاسیک.',
+      descriptionShort:
+        'طرح خشتی لاکی با حال‌وهوای اصیل ایرانی.',
+      brand: 'فرش مریم',
+      style: 'traditional' as const,
+      shaneh: 700,
+      density: 2550,
+      yarn: 'اکریلیک هیت‌ست',
+      pileHeightMm: 10,
+      weightPerSquareMeterGrams: 2500,
+      weavingType: 'ماشینی',
+      warrantyMonths: 60,
+      isActive: true,
+    },
+
+    {
+      name: 'فرش کودک طرح ستاره',
+      slug: 'kids-star',
+      description:
+        'فرش کودک با طراحی ساده و رنگ‌های شاد، مناسب اتاق کودک.',
+      descriptionShort:
+        'فرش کودک با طرح ستاره و رنگ‌بندی شاد.',
+      brand: 'فرش مریم',
+      style: 'children' as const,
+      shaneh: 700,
+      density: 2550,
+      yarn: 'پلی‌استر',
+      pileHeightMm: 8,
+      weightPerSquareMeterGrams: 2000,
+      weavingType: 'ماشینی',
+      warrantyMonths: 36,
+      isActive: true,
+    },
+  ]
+
+  for (const product of productData) {
+    await db
       .insert(products)
+      .values(product)
+      .onConflictDoNothing({
+        target: products.slug,
+      })
+  }
+
+  // --------------------------------------------------
+  // Product IDs
+  // --------------------------------------------------
+
+  const productRows = await db.select().from(products)
+
+  const productId = (slug: string) =>
+    productRows.find((item) => item.slug === slug)?.id
+
+  // --------------------------------------------------
+  // Product Relations
+  // --------------------------------------------------
+
+  const productRelations = [
+    {
+      productSlug: 'afshan-cream-700',
+      categories: ['classic'],
+      designs: ['afshan'],
+      materials: ['acrylic-heatset'],
+    },
+    {
+      productSlug: 'toranj-navy-700',
+      categories: ['classic'],
+      designs: ['toranj'],
+      materials: ['acrylic-heatset'],
+    },
+    {
+      productSlug: 'modern-geometric-gray',
+      categories: ['modern'],
+      designs: ['geometric'],
+      materials: ['acrylic-heatset'],
+    },
+    {
+      productSlug: 'vintage-gray-cream',
+      categories: ['modern'],
+      designs: ['vintage'],
+      materials: ['polyester'],
+    },
+    {
+      productSlug: 'traditional-kheshti-red',
+      categories: ['traditional', 'classic'],
+      designs: ['kheshti'],
+      materials: ['acrylic-heatset'],
+    },
+    {
+      productSlug: 'kids-star',
+      categories: ['children'],
+      designs: ['geometric'],
+      materials: ['polyester'],
+    },
+  ]
+
+  for (const relation of productRelations) {
+    const product = productId(relation.productSlug)
+
+    if (!product) continue
+
+    for (const slug of relation.categories) {
+      const category = categoryId(slug)
+
+      if (!category) continue
+
+      await db
+        .insert(productCategories)
+        .values({
+          productId: product,
+          categoryId: category,
+        })
+        .onConflictDoNothing()
+    }
+
+    for (const slug of relation.designs) {
+      const design = designId(slug)
+
+      if (!design) continue
+
+      await db
+        .insert(productDesigns)
+        .values({
+          productId: product,
+          designId: design,
+        })
+        .onConflictDoNothing()
+    }
+
+    for (const slug of relation.materials) {
+      const material = materialId(slug)
+
+      if (!material) continue
+
+      await db
+        .insert(productMaterials)
+        .values({
+          productId: product,
+          materialId: material,
+        })
+        .onConflictDoNothing()
+    }
+  }
+
+  // --------------------------------------------------
+  // Product Variants
+  // --------------------------------------------------
+
+  const variants = [
+    // Afshan
+    {
+      productSlug: 'afshan-cream-700',
+      dimension: '6 متری',
+      color: 'کرم',
+      colorHex: '#E8DCC8',
+      sku: 'FM-AFSHAN-700-6M',
+      price: 12500000,
+      compareAtPrice: 14500000,
+    },
+    {
+      productSlug: 'afshan-cream-700',
+      dimension: '9 متری',
+      color: 'کرم',
+      colorHex: '#E8DCC8',
+      sku: 'FM-AFSHAN-700-9M',
+      price: 18500000,
+      compareAtPrice: 21000000,
+    },
+    {
+      productSlug: 'afshan-cream-700',
+      dimension: '12 متری',
+      color: 'کرم',
+      colorHex: '#E8DCC8',
+      sku: 'FM-AFSHAN-700-12M',
+      price: 24500000,
+      compareAtPrice: 28000000,
+    },
+
+    // Toranj
+    {
+      productSlug: 'toranj-navy-700',
+      dimension: '6 متری',
+      color: 'سرمه‌ای',
+      colorHex: '#172554',
+      sku: 'FM-TORANJ-700-6M',
+      price: 13000000,
+      compareAtPrice: 15000000,
+    },
+    {
+      productSlug: 'toranj-navy-700',
+      dimension: '9 متری',
+      color: 'سرمه‌ای',
+      colorHex: '#172554',
+      sku: 'FM-TORANJ-700-9M',
+      price: 19200000,
+      compareAtPrice: 22000000,
+    },
+
+    // Modern
+    {
+      productSlug: 'modern-geometric-gray',
+      dimension: '6 متری',
+      color: 'طوسی',
+      colorHex: '#9CA3AF',
+      sku: 'FM-GEO-1200-6M',
+      price: 15500000,
+      compareAtPrice: 17500000,
+    },
+    {
+      productSlug: 'modern-geometric-gray',
+      dimension: '9 متری',
+      color: 'طوسی',
+      colorHex: '#9CA3AF',
+      sku: 'FM-GEO-1200-9M',
+      price: 22500000,
+      compareAtPrice: 25000000,
+    },
+
+    // Vintage
+    {
+      productSlug: 'vintage-gray-cream',
+      dimension: '6 متری',
+      color: 'طوسی کرم',
+      colorHex: '#B8B3A7',
+      sku: 'FM-VINTAGE-1200-6M',
+      price: 14000000,
+      compareAtPrice: 16500000,
+    },
+
+    // Traditional
+    {
+      productSlug: 'traditional-kheshti-red',
+      dimension: '6 متری',
+      color: 'لاکی',
+      colorHex: '#991B1B',
+      sku: 'FM-KHESHTI-700-6M',
+      price: 12800000,
+      compareAtPrice: 15000000,
+    },
+    {
+      productSlug: 'traditional-kheshti-red',
+      dimension: '9 متری',
+      color: 'لاکی',
+      colorHex: '#991B1B',
+      sku: 'FM-KHESHTI-700-9M',
+      price: 19000000,
+      compareAtPrice: 21500000,
+    },
+
+    // Kids
+    {
+      productSlug: 'kids-star',
+      dimension: '4 متری',
+      color: 'چند رنگ',
+      colorHex: '#F5D0FE',
+      sku: 'FM-KIDS-STAR-4M',
+      price: 7500000,
+      compareAtPrice: 8500000,
+    },
+  ]
+
+  for (const variant of variants) {
+    const product = productId(variant.productSlug)
+
+    if (!product) continue
+
+    await db
+      .insert(productVariants)
       .values({
-        name: p.name,
-        slug: p.slug,
-        description: p.description,
+        productId: product,
+        dimension: variant.dimension,
+        color: variant.color,
+        colorHex: variant.colorHex,
+        sku: variant.sku,
+        price: variant.price,
+        compareAtPrice: variant.compareAtPrice,
+        stock: 0,
         isActive: true,
       })
-      .returning()
-
-    // دسته‌بندی‌ها
-    for (const ci of p.categories) {
-      await db.insert(productCategories).values({
-        productId: product.id,
-        categoryId: categoriesData[ci].id,
+      .onConflictDoNothing({
+        target: productVariants.sku,
       })
-    }
-
-    // طرح‌ها
-    for (const di of p.designs) {
-      await db.insert(productDesigns).values({
-        productId: product.id,
-        designId: designsData[di].id,
-      })
-    }
-
-    // متریال‌ها
-    for (const mi of p.materials) {
-      await db.insert(productMaterials).values({
-        productId: product.id,
-        materialId: materialsData[mi].id,
-      })
-    }
-
-    // Variant ها
-    const basePrice = basePrices[p.slug] ?? 5_000_000
-    // پادری فقط یک سایز دارد
-    const templates =
-      p.slug.startsWith('doormat') ||
-      p.slug.startsWith('leather-doormat') ||
-      p.slug === 'carpet-tile-stone'
-        ? [variantTemplates[0]]
-        : variantTemplates
-
-    let skuCounter = 1
-    for (const tpl of templates) {
-      for (const col of tpl.colors) {
-        const price = Math.round(basePrice * col.priceMultiplier)
-        const [variant] = await db
-          .insert(productVariants)
-          .values({
-            productId: product.id,
-            dimension: tpl.dimension,
-            color: col.color,
-            colorHex: col.colorHex,
-            sku: `${p.slug.toUpperCase().replace(/-/g, '_')}_${skuCounter++}`,
-            price,
-            compareAtPrice: Math.round(price * 1.1),
-            stock: Math.floor(Math.random() * 15) + 2, // ۲ تا ۱۶
-            isActive: true,
-          })
-          .returning()
-
-        // تصاویر نمونه برای هر variant
-        await db.insert(variantImages).values([
-          {
-            variantId: variant.id,
-            url: `https://picsum.photos/seed/${p.slug}-${variant.id}-1/800/600`,
-            alt: `${p.name} - ${col.color} - ${tpl.dimension}`,
-            sortOrder: 0,
-          },
-          {
-            variantId: variant.id,
-            url: `https://picsum.photos/seed/${p.slug}-${variant.id}-2/800/600`,
-            alt: `${p.name} - نمای نزدیک`,
-            sortOrder: 1,
-          },
-        ])
-      }
-    }
   }
 
-  console.log('✅ محصولات، Variant ها و تصاویر ایجاد شدند')
+  // --------------------------------------------------
+  // Factory
+  // --------------------------------------------------
 
-  // ============================================================
-  // 6. سفارش‌های نمونه
-  // ============================================================
+  const factoryData = [
+    {
+      name: 'کارخانه نمونه آران',
+      slug: 'aran-sample-factory',
+      phone: '03100000000',
+      whatsapp: '989100000000',
+      contactName: 'محمد احمدی',
+      address: 'آران و بیدگل',
+      city: 'آران و بیدگل',
+      region: 'اصفهان',
+      notes: 'تأمین‌کننده نمونه برای تست سیستم',
+      isActive: true,
+    },
+    {
+      name: 'کارخانه نمونه کاشان',
+      slug: 'kashan-sample-factory',
+      phone: '03100000001',
+      whatsapp: '989110000000',
+      contactName: 'علی رضایی',
+      address: 'کاشان',
+      city: 'کاشان',
+      region: 'اصفهان',
+      notes: 'مناسب تولید سفارشی',
+      isActive: true,
+    },
+  ]
 
-  // گرفتن چند variant برای آیتم‌های سفارش
-  const allVariants = await db.query.productVariants.findMany({ limit: 10 })
+  for (const factory of factoryData) {
+    await db
+      .insert(factories)
+      .values(factory)
+      .onConflictDoNothing({
+        target: factories.slug,
+      })
+  }
 
-  for (let i = 0; i < customers.length; i++) {
-    const customer = customers[i]
-    const v1 = allVariants[i % allVariants.length]
-    const v2 = allVariants[(i + 2) % allVariants.length]
+  const factoryRows = await db.select().from(factories)
+  const variantRows = await db.select().from(productVariants)
 
-    const total = v1.price + v2.price
-    const statuses: Array<
-      'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled'
-    > = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled']
+  // --------------------------------------------------
+  // Factory Products + Inventory + Quotes
+  // --------------------------------------------------
 
-    const [order] = await db
-      .insert(orders)
+  for (const variant of variantRows) {
+    const factory = factoryRows[0]
+
+    if (!factory) continue
+
+    const [factoryProduct] = await db
+      .insert(factoryProducts)
       .values({
-        userId: customer.id,
-        shippingAddress: `تهران، خیابان آزادی، پلاک ${100 + i}، واحد ${i + 1}`,
-        customerNote: i === 0 ? 'لطفاً زودتر ارسال شود' : null,
-        totalAmount: total,
-        status: statuses[i % statuses.length],
+        factoryId: factory.id,
+        variantId: variant.id,
+        canWeave: true,
+        weavingDays: 7,
+        notes: 'تأمین و تولید سفارشی',
+        isActive: true,
       })
+      .onConflictDoNothing()
       .returning()
 
-    await db.insert(orderItems).values([
-      {
-        orderId: order.id,
-        variantId: v1.id,
-        quantity: 1,
-        unitPrice: v1.price,
-      },
-      {
-        orderId: order.id,
-        variantId: v2.id,
-        quantity: 1,
-        unitPrice: v2.price,
-      },
-    ])
+    if (!factoryProduct) continue
+
+    await db
+      .insert(factoryInventory)
+      .values({
+        factoryProductId: factoryProduct.id,
+        quantity: Math.floor(Math.random() * 5),
+        reservedQuantity: 0,
+        checkedAt: new Date(),
+        notes: 'موجودی اولیه Seed',
+      })
+      .onConflictDoNothing()
+
+    await db
+      .insert(factoryQuotes)
+      .values({
+        factoryProductId: factoryProduct.id,
+        purchasePrice: Math.floor(variant.price * 0.75),
+        validFrom: new Date(),
+        notes: 'قیمت خرید نمونه',
+      })
   }
 
-  console.log('✅ سفارش‌های نمونه ایجاد شدند')
-
-  // ============================================================
-  // 7. استعلام‌های نمونه
-  // ============================================================
-  const allProducts = await db.query.products.findMany({ limit: 6 })
-
-  for (let i = 0; i < 3; i++) {
-    const customer = customers[i]
-    const product = allProducts[i]
-    const inquiryStatuses: Array<'new' | 'contacted' | 'closed'> = [
-      'new',
-      'contacted',
-      'closed',
-    ]
-
-    await db.insert(inquiries).values({
-      userId: customer.id,
-      productId: product.id,
-      message: [
-        'آیا این فرش در سایز ۱۲ متری هم موجود است؟',
-        'قیمت نهایی با احتساب ارسال به اصفهان چقدر می‌شود؟',
-        'آیا امکان مشاهده‌ی حضوری این فرش وجود دارد؟',
-      ][i],
-      status: inquiryStatuses[i],
-    })
-  }
-
-  console.log('✅ استعلام‌های نمونه ایجاد شدند')
-  console.log('\n🎉 seed با موفقیت به پایان رسید!')
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-  console.log(`👤 Admin:    09120000001 / password123`)
-  console.log(`👤 Staff:    09120000002 / password123`)
-  console.log(`👤 Customer: 09111111101 / password123`)
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+  console.log('✅ Seed completed successfully')
 }
 
-export const runSeedServerFn = createServerFn().handler(async () => {
-  await seed()
-  return { message: 'Seed completed successfully' }
+seed().catch((error) => {
+  console.error('❌ Seed failed:')
+  console.error(error)
+  process.exit(1)
 })

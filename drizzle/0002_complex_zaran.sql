@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `factory_product_factory_variant_unique` ON `factory_products` (`factory_id`,`variant_id`);
