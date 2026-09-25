@@ -59,5 +59,19 @@ export function extractRubikaMessage(update: AnyRecord) {
 }
 
 export function isAnalyzeCommand(text: string) {
-  return /^(?:\\/|#)?(?:analyze|ai|ثبت|تحلیل)(?:\\s|$)/i.test(text.trim())
+  const value = text.trim().toLowerCase()
+  return (
+    value === 'analyze' ||
+    value === '#analyze' ||
+    value === '/analyze' ||
+    value === 'ai' ||
+    value === '#ai' ||
+    value === '/ai' ||
+    value === 'ثبت' ||
+    value === '#ثبت' ||
+    value === '/ثبت' ||
+    value === 'تحلیل' ||
+    value === '#تحلیل' ||
+    value === '/تحلیل'
+  )
 }
