@@ -400,7 +400,7 @@ export const rubikaIngestBatches = sqliteTable('rubika_ingest_batches', {
   chatId: text('chat_id').notNull(),
   caption: text('caption'),
   status: text('status', {
-    enum: ['pending', 'processing', 'completed', 'failed'],
+    enum: ['pending', 'processing', 'ready', 'failed'],
   }).notNull().default('pending'),
   error: text('error'),
   createdAt: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
@@ -416,6 +416,7 @@ export const rubikaIngestImages = sqliteTable('rubika_ingest_images', {
   fileId: text('file_id').notNull(),
   sourceUrl: text('source_url'),
   sortOrder: integer('sort_order').notNull().default(0),
+  storedUrl: text('stored_url'),
   createdAt: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
 })
 
@@ -425,9 +426,10 @@ export const productDrafts = sqliteTable('product_drafts', {
     onDelete: 'set null',
   }),
   status: text('status', {
-    enum: ['draft', 'approved', 'rejected', 'published'],
+    enum: ['review', 'approved', 'rejected', 'published'],
   }).notNull().default('draft'),
   title: text('title').notNull(),
+  slug: text('slug').notNull().unique(),
   description: text('description'),
   analysisJson: text('analysis_json').notNull(),
   sourceCaption: text('source_caption'),
@@ -452,12 +454,9 @@ export const productDraftImages = sqliteTable('product_draft_images', {
 
 export const rubikaIngestBatchesRelations = relations(
   rubikaIngestBatches,
-  ({ many, one }) => ({
+  ({ many }) => ({
     images: many(rubikaIngestImages),
-    draft: one(productDrafts, {
-      fields: [rubikaIngestBatches.id],
-      references: [productDrafts.batchId],
-    }),
+    drafts: many(productDrafts),
   }),
 )
 
