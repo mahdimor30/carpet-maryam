@@ -130,6 +130,7 @@ export interface FileRoutesByTo {
   '/complete-profile': typeof AuthedCompleteProfileRoute
   '/api/temp-upload': typeof ApiTempUploadRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
+  '/api/rubika/webhook': typeof ApiRubikaWebhookRoute
   '/dashboard/taxonomy': typeof AuthedDashboardTaxonomyRoute
   '/products/$slug': typeof LayoutProductsSlugRoute
   '/dashboard': typeof AuthedDashboardIndexRoute
@@ -147,6 +148,7 @@ export interface FileRoutesById {
   '/_authed/complete-profile': typeof AuthedCompleteProfileRoute
   '/api/temp-upload': typeof ApiTempUploadRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
+  '/api/rubika/webhook': typeof ApiRubikaWebhookRoute
   '/_layout/': typeof LayoutIndexRoute
   '/_authed/dashboard/taxonomy': typeof AuthedDashboardTaxonomyRoute
   '/_layout/products/$slug': typeof LayoutProductsSlugRoute
@@ -165,6 +167,7 @@ export interface FileRouteTypes {
     | '/complete-profile'
     | '/api/temp-upload'
     | '/api/uploadthing'
+    | '/api/rubika/webhook'
     | '/dashboard/taxonomy'
     | '/products/$slug'
     | '/dashboard/'
@@ -179,6 +182,7 @@ export interface FileRouteTypes {
     | '/complete-profile'
     | '/api/temp-upload'
     | '/api/uploadthing'
+    | '/api/rubika/webhook'
     | '/dashboard/taxonomy'
     | '/products/$slug'
     | '/dashboard'
@@ -211,6 +215,7 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   ApiTempUploadRoute: typeof ApiTempUploadRoute
   ApiUploadthingRoute: typeof ApiUploadthingRoute
+  ApiRubikaWebhookRoute: typeof ApiRubikaWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -256,6 +261,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof LayoutIndexRouteImport
       parentRoute: typeof LayoutRouteRoute
+    }
+    '/api/rubika/webhook': {
+      id: '/api/rubika/webhook'
+      path: '/api/rubika/webhook'
+      fullPath: '/api/rubika/webhook'
+      preLoaderRoute: typeof ApiRubikaWebhookRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/temp-upload': {
       id: '/api/temp-upload'
