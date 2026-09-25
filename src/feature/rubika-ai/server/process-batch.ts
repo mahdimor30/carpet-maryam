@@ -8,6 +8,7 @@ import {
 } from '@/server/db/schema'
 import { analyzeCarpetImages, uploadRubikaImages } from './analyze-carpet'
 import { getRubikaFileUrl, sendRubikaMessage } from './rubika-client'
+import { generateMarketingImages } from './generate-marketing-images'
 
 function slugify(input: string) {
   return input
@@ -92,6 +93,21 @@ export async function processRubikaBatch(batchId: number) {
           sortOrder: index,
         })),
       )
+    }
+
+    if (process.env.RUBIKA_GENERATE_MARKETING_IMAGES === 'true' && storedUrls[0]) {
+      const generated = await generateMarketingImages(storedUrls[0], title)
+      if (generated.length) {
+        await db.insert(productDraftImages).values(
+          generated.map((image, index) => ({
+            draftId: draft.id,
+            url: image.url,
+            kind: image.kind,
+            alt: title,
+            sortOrder: storedUrls.length + index,
+          })),
+        )
+      }
     }
 
     await db
