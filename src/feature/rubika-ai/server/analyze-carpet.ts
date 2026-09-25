@@ -84,7 +84,7 @@ export async function analyzeCarpetImages(
   const apiKey = process.env.OPENAI_API_KEY
   if (!apiKey) throw new Error('OPENAI_API_KEY is not configured')
 
-  const model = process.env.OPENAI_VISION_MODEL || 'gpt-5.6-luna'
+  const model = process.env.OPENAI_VISION_MODEL || 'gpt-4.1-mini'
 
   const content = [
     {
