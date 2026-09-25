@@ -1,10 +1,6 @@
 import { and, eq } from 'drizzle-orm'
 import { getDb } from '@/server/db'
-import {
-  cartItems,
-  carts,
-  productVariants,
-} from '@/server/db/schema'
+import { cartItems, carts, productVariants } from '@/server/db/schema'
 
 export async function updateCartItem({
   userId,
@@ -25,12 +21,7 @@ export async function updateCartItem({
     })
     .from(cartItems)
     .innerJoin(carts, eq(carts.id, cartItems.cartId))
-    .where(
-      and(
-        eq(cartItems.id, itemId),
-        eq(carts.userId, userId),
-      ),
-    )
+    .where(and(eq(cartItems.id, itemId), eq(carts.userId, userId)))
     .limit(1)
 
   if (!item[0]) {

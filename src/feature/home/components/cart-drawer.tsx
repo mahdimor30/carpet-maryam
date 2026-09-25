@@ -73,7 +73,7 @@ export function CartDrawer({
                     <img
                       src={product.image || '/placeholder.svg'}
                       alt={product.name}
-                      
+
                       className="object-cover"
                     />
                   </div>

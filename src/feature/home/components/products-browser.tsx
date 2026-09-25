@@ -18,9 +18,7 @@ export function ProductsBrowser({ initialCat }: { initialCat: string }) {
   const [sort, setSort] = useState<SortValue>('popular')
 
   const products = useMemo(() => {
-    let list = PRODUCTS.filter(
-      (p) => cat === 'all' || p.categorySlug === cat,
-    )
+    let list = PRODUCTS.filter((p) => cat === 'all' || p.categorySlug === cat)
     const trimmed = query.trim().toLowerCase()
     if (trimmed) {
       list = list.filter(

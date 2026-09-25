@@ -1,5 +1,5 @@
 import type { BuildQueryResult, ExtractTablesWithRelations } from 'drizzle-orm'
-import * as schema from '@/server/db/schema'
+import type * as schema from '@/server/db/schema'
 
 type Schema = ExtractTablesWithRelations<typeof schema>
 

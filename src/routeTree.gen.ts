@@ -15,6 +15,7 @@ import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthedCompleteProfileRouteImport } from './routes/_authed/complete-profile'
 import { Route as AuthedDashboardRouteRouteImport } from './routes/_authed/dashboard/route'
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
+import { Route as LayoutCheckoutRouteImport } from './routes/_layout/checkout'
 import { Route as ApiTempUploadRouteImport } from './routes/api/temp-upload'
 import { Route as ApiUploadthingRouteImport } from './routes/api/uploadthing'
 import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
@@ -57,6 +58,11 @@ const AuthedDashboardRouteRoute = AuthedDashboardRouteRouteImport.update({
 const LayoutIndexRoute = LayoutIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => LayoutRouteRoute,
+} as any)
+const LayoutCheckoutRoute = LayoutCheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
   getParentRoute: () => LayoutRouteRoute,
 } as any)
 const ApiTempUploadRoute = ApiTempUploadRouteImport.update({
@@ -144,6 +150,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthedDashboardRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/complete-profile': typeof AuthedCompleteProfileRoute
+  '/checkout': typeof LayoutCheckoutRoute
   '/api/temp-upload': typeof ApiTempUploadRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
   '/dashboard/inquiries': typeof AuthedDashboardInquiriesRoute
@@ -164,6 +171,7 @@ export interface FileRoutesByTo {
   '/': typeof LayoutIndexRoute
   '/login': typeof AuthLoginRoute
   '/complete-profile': typeof AuthedCompleteProfileRoute
+  '/checkout': typeof LayoutCheckoutRoute
   '/api/temp-upload': typeof ApiTempUploadRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
   '/dashboard/inquiries': typeof AuthedDashboardInquiriesRoute
@@ -187,6 +195,7 @@ export interface FileRoutesById {
   '/_authed/dashboard': typeof AuthedDashboardRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_authed/complete-profile': typeof AuthedCompleteProfileRoute
+  '/_layout/checkout': typeof LayoutCheckoutRoute
   '/api/temp-upload': typeof ApiTempUploadRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
   '/_layout/': typeof LayoutIndexRoute
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/complete-profile'
+    | '/checkout'
     | '/api/temp-upload'
     | '/api/uploadthing'
     | '/dashboard/inquiries'
@@ -231,6 +241,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/complete-profile'
+    | '/checkout'
     | '/api/temp-upload'
     | '/api/uploadthing'
     | '/dashboard/inquiries'
@@ -253,6 +264,7 @@ export interface FileRouteTypes {
     | '/_authed/dashboard'
     | '/_auth/login'
     | '/_authed/complete-profile'
+    | '/_layout/checkout'
     | '/api/temp-upload'
     | '/api/uploadthing'
     | '/_layout/'
@@ -322,6 +334,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof LayoutIndexRouteImport
+      parentRoute: typeof LayoutRouteRoute
+    }
+    '/_layout/checkout': {
+      id: '/_layout/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof LayoutCheckoutRouteImport
       parentRoute: typeof LayoutRouteRoute
     }
     '/api/temp-upload': {
@@ -433,6 +452,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface LayoutRouteRouteChildren {
+  LayoutCheckoutRoute: typeof LayoutCheckoutRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
   LayoutCategoriesSlugRoute: typeof LayoutCategoriesSlugRoute
   LayoutProductsSlugRoute: typeof LayoutProductsSlugRoute
@@ -441,6 +461,7 @@ interface LayoutRouteRouteChildren {
 }
 
 const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
+  LayoutCheckoutRoute: LayoutCheckoutRoute,
   LayoutIndexRoute: LayoutIndexRoute,
   LayoutCategoriesSlugRoute: LayoutCategoriesSlugRoute,
   LayoutProductsSlugRoute: LayoutProductsSlugRoute,

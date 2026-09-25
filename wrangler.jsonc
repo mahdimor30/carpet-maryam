@@ -17,7 +17,7 @@
       "binding": "carpet_maryam_db",
       "database_name": "carpet-maryam-db",
       "database_id": "7f9e7fc7-b215-4750-9167-8572621d8a74",
-      "remote": true,
+      "remote": false,
       "migrations_dir": "drizzle",
     },
   ],

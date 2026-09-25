@@ -5,7 +5,10 @@ import type { ProductFormValues } from '../validations/product'
 
 export const useUpdateProduct = () =>
   useMutation({
-    mutationFn: async ({ id, ...value }: ProductFormValues & { id: number }) => {
+    mutationFn: async ({
+      id,
+      ...value
+    }: ProductFormValues & { id: number }) => {
       const serverValue = {
         id,
         ...value,

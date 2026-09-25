@@ -11,32 +11,19 @@ import { getCurrentUserFn } from './get-user-cuemt'
 import { hashPassword } from '../utils/password'
 
 const completeProfileSchema = z.object({
-  name: z
-    .string()
-    .min(2, 'نام باید حداقل ۲ کاراکتر باشد')
-    .max(100),
+  name: z.string().min(2, 'نام باید حداقل ۲ کاراکتر باشد').max(100),
 
-  email: z
-    .string()
-    .email('ایمیل معتبر نیست')
-    .optional()
-    .or(z.literal('')),
+  email: z.string().email('ایمیل معتبر نیست').optional().or(z.literal('')),
 
-  password: z
-    .string()
-    .min(8, 'رمز عبور باید حداقل ۸ کاراکتر باشد'),
+  password: z.string().min(8, 'رمز عبور باید حداقل ۸ کاراکتر باشد'),
 })
 
-export type CompleteProfileInput = z.infer<
-  typeof completeProfileSchema
->
+export type CompleteProfileInput = z.infer<typeof completeProfileSchema>
 
 export const completeProfileFn = createServerFn({
   method: 'POST',
 })
-  .validator((data: CompleteProfileInput) =>
-    completeProfileSchema.parse(data),
-  )
+  .validator((data: CompleteProfileInput) => completeProfileSchema.parse(data))
   .handler(async ({ data }) => {
     try {
       // 1. بررسی لاگین بودن کاربر
@@ -60,10 +47,7 @@ export const completeProfileFn = createServerFn({
       if (normalizedEmail) {
         const existingEmail = await db.query.users.findFirst({
           where: (users, { eq, and, ne }) =>
-            and(
-              eq(users.email, normalizedEmail),
-              ne(users.id, user.id),
-            ),
+            and(eq(users.email, normalizedEmail), ne(users.id, user.id)),
         })
 
         if (existingEmail) {
@@ -93,10 +77,7 @@ export const completeProfileFn = createServerFn({
         success: true,
       } as const
     } catch (error) {
-      console.error(
-        '[completeProfileFn] خطا در تکمیل پروفایل:',
-        error,
-      )
+      console.error('[completeProfileFn] خطا در تکمیل پروفایل:', error)
 
       return {
         success: false,

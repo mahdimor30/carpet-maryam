@@ -1,4 +1,4 @@
-import type { FooterSection } from '@/type'
+import type { FooterSection } from '@/types/footer'
 import { FOOTER_SECTIONS, LEGAL_LINKS } from './data'
 import { FooterBrand } from './footer-brand'
 

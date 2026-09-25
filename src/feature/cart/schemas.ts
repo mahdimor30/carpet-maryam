@@ -14,8 +14,7 @@ export const RemoveCartItemSchema = z.object({
   itemId: z.coerce.number().int().positive(),
 })
 
-export type RemoveCartItemInput =
-  z.input<typeof RemoveCartItemSchema>
+export type RemoveCartItemInput = z.input<typeof RemoveCartItemSchema>
 
 export type AddToCartInput = z.input<typeof AddToCartSchema>
 export type UpdateCartItemInput = z.input<typeof UpdateCartItemSchema>

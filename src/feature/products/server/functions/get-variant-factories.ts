@@ -8,10 +8,7 @@ export const getVariantFactoriesFn = createServerFn({
   method: 'GET',
 })
   .inputValidator((input: { variantId: number }) => {
-    if (
-      !Number.isInteger(input.variantId) ||
-      input.variantId <= 0
-    ) {
+    if (!Number.isInteger(input.variantId) || input.variantId <= 0) {
       throw new Error('Invalid variantId')
     }
 

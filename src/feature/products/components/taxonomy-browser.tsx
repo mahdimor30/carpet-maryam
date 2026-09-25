@@ -1,10 +1,15 @@
 'use client'
 
-
 import { useState } from 'react'
 import { ArrowLeft, Layers, Palette, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { CATEGORIES, DESIGNS, MATERIALS, PRODUCTS, toFaNumber } from '@/lib/data'
+import {
+  CATEGORIES,
+  DESIGNS,
+  MATERIALS,
+  PRODUCTS,
+  toFaNumber,
+} from '@/lib/data'
 import { Link } from '@tanstack/react-router'
 
 type Axis = 'category' | 'design' | 'material'
@@ -15,7 +20,9 @@ const TABS: { key: Axis; label: string; icon: typeof Layers }[] = [
   { key: 'material', label: 'متریال', icon: Palette },
 ]
 
-function representativeImage(predicate: (p: (typeof PRODUCTS)[number]) => boolean) {
+function representativeImage(
+  predicate: (p: (typeof PRODUCTS)[number]) => boolean,
+) {
   return PRODUCTS.find(predicate)?.image || '/placeholder.svg'
 }
 
@@ -91,14 +98,20 @@ export function TaxonomyBrowser() {
           <Link
             key={item.slug}
             to="/products"
-            search={{ [tab === 'category' ? 'cat' : tab === 'design' ? 'design' : 'material']: item.slug }}
+            search={{
+              [tab === 'category'
+                ? 'cat'
+                : tab === 'design'
+                  ? 'design'
+                  : 'material']: item.slug,
+            }}
             className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg"
           >
             <div className="relative aspect-[4/3] overflow-hidden">
               <img
                 src={item.image}
                 alt={item.name}
-                
+
                 sizes="(max-width: 768px) 50vw, 25vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
               />
@@ -106,7 +119,9 @@ export function TaxonomyBrowser() {
             </div>
             <div className="flex items-center justify-between gap-2 p-4">
               <div>
-                <p className="text-sm font-semibold text-foreground">{item.name}</p>
+                <p className="text-sm font-semibold text-foreground">
+                  {item.name}
+                </p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
                   {toFaNumber(item.count)} مدل
                 </p>

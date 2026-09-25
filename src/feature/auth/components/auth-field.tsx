@@ -1,6 +1,7 @@
 'use client'
 
-import { useId, useState, type InputHTMLAttributes, type ReactNode } from 'react'
+import { useId, useState } from 'react'
+import type { InputHTMLAttributes, ReactNode } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -58,7 +59,11 @@ export function AuthField({
             aria-label={show ? 'پنهان کردن رمز' : 'نمایش رمز'}
             className="absolute inset-y-0 left-3 flex items-center text-muted-foreground transition-colors hover:text-foreground"
           >
-            {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            {show ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
           </button>
         )}
       </div>

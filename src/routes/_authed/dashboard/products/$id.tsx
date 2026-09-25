@@ -12,9 +12,7 @@ export const Route = createFileRoute('/_authed/dashboard/products/$id')({
     await ctx.context.queryClient.prefetchQuery(queryProduct(ctx.params.id))
   },
   head: () => ({
-    meta: [
-      { title: 'ویرایش محصول | فرش مریم' },
-    ],
+    meta: [{ title: 'ویرایش محصول | فرش مریم' }],
   }),
 })
 

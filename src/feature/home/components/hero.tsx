@@ -1,4 +1,11 @@
-import { ArrowLeft, BadgeCheck, Factory, MessagesSquare, Palette, Truck } from 'lucide-react'
+import {
+  ArrowLeft,
+  BadgeCheck,
+  Factory,
+  MessagesSquare,
+  Palette,
+  Truck,
+} from 'lucide-react'
 
 const HIGHLIGHTS = [
   { icon: Palette, title: 'بیش از ۵۰۰ طرح', desc: 'نقشه‌های اصیل و نوآورانه' },
@@ -21,9 +28,9 @@ export function Hero() {
 
           <div className="max-w-2xl space-y-4">
             <h1 className="text-balance font-heading text-4xl font-bold leading-tight text-foreground sm:text-5xl">
-              فرش مناسب{' '}
+              خرید فرش ماشینی و دستباف کاشان؛{' '}
               <span className="font-normal text-accent underline decoration-secondary decoration-4 underline-offset-8">
-                خانه‌ات
+                مناسب خانه‌ات
               </span>{' '}
               را پیدا کن
             </h1>
@@ -63,9 +70,7 @@ export function Hero() {
                     <h2 className="text-sm font-semibold text-foreground">
                       {item.title}
                     </h2>
-                    <p className="text-xs text-muted-foreground">
-                      {item.desc}
-                    </p>
+                    <p className="text-xs text-muted-foreground">{item.desc}</p>
                   </div>
                 </div>
               ))}

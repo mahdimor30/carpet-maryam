@@ -1,16 +1,13 @@
-export function extractToken(
-  authHeader?: string
-) {
+export function extractToken(authHeader?: string) {
   if (!authHeader) {
-    return null;
+    return null
   }
 
-  const [type, token] =
-    authHeader.split(" ");
+  const [type, token] = authHeader.split(' ')
 
-  if (type !== "Bearer") {
-    return null;
+  if (type !== 'Bearer') {
+    return null
   }
 
-  return token;
+  return token
 }

@@ -16,15 +16,16 @@ export const orderItemSources = sqliteTable('order_item_sources', {
   sourceType: text('source_type', {
     enum: ['store', 'factory', 'weaving'],
   }).notNull(),
-  factoryId: integer('factory_id')
-    .references(() => factories.id, {
-      onDelete: 'set null',
-    }),
+  factoryId: integer('factory_id').references(() => factories.id, {
+    onDelete: 'set null',
+  }),
 
-  factoryProductId: integer('factory_product_id')
-    .references(() => factoryProducts.id, {
+  factoryProductId: integer('factory_product_id').references(
+    () => factoryProducts.id,
+    {
       onDelete: 'set null',
-    }),
+    },
+  ),
 
   purchasePrice: integer('purchase_price'),
 

@@ -1,5 +1,4 @@
-
-import { and, asc, desc, eq, gte, like, lte, or, sql } from 'drizzle-orm'
+import { and, asc, desc, eq, like, or, sql } from 'drizzle-orm'
 
 import { getDb } from '@/server/db'
 
@@ -14,10 +13,8 @@ import {
   products,
 } from '@/server/db/schema'
 
-import {
-  ProductListSchema,
-  type ProductListInput,
-} from '../schemas'
+import { ProductListSchema } from '../schemas'
+import type { ProductListInput } from '../schemas'
 
 export async function getProducts(input: ProductListInput = {}) {
   const params = ProductListSchema.parse(input)
@@ -39,9 +36,7 @@ export async function getProducts(input: ProductListInput = {}) {
 
   const offset = (page - 1) * limit
 
-  const conditions = [
-    eq(products.isActive, true),
-  ]
+  const conditions = [eq(products.isActive, true)]
 
   // --------------------------------------------------
   // Search
@@ -62,9 +57,7 @@ export async function getProducts(input: ProductListInput = {}) {
   // --------------------------------------------------
 
   if (shaneh) {
-    conditions.push(
-      eq(products.shaneh, shaneh),
-    )
+    conditions.push(eq(products.shaneh, shaneh))
   }
 
   // --------------------------------------------------
@@ -211,8 +204,7 @@ export async function getProducts(input: ProductListInput = {}) {
       density: products.density,
       yarn: products.yarn,
       pileHeightMm: products.pileHeightMm,
-      weightPerSquareMeterGrams:
-        products.weightPerSquareMeterGrams,
+      weightPerSquareMeterGrams: products.weightPerSquareMeterGrams,
       weavingType: products.weavingType,
       warrantyMonths: products.warrantyMonths,
       createdAt: products.createdAt,
@@ -231,10 +223,7 @@ export async function getProducts(input: ProductListInput = {}) {
       `,
     })
     .from(products)
-    .leftJoin(
-      productVariants,
-      eq(productVariants.productId, products.id),
-    )
+    .leftJoin(productVariants, eq(productVariants.productId, products.id))
     .where(where)
     .groupBy(products.id)
     .orderBy(orderBy)

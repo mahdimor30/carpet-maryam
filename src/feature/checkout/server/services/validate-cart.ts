@@ -1,12 +1,7 @@
 import { and, eq } from 'drizzle-orm'
 
 import { getDb } from '@/server/db'
-import {
-  cartItems,
-  carts,
-  products,
-  productVariants,
-} from '@/server/db/schema'
+import { cartItems, carts, products, productVariants } from '@/server/db/schema'
 
 import { getVariantFactories } from '@/feature/products/server/queries/get-variant-factories'
 
@@ -40,14 +35,8 @@ export async function validateCart(userId: number) {
       variantStock: productVariants.stock,
     })
     .from(cartItems)
-    .innerJoin(
-      productVariants,
-      eq(productVariants.id, cartItems.variantId),
-    )
-    .innerJoin(
-      products,
-      eq(products.id, productVariants.productId),
-    )
+    .innerJoin(productVariants, eq(productVariants.id, cartItems.variantId))
+    .innerJoin(products, eq(products.id, productVariants.productId))
     .where(
       and(
         eq(cartItems.cartId, cart[0].id),
@@ -65,19 +54,15 @@ export async function validateCart(userId: number) {
   for (const item of items) {
     const factories = await getVariantFactories(item.variantId)
 
-    const directStockAvailable =
-      item.variantStock >= item.quantity
+    const directStockAvailable = item.variantStock >= item.quantity
 
     const factoryAvailable = factories.some(
       (factory) =>
-        factory.availableQuantity >= item.quantity ||
-        factory.canWeave,
+        factory.availableQuantity >= item.quantity || factory.canWeave,
     )
 
     if (!directStockAvailable && !factoryAvailable) {
-      throw new Error(
-        `Variant ${item.variantSku} is no longer available`,
-      )
+      throw new Error(`Variant ${item.variantSku} is no longer available`)
     }
 
     validatedItems.push({

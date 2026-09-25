@@ -16,14 +16,7 @@ export const products = sqliteTable('products', {
 
   // سبک فرش
   style: text('style', {
-    enum: [
-      'classic',
-      'traditional',
-      'modern',
-      'minimal',
-      'children',
-      'fancy',
-    ],
+    enum: ['classic', 'traditional', 'modern', 'minimal', 'children', 'fancy'],
   }),
 
   // مشخصات فنی
@@ -35,9 +28,7 @@ export const products = sqliteTable('products', {
 
   pileHeightMm: integer('pile_height_mm'),
 
-  weightPerSquareMeterGrams: integer(
-    'weight_per_square_meter_grams',
-  ),
+  weightPerSquareMeterGrams: integer('weight_per_square_meter_grams'),
 
   weavingType: text('weaving_type'),
 

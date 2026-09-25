@@ -9,5 +9,5 @@ export const config = {
   siteUrl,
   siteName: 'فرش مریم',
   locale: 'fa_IR',
-  defaultOgImage: '/images/home/hero-carpet.jpg',
+  defaultOgImage: '/hero-interior.png',
 } as const

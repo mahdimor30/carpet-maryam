@@ -15,11 +15,18 @@ const DESCRIPTIONS: Record<string, string> = {
   fantasy: 'رنگ‌های شاد و طرح‌های امروزی برای فضاهای دنج',
 }
 
-export function CategoryShowcase({ categories }: { categories: HomeCategory[] }) {
+export function CategoryShowcase({
+  categories,
+}: {
+  categories: HomeCategory[]
+}) {
   if (categories.length === 0) return null
 
   return (
-    <section id="categories" className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+    <section
+      id="categories"
+      className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20"
+    >
       <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
           <div className="mb-2 flex items-center gap-2 text-xs font-medium text-accent">
@@ -30,8 +37,8 @@ export function CategoryShowcase({ categories }: { categories: HomeCategory[] })
             دنیای فرش مریم
           </h2>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            مجموعه‌ای منتخب از نفیس‌ترین دستبافته‌ها و بافته‌های مدرن
-            ایرانی؛ خلق پیوندی میان اصالت کویر و زندگی امروزی.
+            مجموعه‌ای منتخب از نفیس‌ترین دستبافته‌ها و بافته‌های مدرن ایرانی؛
+            خلق پیوندی میان اصالت کویر و زندگی امروزی.
           </p>
         </div>
         <Link

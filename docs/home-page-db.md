@@ -34,11 +34,11 @@ HomePage({ featuredProducts, galleryProducts, categories })  ──►  سه ک�
 
 ## ۲. فایل‌های جدید
 
-| فایل | نقش |
-| --- | --- |
-| `src/feature/products/server/queries/get-home-products.ts` | کوئری محصولات صفحه اصلی + تایپ `HomeProduct` |
-| `src/feature/products/server/queries/get-home-categories.ts` | کوئری دسته‌بندی‌ها + تایپ `HomeCategory` |
-| `src/feature/products/server/functions/get-home-products.ts` | سرورفانکشن `getHomeProductsFn` (متد GET) |
+| فایل                                                         | نقش                                          |
+| ------------------------------------------------------------ | -------------------------------------------- |
+| `src/feature/products/server/queries/get-home-products.ts`   | کوئری محصولات صفحه اصلی + تایپ `HomeProduct` |
+| `src/feature/products/server/queries/get-home-categories.ts` | کوئری دسته‌بندی‌ها + تایپ `HomeCategory`     |
+| `src/feature/products/server/functions/get-home-products.ts` | سرورفانکشن `getHomeProductsFn` (متد GET)     |
 
 ### `getHomeProducts.ts` — دو تابع خروجی
 
@@ -106,18 +106,18 @@ WHERE product_variants.product_id = products.id
 
 ## ۳. فایل‌های تغییر‌یافته
 
-| فایل | تغییر |
-| --- | --- |
-| `src/routes/_layout/index.tsx` | `loader` اضافه شد که `getHomeProductsFn()` را صدا می‌زند و `HomeRoute` داده را با `Route.useLoaderData()` به `HomePage` پاس می‌دهد |
-| `src/feature/home/index.tsx` | `HomePage` سه prop گرفت: `featuredProducts`، `galleryProducts`، `categories` |
-| `src/feature/home/components/featured-products.tsx` | آرایه‌ی هاردکد `FEATURED` حذف شد؛ کارت از `HomeProduct` رندر می‌شود (تخفیف/شانه/دسته/قیمت خط‌خورده/ابعاد از دیتابیس) |
-| `src/feature/home/components/category-showcase.tsx` | از `categories` پراپ؛ تصویر و تعداد از دیتابیس، توضیح متنی هر اسلاگ با متن پیش‌فرض |
-| `src/feature/home/components/instagram-gallery.tsx` | از `products` پراپ (۶ محصول آخر)؛ کپشن از نام طرحِ محصول |
-| `src/feature/home/components/cart-provider.tsx` | تایپ `CartProduct` به‌جای `Product` کتابخانه‌ی نمونه؛ حالا هم محصول دیتابیس و هم داده‌های نمونه‌ی قدیمی را می‌پذیرد |
-| `src/feature/home/components/cart-drawer.tsx` | نمایش ابعاد با ارقام فارسی و بدون پسوند تکراری «متر» (چون `dimension` خودش «۶ متری» است) |
-| `seed.sql` | اصلاح کامل (بخش ۵) |
-| `src/server/config.ts` | کلاینت‌سِیف شد (بخش ۶) |
-| `wrangler.jsonc` | `"remote": false` برای dev (بخش ۷) |
+| فایل                                                | تغییر                                                                                                                              |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `src/routes/_layout/index.tsx`                      | `loader` اضافه شد که `getHomeProductsFn()` را صدا می‌زند و `HomeRoute` داده را با `Route.useLoaderData()` به `HomePage` پاس می‌دهد |
+| `src/feature/home/index.tsx`                        | `HomePage` سه prop گرفت: `featuredProducts`، `galleryProducts`، `categories`                                                       |
+| `src/feature/home/components/featured-products.tsx` | آرایه‌ی هاردکد `FEATURED` حذف شد؛ کارت از `HomeProduct` رندر می‌شود (تخفیف/شانه/دسته/قیمت خط‌خورده/ابعاد از دیتابیس)               |
+| `src/feature/home/components/category-showcase.tsx` | از `categories` پراپ؛ تصویر و تعداد از دیتابیس، توضیح متنی هر اسلاگ با متن پیش‌فرض                                                 |
+| `src/feature/home/components/instagram-gallery.tsx` | از `products` پراپ (۶ محصول آخر)؛ کپشن از نام طرحِ محصول                                                                           |
+| `src/feature/home/components/cart-provider.tsx`     | تایپ `CartProduct` به‌جای `Product` کتابخانه‌ی نمونه؛ حالا هم محصول دیتابیس و هم داده‌های نمونه‌ی قدیمی را می‌پذیرد                |
+| `src/feature/home/components/cart-drawer.tsx`       | نمایش ابعاد با ارقام فارسی و بدون پسوند تکراری «متر» (چون `dimension` خودش «۶ متری» است)                                           |
+| `seed.sql`                                          | اصلاح کامل (بخش ۵)                                                                                                                 |
+| `src/server/config.ts`                              | کلاینت‌سِیف شد (بخش ۶)                                                                                                             |
+| `wrangler.jsonc`                                    | `"remote": false` برای dev (بخش ۷)                                                                                                 |
 
 نکته: مسیر `/_layout/index.tsx` بعداً توسط خودتان به `createSeo` و `src/lib/seo.ts` وصل شد؛
 لودر و پاس‌دادن داده دست‌نخورده باقی مانده است.
@@ -209,14 +209,14 @@ const siteUrl =
 
 **محیط dev (دیتابیس لوکال با ۶ محصول، ۱۱ تنوع، ۸ تصویر):**
 
-| بررسی | نتیجه |
-| --- | --- |
-| کارت‌های منتخب | ۴ کارت با نام، قیمت، قیمت خط‌خورده، درصد تخفیف (`۱۲٪`/`۱۵٪`/`۱۵٪`/`۱۱٪`)، شانه، تراکم، ابعاد فارسی |
-| دسته‌بندی‌ها | ۴ کارت با شمارش درست (کلاسیک ۳، مدرن ۲، سنتی ۱، کودک ۱) و تصویر جانشین از محصول |
-| گالری | ۶ محصول آخر با تصویر |
-| انتخاب تصویر اصلی | برای محصولی که هم تصویر گالری دارد هم اصلی، تصویر `is_primary` انتخاب شد (تصویر گالری رندر نشد) |
-| افزودن به سبد | دکمه «خرید سریع» روی محصول دیتابیسی → نشان سبد `۱`، نام/ابعاد/قیمت درست در کشو |
-| خطای SQL | هیچ خطای D1 در لاگ و در HTML نبود |
+| بررسی             | نتیجه                                                                                              |
+| ----------------- | -------------------------------------------------------------------------------------------------- |
+| کارت‌های منتخب    | ۴ کارت با نام، قیمت، قیمت خط‌خورده، درصد تخفیف (`۱۲٪`/`۱۵٪`/`۱۵٪`/`۱۱٪`)، شانه، تراکم، ابعاد فارسی |
+| دسته‌بندی‌ها      | ۴ کارت با شمارش درست (کلاسیک ۳، مدرن ۲، سنتی ۱، کودک ۱) و تصویر جانشین از محصول                    |
+| گالری             | ۶ محصول آخر با تصویر                                                                               |
+| انتخاب تصویر اصلی | برای محصولی که هم تصویر گالری دارد هم اصلی، تصویر `is_primary` انتخاب شد (تصویر گالری رندر نشد)    |
+| افزودن به سبد     | دکمه «خرید سریع» روی محصول دیتابیسی → نشان سبد `۱`، نام/ابعاد/قیمت درست در کشو                     |
+| خطای SQL          | هیچ خطای D1 در لاگ و در HTML نبود                                                                  |
 
 **تایپ و build:**
 

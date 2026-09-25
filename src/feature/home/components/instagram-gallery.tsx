@@ -12,8 +12,7 @@ export function InstagramGallery({ products }: { products: HomeProduct[] }) {
             الهام بگیر
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            فرش‌های مریم در خانه مشتریان و طراحی‌های داخلی واقعی در سراسر
-            ایران
+            فرش‌های مریم در خانه مشتریان و طراحی‌های داخلی واقعی در سراسر ایران
           </p>
         </div>
         <a

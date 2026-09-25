@@ -1,5 +1,91 @@
 import { toFa } from '@/lib/dashboard-data'
-const ROLE: Record<string,string> = { admin:'مدیر', staff:'همکار', customer:'مشتری' }
-export function UsersPage({ users }: { users: Array<{ id:number; name:string|null; phone:string; email:string|null; role:string; isActive:boolean; createdAt:Date }> }) {
- return <div className="mx-auto max-w-6xl"><h1 className="font-heading text-2xl font-bold">کاربران</h1><p className="mt-1 mb-6 text-sm text-muted-foreground">فهرست کاربران و وضعیت حساب‌ها</p><div className="overflow-hidden rounded-2xl border border-border bg-card"><div className="overflow-x-auto"><table className="w-full min-w-[760px] text-right"><thead><tr className="border-b bg-secondary/50 text-xs text-muted-foreground"><th className="px-4 py-3">کاربر</th><th className="px-4 py-3">تماس</th><th className="px-4 py-3">نقش</th><th className="px-4 py-3">وضعیت</th><th className="px-4 py-3">عضویت</th></tr></thead><tbody>{users.length ? users.map(u => <tr key={u.id} className="border-b border-border/60 text-sm last:border-0"><td className="px-4 py-3"><div className="font-semibold">{u.name || `کاربر ${toFa(u.id)}`}</div><div className="text-xs text-muted-foreground">#{toFa(u.id)}</div></td><td className="px-4 py-3"><div dir="ltr" className="text-right">{u.phone}</div><div className="text-xs text-muted-foreground">{u.email || '—'}</div></td><td className="px-4 py-3">{ROLE[u.role] || u.role}</td><td className="px-4 py-3"><span className={`rounded-full px-2.5 py-1 text-xs ${u.isActive ? 'bg-chart-4/15 text-chart-4' : 'bg-muted text-muted-foreground'}`}>{u.isActive ? 'فعال' : 'غیرفعال'}</span></td><td className="px-4 py-3 text-muted-foreground">{new Date(u.createdAt).toLocaleDateString('fa-IR')}</td></tr>) : <tr><td colSpan={5} className="px-4 py-10 text-center text-muted-foreground">کاربری وجود ندارد.</td></tr>}</tbody></table></div></div></div>
+
+const ROLE: Record<string, string> = {
+  admin: 'مدیر',
+  staff: 'همکار',
+  customer: 'مشتری',
+}
+export function UsersPage({
+  users,
+}: {
+  users: Array<{
+    id: number
+    name: string | null
+    phone: string
+    email: string | null
+    role: string
+    isActive: boolean
+    createdAt: Date
+  }>
+}) {
+  return (
+    <div className="mx-auto max-w-6xl">
+      <h1 className="font-heading text-2xl font-bold">کاربران</h1>
+      <p className="mt-1 mb-6 text-sm text-muted-foreground">
+        فهرست کاربران و وضعیت حساب‌ها
+      </p>
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[760px] text-right">
+            <thead>
+              <tr className="border-b bg-secondary/50 text-xs text-muted-foreground">
+                <th className="px-4 py-3">کاربر</th>
+                <th className="px-4 py-3">تماس</th>
+                <th className="px-4 py-3">نقش</th>
+                <th className="px-4 py-3">وضعیت</th>
+                <th className="px-4 py-3">عضویت</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.length ? (
+                users.map((u) => (
+                  <tr
+                    key={u.id}
+                    className="border-b border-border/60 text-sm last:border-0"
+                  >
+                    <td className="px-4 py-3">
+                      <div className="font-semibold">
+                        {u.name || `کاربر ${toFa(u.id)}`}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        #{toFa(u.id)}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div dir="ltr" className="text-right">
+                        {u.phone}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {u.email || '—'}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">{ROLE[u.role] || u.role}</td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-xs ${u.isActive ? 'bg-chart-4/15 text-chart-4' : 'bg-muted text-muted-foreground'}`}
+                      >
+                        {u.isActive ? 'فعال' : 'غیرفعال'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {new Date(u.createdAt).toLocaleDateString('fa-IR')}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="px-4 py-10 text-center text-muted-foreground"
+                  >
+                    کاربری وجود ندارد.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
 }

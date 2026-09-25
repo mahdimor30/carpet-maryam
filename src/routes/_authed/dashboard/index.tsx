@@ -2,6 +2,17 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { getProducts } from '@/feature/products/serverFun/get-products'
 import { getDashboardData } from '@/feature/dashboard/serverFn/get-dashboard-data'
 
+import {
+  Package,
+  Layers,
+  ShoppingCart,
+  MessageSquare,
+  PlusCircle,
+  ArrowLeft,
+} from 'lucide-react'
+import { ProductsTable } from '@/feature/products/components/products-table'
+import { toFa } from '@/lib/dashboard-data'
+
 export const Route = createFileRoute('/_authed/dashboard/')({
   component: DashboardPage,
   async loader() {
@@ -12,21 +23,35 @@ export const Route = createFileRoute('/_authed/dashboard/')({
     return { products, stats: dashboard.stats }
   },
   head: () => ({
-    meta: [
-      { title: 'نمای کلی | فرش مریم' },
-    ],
+    meta: [{ title: 'نمای کلی | فرش مریم' }],
   }),
 })
 
-import { Package, Layers, ShoppingCart, MessageSquare, PlusCircle, ArrowLeft } from 'lucide-react'
-import { ProductsTable } from '@/feature/products/components/products-table'
-import { toFa } from '@/lib/dashboard-data'
-
 const STAT_META = [
-  { key: 'products', label: 'کل محصولات', icon: Package, accent: 'text-chart-2 bg-chart-2/10' },
-  { key: 'activeVariants', label: 'تنوع فعال', icon: Layers, accent: 'text-accent bg-accent/15' },
-  { key: 'todayOrders', label: 'سفارش‌های امروز', icon: ShoppingCart, accent: 'text-chart-4 bg-chart-4/15' },
-  { key: 'newInquiries', label: 'استعلام جدید', icon: MessageSquare, accent: 'text-chart-5 bg-chart-5/15' },
+  {
+    key: 'products',
+    label: 'کل محصولات',
+    icon: Package,
+    accent: 'text-chart-2 bg-chart-2/10',
+  },
+  {
+    key: 'activeVariants',
+    label: 'تنوع فعال',
+    icon: Layers,
+    accent: 'text-accent bg-accent/15',
+  },
+  {
+    key: 'todayOrders',
+    label: 'سفارش‌های امروز',
+    icon: ShoppingCart,
+    accent: 'text-chart-4 bg-chart-4/15',
+  },
+  {
+    key: 'newInquiries',
+    label: 'استعلام جدید',
+    icon: MessageSquare,
+    accent: 'text-chart-5 bg-chart-5/15',
+  },
 ] as const
 
 function DashboardPage() {
@@ -35,7 +60,9 @@ function DashboardPage() {
     <div className="mx-auto max-w-6xl">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-heading text-2xl font-bold text-foreground">نمای کلی</h1>
+          <h1 className="font-heading text-2xl font-bold text-foreground">
+            نمای کلی
+          </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             خلاصه‌ای از وضعیت فروشگاه فرش مریم
           </p>
@@ -72,7 +99,9 @@ function DashboardPage() {
       </div>
 
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-heading text-lg font-bold text-foreground">آخرین محصولات</h2>
+        <h2 className="font-heading text-lg font-bold text-foreground">
+          آخرین محصولات
+        </h2>
         <Link
           to="/dashboard/products"
           className="inline-flex items-center gap-1 text-sm font-medium text-accent-foreground hover:underline"

@@ -154,7 +154,9 @@ export function toServerVariant(v: VariantInput) {
     colorHex: v.colorHex || undefined,
     sku: v.sku || undefined,
     price: Number(faToEn(v.price)),
-    compareAtPrice: v.compareAtPrice ? Number(faToEn(v.compareAtPrice)) : undefined,
+    compareAtPrice: v.compareAtPrice
+      ? Number(faToEn(v.compareAtPrice))
+      : undefined,
     stock: Number(faToEn(v.stock)) || 0,
     isActive: v.isActive,
     images: v.images.map((img) => ({

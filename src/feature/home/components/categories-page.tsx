@@ -3,14 +3,19 @@ import { Link } from '@tanstack/react-router'
 import { CATEGORIES, PRODUCTS, toFaNumber } from '@/lib/data'
 
 function categoryImage(slug: string) {
-  return PRODUCTS.find((product) => product.categorySlug === slug)?.image ?? '/placeholder.svg'
+  return (
+    PRODUCTS.find((product) => product.categorySlug === slug)?.image ??
+    '/placeholder.svg'
+  )
 }
 
 export function CategoriesPage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
       <nav className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
-        <Link to="/" className="hover:text-foreground">خانه</Link>
+        <Link to="/" className="hover:text-foreground">
+          خانه
+        </Link>
         <span>/</span>
         <span className="text-foreground">دسته‌بندی‌ها</span>
       </nav>
@@ -21,16 +26,21 @@ export function CategoriesPage() {
             <Layers3 className="h-4 w-4 text-accent" />
             انتخاب بر اساس سبک
           </span>
-          <h1 className="font-heading text-3xl font-bold sm:text-4xl">دسته‌بندی فرش‌ها</h1>
+          <h1 className="font-heading text-3xl font-bold sm:text-4xl">
+            دسته‌بندی فرش‌ها
+          </h1>
           <p className="leading-7 text-muted-foreground">
-            از طرح‌های کلاسیک و اصیل تا مدل‌های مدرن، پتینه و فانتزی؛ دسته مورد نظرت را انتخاب کن و محصولات همان سبک را یک‌جا ببین.
+            از طرح‌های کلاسیک و اصیل تا مدل‌های مدرن، پتینه و فانتزی؛ دسته مورد
+            نظرت را انتخاب کن و محصولات همان سبک را یک‌جا ببین.
           </p>
         </div>
       </section>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {CATEGORIES.map((category) => {
-          const count = PRODUCTS.filter((product) => product.categorySlug === category.slug).length
+          const count = PRODUCTS.filter(
+            (product) => product.categorySlug === category.slug,
+          ).length
           return (
             <Link
               key={category.slug}
@@ -46,8 +56,12 @@ export function CategoriesPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/65 via-transparent to-transparent" />
                 <div className="absolute bottom-4 right-4 text-primary-foreground">
-                  <h2 className="font-heading text-2xl font-bold">{category.name}</h2>
-                  <p className="mt-1 text-xs text-primary-foreground/80">{toFaNumber(count)} محصول موجود</p>
+                  <h2 className="font-heading text-2xl font-bold">
+                    {category.name}
+                  </h2>
+                  <p className="mt-1 text-xs text-primary-foreground/80">
+                    {toFaNumber(count)} محصول موجود
+                  </p>
                 </div>
               </div>
               <div className="flex items-center justify-between p-5">

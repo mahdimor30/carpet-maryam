@@ -1,11 +1,9 @@
-
-
 /* ============================================================
  * 7. Rubika -> AI product ingestion
  * ============================================================ */
 
-import { relations, sql } from "drizzle-orm"
-import { integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core"
+import { relations, sql } from 'drizzle-orm'
+import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
 export const rubikaIngestBatches = sqliteTable('rubika_ingest_batches', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -13,7 +11,9 @@ export const rubikaIngestBatches = sqliteTable('rubika_ingest_batches', {
   caption: text('caption'),
   status: text('status', {
     enum: ['pending', 'processing', 'ready', 'failed'],
-  }).notNull().default('pending'),
+  })
+    .notNull()
+    .default('pending'),
   error: text('error'),
   createdAt: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
   updatedAt: text('updated_at').default(sql`(CURRENT_TIMESTAMP)`),
@@ -39,7 +39,9 @@ export const productDrafts = sqliteTable('product_drafts', {
   }),
   status: text('status', {
     enum: ['review', 'approved', 'rejected', 'published'],
-  }).notNull().default('draft'),
+  })
+    .notNull()
+    .default('review'),
   title: text('title').notNull(),
   slug: text('slug').notNull().unique(),
   description: text('description'),
@@ -58,7 +60,9 @@ export const productDraftImages = sqliteTable('product_draft_images', {
   url: text('url').notNull(),
   kind: text('kind', {
     enum: ['source', 'product', 'interior', 'advertisement'],
-  }).notNull().default('source'),
+  })
+    .notNull()
+    .default('source'),
   alt: text('alt'),
   sortOrder: integer('sort_order').notNull().default(0),
   createdAt: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),

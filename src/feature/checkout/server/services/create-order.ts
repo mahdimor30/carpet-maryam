@@ -53,17 +53,11 @@ export async function createOrder({
     .values({
       userId,
       status: 'pending',
-
-      subtotal: checkout.subtotal,
-      shipping: checkout.shipping,
-      discount: checkout.discount,
-      total: checkout.total,
-
-      shippingAddress,
-      shippingPostalCode,
-      shippingPhone,
-
-      notes: notes ?? null,
+      totalAmount: checkout.total,
+      shippingAddress: [shippingAddress, shippingPostalCode, shippingPhone]
+        .filter(Boolean)
+        .join(' | '),
+      customerNote: notes ?? null,
     })
     .returning({
       id: orders.id,
@@ -71,9 +65,7 @@ export async function createOrder({
 
   statements.push(orderInsert)
 
-  const [createdOrder] = await db.batch(
-    statements as [typeof orderInsert],
-  )
+  const [createdOrder] = await db.batch(statements as [typeof orderInsert])
 
   if (!createdOrder[0]) {
     throw new Error('Failed to create order')
@@ -89,11 +81,6 @@ export async function createOrder({
         orderId,
         variantId: item.variantId,
 
-        productName: item.productName,
-        productSlug: item.productSlug,
-
-        sku: item.variantSku,
-
         quantity: item.quantity,
 
         unitPrice: item.variantPrice,
@@ -108,24 +95,20 @@ export async function createOrder({
     }
 
     await db.insert(orderItemSources).values({
-    orderItemId: createdItem[0].id,
+      orderItemId: createdItem[0].id,
 
       sourceType: item.source.type,
 
       factoryId: item.source.factoryId,
 
-      factoryProductId:
-        item.source.factoryProductId,
+      factoryProductId: item.source.factoryProductId,
 
-      purchasePrice:
-        item.source.purchasePrice,
+      purchasePrice: item.source.purchasePrice,
     })
   }
 
   // Clear cart
-  await db
-    .delete(cartItems)
-    .where(eq(cartItems.cartId, cart[0].id))
+  await db.delete(cartItems).where(eq(cartItems.cartId, cart[0].id))
 
   await db
     .update(carts)

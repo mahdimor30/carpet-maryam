@@ -1,4 +1,4 @@
-import { UTApi, UTFile } from 'uploadthing/server'
+import { UTApi } from 'uploadthing/server'
 
 const utapi = new UTApi()
 
@@ -14,33 +14,45 @@ async function generateOne(imageUrl: string, prompt: string) {
     },
     body: JSON.stringify({
       model: process.env.OPENAI_IMAGE_MODEL || 'gpt-image-1',
-      input: [{
-        role: 'user',
-        content: [
-          { type: 'input_text', text: prompt },
-          { type: 'input_image', image_url: imageUrl, detail: 'high' },
-        ],
-      }],
-      tools: [{
-        type: 'image_generation',
-        action: 'generate',
-        size: '1024x1024',
-        quality: 'medium',
-        output_format: 'webp',
-      }],
+      input: [
+        {
+          role: 'user',
+          content: [
+            { type: 'input_text', text: prompt },
+            { type: 'input_image', image_url: imageUrl, detail: 'high' },
+          ],
+        },
+      ],
+      tools: [
+        {
+          type: 'image_generation',
+          action: 'generate',
+          size: '1024x1024',
+          quality: 'medium',
+          output_format: 'webp',
+        },
+      ],
     }),
   })
 
   if (!response.ok) {
-    throw new Error(`OpenAI image generation failed: ${response.status} ${(await response.text()).slice(0, 300)}`)
+    throw new Error(
+      `OpenAI image generation failed: ${response.status} ${(await response.text()).slice(0, 300)}`,
+    )
   }
 
-  const data = await response.json() as { output?: Array<{ type?: string; result?: string }> }
-  const result = data.output?.find((item) => item.type === 'image_generation_call')?.result
+  const data = (await response.json()) as {
+    output?: Array<{ type?: string; result?: string }>
+  }
+  const result = data.output?.find(
+    (item) => item.type === 'image_generation_call',
+  )?.result
   if (!result) return null
 
   const bytes = Uint8Array.from(atob(result), (char) => char.charCodeAt(0))
-  const upload = await utapi.uploadFiles(new File([bytes], `carpet-${Date.now()}.webp`, { type: 'image/webp' }))
+  const upload = await utapi.uploadFiles(
+    new File([bytes], `carpet-${Date.now()}.webp`, { type: 'image/webp' }),
+  )
   const item = Array.isArray(upload) ? upload[0] : upload
   return item.data?.url ?? null
 }
@@ -61,7 +73,10 @@ export async function generateMarketingImages(imageUrl: string, title: string) {
     },
   ]
 
-  const output: Array<{ kind: 'product' | 'interior' | 'advertisement'; url: string }> = []
+  const output: Array<{
+    kind: 'product' | 'interior' | 'advertisement'
+    url: string
+  }> = []
   for (const job of jobs) {
     const url = await generateOne(imageUrl, job.prompt)
     if (url) output.push({ kind: job.kind, url })

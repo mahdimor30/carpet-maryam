@@ -36,25 +36,30 @@ export function extractRubikaMessage(update: AnyRecord) {
     findStringByKey(message, /^(photo|image|media)$/i)
 
   const chatId =
-    update.chat_id ??
-    message.chat_id ??
-    update.object_guid ??
-    message.object_guid ??
-    findStringByKey(message, /^(chat_id|chatId|object_guid|object_guid_id)$/i) ||
+    (update.chat_id ??
+      message.chat_id ??
+      update.object_guid ??
+      message.object_guid ??
+      findStringByKey(
+        message,
+        /^(chat_id|chatId|object_guid|object_guid_id)$/i,
+      )) ||
     null
 
   const messageId =
-    update.message_id ??
-    message.message_id ??
-    message.id ??
-    null
+    update.message_id ?? message.message_id ?? message.id ?? null
 
   return {
     message,
     text,
     fileId,
     chatId: typeof chatId === 'string' && chatId ? chatId : null,
-    messageId: typeof messageId === 'string' ? messageId : messageId == null ? null : String(messageId),
+    messageId:
+      typeof messageId === 'string'
+        ? messageId
+        : messageId == null
+          ? null
+          : String(messageId),
   }
 }
 

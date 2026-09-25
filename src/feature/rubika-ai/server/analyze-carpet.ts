@@ -100,7 +100,9 @@ export async function analyzeCarpetImages(
         'Write the title and description in Persian.',
         'The description must be suitable for a product draft, not an exaggerated advertisement.',
         caption ? `Rubika caption: ${caption}` : '',
-      ].filter(Boolean).join('\\n'),
+      ]
+        .filter(Boolean)
+        .join('\\n'),
     },
     ...imageUrls.map((image_url) => ({
       type: 'input_image',
@@ -131,7 +133,9 @@ export async function analyzeCarpetImages(
 
   if (!response.ok) {
     const body = await response.text()
-    throw new Error(`OpenAI analysis failed: ${response.status} ${body.slice(0, 500)}`)
+    throw new Error(
+      `OpenAI analysis failed: ${response.status} ${body.slice(0, 500)}`,
+    )
   }
 
   const data = (await response.json()) as { output_text?: string }

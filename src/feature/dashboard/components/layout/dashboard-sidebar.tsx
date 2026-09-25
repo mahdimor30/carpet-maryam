@@ -23,7 +23,12 @@ const NAV = [
     icon: Package,
     children: [
       { to: '/dashboard/products', label: 'همه محصولات', exact: true },
-      { to: '/dashboard/products/new', label: 'افزودن محصول', icon: PlusCircle, exact: true },
+      {
+        to: '/dashboard/products/new',
+        label: 'افزودن محصول',
+        icon: PlusCircle,
+        exact: true,
+      },
     ],
   },
   { to: '/dashboard/taxonomy', label: 'دسته و طرح', icon: Tags },
@@ -91,13 +96,21 @@ export function DashboardSidebar({
                 return (
                   <NavGroup
                     key={item.label}
-                    item={item as typeof item & { children: { to: string; label: string; icon?: any }[] }}
+                    item={
+                      item as typeof item & {
+                        children: { to: string; label: string; icon?: any }[]
+                      }
+                    }
                     pathname={pathname}
                     onClose={onClose}
                   />
                 )
               }
-              const active = isActive(pathname, (item as any).to, (item as any).exact)
+              const active = isActive(
+                pathname,
+                (item as any).to,
+                (item as any).exact,
+              )
               const Icon = item.icon
               const to = (item as any).to as string
               return (
@@ -140,7 +153,11 @@ function NavGroup({
   pathname,
   onClose,
 }: {
-  item: { label: string; icon: any; children: { to: string; label: string; icon?: any }[] }
+  item: {
+    label: string
+    icon: any
+    children: { to: string; label: string; icon?: any }[]
+  }
   pathname: string
   onClose: () => void
 }) {

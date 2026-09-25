@@ -1,1 +1,3 @@
-export function CarpetSVG(){ return <svg /> }
+export function CarpetSVG() {
+  return <svg />
+}

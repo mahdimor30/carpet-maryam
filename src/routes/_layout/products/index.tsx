@@ -10,7 +10,10 @@ export const Route = createFileRoute('/_layout/products/')({
   head: () => ({
     meta: [
       { title: 'محصولات | فرش مریم' },
-      { name: 'description', content: 'مشاهده و خرید انواع فرش و قالی در فروشگاه فرش مریم' },
+      {
+        name: 'description',
+        content: 'مشاهده و خرید انواع فرش و قالی در فروشگاه فرش مریم',
+      },
     ],
   }),
 })

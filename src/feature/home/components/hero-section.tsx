@@ -18,8 +18,8 @@ export function HeroSection() {
           </h1>
 
           <p className="mt-6 max-w-lg text-base leading-8 text-on-surface-variant md:text-lg">
-            مجموعه‌ای از فرش‌های زیبا و باکیفیت با امکان تهیه مستقیم از
-            کارخانه و مشاوره برای انتخاب بهترین گزینه برای خانه شما.
+            مجموعه‌ای از فرش‌های زیبا و باکیفیت با امکان تهیه مستقیم از کارخانه
+            و مشاوره برای انتخاب بهترین گزینه برای خانه شما.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -56,18 +56,14 @@ export function HeroSection() {
             </div>
 
             <div>
-              <p className="text-sm font-semibold text-on-surface">
-                تنوع بالا
-              </p>
+              <p className="text-sm font-semibold text-on-surface">تنوع بالا</p>
               <p className="mt-1 text-xs text-on-surface-variant">
                 طرح و سایزهای مختلف
               </p>
             </div>
 
             <div>
-              <p className="text-sm font-semibold text-on-surface">
-                مشاوره
-              </p>
+              <p className="text-sm font-semibold text-on-surface">مشاوره</p>
               <p className="mt-1 text-xs text-on-surface-variant">
                 قبل از خرید
               </p>

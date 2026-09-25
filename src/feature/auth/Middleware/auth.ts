@@ -43,13 +43,13 @@ async function sha256Hex(value: string) {
 async function resolveUser() {
   const db = getDb()
   const token = getCookie(SESSION_COOKIE_NAME)
-  
+
   if (!token) return null
 
   let payload: { sub?: string }
   try {
     const result = await jwtVerify(token, getJwtSecret())
-    payload = result.payload as { sub?: string }
+    payload = result.payload
   } catch {
     return null
   }

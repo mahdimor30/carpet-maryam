@@ -30,7 +30,7 @@ const config = defineConfig({
 
     tanstackStart({
       prerender: {
-        enabled: true,
+        enabled: process.env.PRERENDER === 'true',
 
         autoStaticPathsDiscovery: false,
 

@@ -1,17 +1,10 @@
 // src/features/cart/server/services/add-to-cart.ts
 
-import {
-  and,
-  eq,
-} from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 
 import { getDb } from '@/server/db'
 
-import {
-  cartItems,
-  carts,
-  productVariants,
-} from '@/server/db/schema'
+import { cartItems, carts, productVariants } from '@/server/db/schema'
 
 export async function addToCart({
   userId,
@@ -44,29 +37,23 @@ export async function addToCart({
     .limit(1)
 
   if (!variant[0]) {
-    throw new Error(
-      'Product variant not found',
-    )
+    throw new Error('Product variant not found')
   }
 
   if (variant[0].stock <= 0) {
-    throw new Error(
-      'Product variant is out of stock',
-    )
+    throw new Error('Product variant is out of stock')
   }
 
   // ----------------------------------------
   // Cart
   // ----------------------------------------
 
-  let cart = await db
+  const cart = await db
     .select({
       id: carts.id,
     })
     .from(carts)
-    .where(
-      eq(carts.userId, userId),
-    )
+    .where(eq(carts.userId, userId))
     .limit(1)
 
   let cartId: number
@@ -97,13 +84,7 @@ export async function addToCart({
     })
     .from(cartItems)
     .where(
-      and(
-        eq(cartItems.cartId, cartId),
-        eq(
-          cartItems.variantId,
-          variantId,
-        ),
-      ),
+      and(eq(cartItems.cartId, cartId), eq(cartItems.variantId, variantId)),
     )
     .limit(1)
 
@@ -112,15 +93,10 @@ export async function addToCart({
   // ----------------------------------------
 
   if (existing[0]) {
-    const newQuantity =
-      existing[0].quantity + quantity
+    const newQuantity = existing[0].quantity + quantity
 
-    if (
-      newQuantity > variant[0].stock
-    ) {
-      throw new Error(
-        `Only ${variant[0].stock} items available`,
-      )
+    if (newQuantity > variant[0].stock) {
+      throw new Error(`Only ${variant[0].stock} items available`)
     }
 
     await db
@@ -129,12 +105,7 @@ export async function addToCart({
         quantity: newQuantity,
         updatedAt: new Date(),
       })
-      .where(
-        eq(
-          cartItems.id,
-          existing[0].id,
-        ),
-      )
+      .where(eq(cartItems.id, existing[0].id))
 
     return {
       cartId,

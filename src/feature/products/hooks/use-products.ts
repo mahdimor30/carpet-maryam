@@ -7,5 +7,5 @@ export const queryPrpducts = queryOptions({
 })
 
 export const useProducts = () => {
- return useQuery(queryPrpducts)
+  return useQuery(queryPrpducts)
 }

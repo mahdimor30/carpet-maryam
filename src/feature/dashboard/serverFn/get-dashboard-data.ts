@@ -33,7 +33,8 @@ export const getDashboardData = createServerFn()
       stats: {
         products: products.length,
         activeVariants: variants.filter((v) => v.isActive).length,
-        todayOrders: orders.filter((o) => isToday(new Date(o.createdAt))).length,
+        todayOrders: orders.filter((o) => isToday(new Date(o.createdAt)))
+          .length,
         newInquiries: inquiries.filter((i) => i.status === 'new').length,
       },
       orders: orders.map((o) => ({
@@ -51,10 +52,14 @@ export const getDashboardData = createServerFn()
         phone: i.user?.phone || '—',
         message: i.message,
         productName: i.product?.name || null,
-        variant: i.variant ? `${i.variant.dimension} / ${i.variant.color}` : null,
+        variant: i.variant
+          ? `${i.variant.dimension} / ${i.variant.color}`
+          : null,
         status: i.status,
         createdAt: i.createdAt,
       })),
-      users: users.map(({ passwordHash: _passwordHash, otpCode: _otpCode, ...u }) => u),
+      users: users.map(
+        ({ passwordHash: _passwordHash, otpCode: _otpCode, ...u }) => u,
+      ),
     }
   })

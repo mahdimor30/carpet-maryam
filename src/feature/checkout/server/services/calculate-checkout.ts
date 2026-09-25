@@ -1,4 +1,4 @@
-import { getVariantFactories } from '@/feature/products/server/queries/get-variant-factories'
+import type { getVariantFactories } from '@/feature/products/server/queries/get-variant-factories'
 
 type CheckoutItem = {
   itemId: number
@@ -16,9 +16,6 @@ type CheckoutItem = {
 
   factories: Awaited<ReturnType<typeof getVariantFactories>>
 }
-
-
-
 
 export async function calculateCheckout(items: CheckoutItem[]) {
   const calculatedItems = []

@@ -12,8 +12,13 @@ function getJwtSecret() {
 }
 
 async function sha256Hex(value: string) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))
-  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('')
+  const buf = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(value),
+  )
+  return Array.from(new Uint8Array(buf))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
 }
 
 async function resolveUser(req: Request) {
@@ -22,7 +27,10 @@ async function resolveUser(req: Request) {
   const cookies = Object.fromEntries(
     cookieHeader.split(';').map((c) => {
       const parts = c.trim().split('=')
-      return [decodeURIComponent(parts[0]), decodeURIComponent(parts.slice(1).join('='))]
+      return [
+        decodeURIComponent(parts[0]),
+        decodeURIComponent(parts.slice(1).join('=')),
+      ]
     }),
   )
   const token = cookies['session_token']
@@ -34,7 +42,7 @@ async function resolveUser(req: Request) {
   let payload: { sub?: string }
   try {
     const result = await jwtVerify(token, secret)
-    payload = result.payload as { sub?: string }
+    payload = result.payload
   } catch {
     return null
   }
@@ -68,35 +76,49 @@ export const Route = createFileRoute('/api/temp-upload')({
         try {
           const user = await resolveUser(request)
           if (!user) {
-            return new Response(JSON.stringify({ error: 'لطفاً ابتدا وارد حساب خود شوید' }), {
-              status: 401,
-              headers: { 'Content-Type': 'application/json' },
-            })
+            return new Response(
+              JSON.stringify({ error: 'لطفاً ابتدا وارد حساب خود شوید' }),
+              {
+                status: 401,
+                headers: { 'Content-Type': 'application/json' },
+              },
+            )
           }
           if (user.role === 'customer') {
-            return new Response(JSON.stringify({ error: 'فقط مدیر و کارمند مجاز به آپلود هستند' }), {
-              status: 403,
-              headers: { 'Content-Type': 'application/json' },
-            })
+            return new Response(
+              JSON.stringify({
+                error: 'فقط مدیر و کارمند مجاز به آپلود هستند',
+              }),
+              {
+                status: 403,
+                headers: { 'Content-Type': 'application/json' },
+              },
+            )
           }
 
           const formData = await request.formData()
           const file = formData.get('file')
           if (!file || !(file instanceof File)) {
-            return new Response(JSON.stringify({ error: 'فایلی ارسال نشده است' }), {
-              status: 400,
-              headers: { 'Content-Type': 'application/json' },
-            })
+            return new Response(
+              JSON.stringify({ error: 'فایلی ارسال نشده است' }),
+              {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' },
+              },
+            )
           }
 
           const result = await utapi.uploadFiles(file)
           const data = Array.isArray(result) ? result[0] : result
 
           if (data.error) {
-            return new Response(JSON.stringify({ error: data.error.message || 'خطا در آپلود' }), {
-              status: 500,
-              headers: { 'Content-Type': 'application/json' },
-            })
+            return new Response(
+              JSON.stringify({ error: data.error.message || 'خطا در آپلود' }),
+              {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+              },
+            )
           }
 
           return new Response(JSON.stringify({ url: data.data.url }), {

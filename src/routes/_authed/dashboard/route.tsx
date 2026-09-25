@@ -9,14 +9,12 @@ export const Route = createFileRoute('/_authed/dashboard')({
   },
   component: RouteComponent,
   head: () => ({
-    meta: [
-      { title: 'داشبورد | فرش مریم' },
-    ],
+    meta: [{ title: 'داشبورد | فرش مریم' }],
   }),
 })
 
 function RouteComponent() {
-  return(
+  return (
     <DashboardShell>
       <Outlet />
     </DashboardShell>

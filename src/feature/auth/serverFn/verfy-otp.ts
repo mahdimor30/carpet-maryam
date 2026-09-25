@@ -46,9 +46,11 @@ function timingSafeEqual(a: string, b: string): boolean {
 function getClientIp(): string | null {
   try {
     const request = getRequest()
-    return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-      ?? request.headers.get('x-real-ip')
-      ?? null
+    return (
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+      request.headers.get('x-real-ip') ??
+      null
+    )
   } catch {
     return null
   }
@@ -118,7 +120,8 @@ export const verifyOtpFn = createServerFn({ method: 'POST' })
       if (user.otpAttempts >= MAX_OTP_ATTEMPTS) {
         return {
           success: false,
-          message: 'تعداد تلاش‌های شما بیش از حد مجاز است. کد جدید درخواست کنید',
+          message:
+            'تعداد تلاش‌های شما بیش از حد مجاز است. کد جدید درخواست کنید',
         }
       }
 

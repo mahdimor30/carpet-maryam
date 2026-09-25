@@ -1,20 +1,29 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "eslint.config.js", "prettier.config.js", "vite.config.js"],
-  
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "eslint.config.js",
+    "prettier.config.js",
+    "vite.config.js"
+  ],
+  "exclude": [
+    "src/feature/auth/services/**",
+    "src/feature/auth/serverFn/fake.ts",
+    "src/feature/products/queries/**",
+    "src/feature/products/services/**",
+    "src/feature/profile-cv/**"
+  ],
+
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
     "module": "ESNext",
     "paths": {
-      // "#/*": ["./src/*"],
+      "#/*": ["./src/*"],
       "@/*": ["./src/*"]
     },
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": [
-        "./worker-configuration.d.ts",
-        "bun-types",
-        "vite/client"
-    ],
+    "types": ["./worker-configuration.d.ts", "vite/client"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",

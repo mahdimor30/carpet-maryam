@@ -1,6 +1,6 @@
-import { Link } from "@tanstack/react-router"
-import { AuthShell } from "../components/auth-shell"
-import { RegisterForm } from "../components/register-form"
+import { Link } from '@tanstack/react-router'
+import { AuthShell } from '../components/auth-shell'
+import { RegisterForm } from '../components/register-form'
 
 export default function RegisterPage() {
   return (

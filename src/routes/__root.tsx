@@ -17,6 +17,27 @@ interface MyRouterContext {
   queryClient: QueryClient
 }
 
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://farshmaryam.ir/#organization',
+      name: 'فرش مریم',
+      url: 'https://farshmaryam.ir/',
+      logo: 'https://farshmaryam.ir/logo.png',
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://farshmaryam.ir/#website',
+      name: 'فرش مریم',
+      url: 'https://farshmaryam.ir/',
+      publisher: { '@id': 'https://farshmaryam.ir/#organization' },
+      inLanguage: 'fa-IR',
+    },
+  ],
+}
+
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   head: () => ({
     meta: [
@@ -32,7 +53,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
       {
         name: 'description',
-        content: 'فروشگاه تخصصی فرش و قالی دستباف و ماشینی با بهترین کیفیت و قیمت در ایران',
+        content:
+          'فروشگاه تخصصی فرش و قالی دستباف و ماشینی با بهترین کیفیت و قیمت در ایران',
       },
       {
         name: 'keywords',
@@ -51,9 +73,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fa" dir='rtl'>
+    <html lang="fa" dir="rtl">
       <head>
         <HeadContent />
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
       </head>
       <body>
         <CartProvider>{children}</CartProvider>

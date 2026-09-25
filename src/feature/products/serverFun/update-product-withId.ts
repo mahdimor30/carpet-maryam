@@ -42,24 +42,36 @@ export const updateProductWithId = createServerFn({ method: 'POST' })
         .where(eq(products.id, id))
 
       // 2) بازنویسی رابطه‌های many-to-many: حذف قدیمی و درج جدید
-      await db.delete(productCategories).where(eq(productCategories.productId, id))
+      await db
+        .delete(productCategories)
+        .where(eq(productCategories.productId, id))
       if (fields.categoryIds.length > 0) {
         await db.insert(productCategories).values(
-          fields.categoryIds.map((categoryId) => ({ productId: id, categoryId })),
+          fields.categoryIds.map((categoryId) => ({
+            productId: id,
+            categoryId,
+          })),
         )
       }
 
       await db.delete(productDesigns).where(eq(productDesigns.productId, id))
       if (fields.designIds.length > 0) {
-        await db.insert(productDesigns).values(
-          fields.designIds.map((designId) => ({ productId: id, designId })),
-        )
+        await db
+          .insert(productDesigns)
+          .values(
+            fields.designIds.map((designId) => ({ productId: id, designId })),
+          )
       }
 
-      await db.delete(productMaterials).where(eq(productMaterials.productId, id))
+      await db
+        .delete(productMaterials)
+        .where(eq(productMaterials.productId, id))
       if (fields.materialIds.length > 0) {
         await db.insert(productMaterials).values(
-          fields.materialIds.map((materialId) => ({ productId: id, materialId })),
+          fields.materialIds.map((materialId) => ({
+            productId: id,
+            materialId,
+          })),
         )
       }
 
@@ -72,22 +84,26 @@ export const updateProductWithId = createServerFn({ method: 'POST' })
 
       if (oldVariants.length > 0) {
         const oldIds = oldVariants.map((v) => v.id)
-        await db.delete(variantImages).where(inArray(variantImages.variantId, oldIds))
-        await db.delete(productVariants).where(inArray(productVariants.id, oldIds))
+        await db
+          .delete(variantImages)
+          .where(inArray(variantImages.variantId, oldIds))
+        await db
+          .delete(productVariants)
+          .where(inArray(productVariants.id, oldIds))
       }
 
       for (const variant of fields.variants) {
         const [insertedVariant] = await db
           .insert(productVariants)
           .values({
-            productId: id,
-            dimension: variant.dimension,
-            color: variant.color,
+            productId: id!,
+            dimension: variant.dimension ?? 'نامشخص',
+            color: variant.color ?? 'نامشخص',
             colorHex: variant.colorHex,
-            sku: variant.sku,
-            price: variant.price,
-            compareAtPrice: variant.compareAtPrice,
-            stock: variant.stock,
+            sku: variant.sku || `${id}-${fields.variants.indexOf(variant) + 1}`,
+            price: Number(variant.price) || 0,
+            compareAtPrice: Number(variant.compareAtPrice) || null,
+            stock: Number(variant.stock) || 0,
             isActive: variant.isActive,
           })
           .returning({ id: productVariants.id })

@@ -1,8 +1,4 @@
-import {
-  integer,
-  sqliteTable,
-  unique,
-} from 'drizzle-orm/sqlite-core'
+import { integer, sqliteTable, unique } from 'drizzle-orm/sqlite-core'
 
 import { carts } from './carts'
 import { productVariants } from './product-variants'
@@ -10,8 +6,7 @@ import { productVariants } from './product-variants'
 export const cartItems = sqliteTable(
   'cart_items',
   {
-    id: integer('id')
-      .primaryKey({ autoIncrement: true }),
+    id: integer('id').primaryKey({ autoIncrement: true }),
 
     cartId: integer('cart_id')
       .notNull()
@@ -25,9 +20,7 @@ export const cartItems = sqliteTable(
         onDelete: 'cascade',
       }),
 
-    quantity: integer('quantity')
-      .notNull()
-      .default(1),
+    quantity: integer('quantity').notNull().default(1),
 
     createdAt: integer('created_at', {
       mode: 'timestamp',
@@ -43,11 +36,6 @@ export const cartItems = sqliteTable(
   },
 
   (table) => [
-    unique(
-      'cart_item_cart_variant_unique',
-    ).on(
-      table.cartId,
-      table.variantId,
-    ),
+    unique('cart_item_cart_variant_unique').on(table.cartId, table.variantId),
   ],
 )

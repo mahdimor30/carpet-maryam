@@ -1,12 +1,12 @@
-Welcome to your new TanStack Start app! 
+Welcome to your new TanStack Start app!
 
 # Getting Started
 
 To run this application:
 
 ```bash
-pnpm install
-pnpm dev
+bun install
+bun dev
 ```
 
 # Building For Production
@@ -14,7 +14,7 @@ pnpm dev
 To build this application for production:
 
 ```bash
-pnpm build
+bun run build
 ```
 
 ## Testing
@@ -22,7 +22,7 @@ pnpm build
 This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
 
 ```bash
-pnpm test
+bun test
 ```
 
 ## Styling
@@ -36,19 +36,17 @@ If you prefer not to use Tailwind CSS:
 1. Remove the demo pages in `src/routes/demo/`
 2. Replace the Tailwind import in `src/styles.css` with your own styles
 3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Uninstall the packages: `pnpm add @tailwindcss/vite tailwindcss --dev`
+4. Uninstall the packages: `bun add @tailwindcss/vite tailwindcss --dev`
 
 ## Linting & Formatting
-
 
 This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
 
 ```bash
-pnpm lint
-pnpm format
-pnpm check
+bun run lint
+bun run format
+bun run check
 ```
-
 
 ## Deploy to Cloudflare Workers
 
@@ -62,16 +60,13 @@ For production env vars, run `wrangler secret put MY_VAR` for each secret listed
 
 KV, D1, R2, and Durable Object bindings are configured in `wrangler.jsonc` — see https://developers.cloudflare.com/workers/wrangler/configuration/.
 
-
 ## Shadcn
 
 Add components using the latest version of [Shadcn](https://ui.shadcn.com/).
 
 ```bash
-pnpm dlx shadcn@latest add button
+bunx shadcn@latest add button
 ```
-
-
 
 ## Routing
 
@@ -90,7 +85,7 @@ Now that you have two routes you can use a `Link` component to navigate between 
 To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
 
 ```tsx
-import { Link } from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 ```
 
 Then anywhere in your JSX you can use it like so:
@@ -158,11 +153,11 @@ const getServerTime = createServerFn({
 // Use in a component
 function MyComponent() {
   const [time, setTime] = useState('')
-  
+
   useEffect(() => {
     getServerTime().then(setTime)
   }, [])
-  
+
   return <div>Server time: {time}</div>
 }
 ```
@@ -225,7 +220,6 @@ You can learn more about all of the offerings from TanStack in the [TanStack doc
 
 For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
 
-
 ## Rubika AI carpet ingestion
 
 The Rubika flow can receive carpet images from a Rubika bot, group recent images into a batch, upload them to the existing UploadThing storage, analyze all images together with OpenAI vision, and create a product draft for dashboard review.
@@ -252,6 +246,7 @@ https://YOUR_DOMAIN/api/rubika/webhook?secret=YOUR_RUBIKA_WEBHOOK_SECRET
 ```
 
 MVP behavior:
+
 1. Send multiple carpet images to the configured Rubika chat/channel.
 2. Images are collected into a 10-minute pending batch.
 3. Send `/analyze` (or `تحلیل`) to start analysis, unless RUBIKA_AUTO_ANALYZE_AFTER is set to a positive number.

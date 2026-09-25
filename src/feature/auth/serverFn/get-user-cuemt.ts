@@ -1,6 +1,6 @@
 import { getDb } from '@/server/db'
 import { sessions } from '@/server/db/schema'
-import { createMiddleware, createServerFn } from '@tanstack/react-start'
+import { createServerFn } from '@tanstack/react-start'
 import { getCookie } from '@tanstack/react-start/server'
 import { eq } from 'drizzle-orm'
 import { jwtVerify } from 'jose'
@@ -35,7 +35,7 @@ export const getCurrentUserFn = createServerFn({ method: 'GET' }).handler(
     let payload: { sub?: string; sid?: string }
     try {
       const result = await jwtVerify(token, getJwtSecret())
-      payload = result.payload as { sub?: string; sid?: string }
+      payload = result.payload
     } catch {
       // امضای نامعتبر، دستکاری‌شده، یا منقضی
       return null
@@ -74,5 +74,3 @@ export const getCurrentUserFn = createServerFn({ method: 'GET' }).handler(
     }
   },
 )
-
-

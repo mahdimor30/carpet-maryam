@@ -16,13 +16,7 @@ export const ProductListSchema = z.object({
   maxPrice: z.coerce.number().int().nonnegative().optional(),
 
   sort: z
-    .enum([
-      'newest',
-      'price_asc',
-      'price_desc',
-      'name_asc',
-      'name_desc',
-    ])
+    .enum(['newest', 'price_asc', 'price_desc', 'name_asc', 'name_desc'])
     .default('newest'),
 })
 

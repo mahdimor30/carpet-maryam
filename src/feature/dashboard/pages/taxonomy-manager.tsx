@@ -1,5 +1,15 @@
 import { useState } from 'react'
-import { Layers, Palette, Pencil, PlusCircle, Sparkles, Trash2, X, Loader2, ImageUp } from 'lucide-react'
+import {
+  Layers,
+  Palette,
+  Pencil,
+  PlusCircle,
+  Sparkles,
+  Trash2,
+  X,
+  Loader2,
+  ImageUp,
+} from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { slugify, toFa } from '@/lib/dashboard-data'
@@ -21,8 +31,18 @@ interface TaxonomyItem {
   image: string | null
 }
 
-const AXES: { key: Axis; label: string; singular: string; icon: typeof Layers }[] = [
-  { key: 'category', label: 'دسته‌بندی‌ها', singular: 'دسته‌بندی', icon: Layers },
+const AXES: {
+  key: Axis
+  label: string
+  singular: string
+  icon: typeof Layers
+}[] = [
+  {
+    key: 'category',
+    label: 'دسته‌بندی‌ها',
+    singular: 'دسته‌بندی',
+    icon: Layers,
+  },
   { key: 'design', label: 'طرح‌ها', singular: 'طرح', icon: Sparkles },
   { key: 'material', label: 'متریال‌ها', singular: 'متریال', icon: Palette },
 ]
@@ -37,16 +57,27 @@ export default function TaxonomyManager() {
 
   const [name, setName] = useState('')
   const [error, setError] = useState('')
-  const [deleteTarget, setDeleteTarget] = useState<{ id: number; name: string } | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<{
+    id: number
+    name: string
+  } | null>(null)
   const [editTarget, setEditTarget] = useState<TaxonomyItem | null>(null)
   const [editName, setEditName] = useState('')
   const [editSlug, setEditSlug] = useState('')
   const [editImage, setEditImage] = useState<string | null>(null)
   const [addImage, setAddImage] = useState<string | null>(null)
 
-  const { startUpload: uploadImage, isUploading: isUploading } = useUploadThing('temporaryImage')
+  const { startUpload: uploadImage, isUploading: isUploading } =
+    useUploadThing('temporaryImage')
 
-  const items: TaxonomyItem[] = data?.[tab === 'category' ? 'categories' : tab === 'design' ? 'designs' : 'materials'] ?? []
+  const items: TaxonomyItem[] =
+    data?.[
+      tab === 'category'
+        ? 'categories'
+        : tab === 'design'
+          ? 'designs'
+          : 'materials'
+    ] ?? []
   const activeAxis = AXES.find((a) => a.key === tab)!
 
   async function handleAdd(e: React.FormEvent) {
@@ -61,7 +92,12 @@ export default function TaxonomyManager() {
       setError('موردی با این نام/شناسه از قبل وجود دارد')
       return
     }
-    const result = await addItem({ type: tab, name: trimmed, slug, image: addImage })
+    const result = await addItem({
+      type: tab,
+      name: trimmed,
+      slug,
+      image: addImage,
+    })
     if (result) {
       setName('')
       setAddImage(null)
@@ -92,7 +128,13 @@ export default function TaxonomyManager() {
       setError('موردی با این نام/شناسه از قبل وجود دارد')
       return
     }
-    await editItem({ type: tab, id: editTarget.id, name: trimmed, slug, image: editImage })
+    await editItem({
+      type: tab,
+      id: editTarget.id,
+      name: trimmed,
+      slug,
+      image: editImage,
+    })
     setEditTarget(null)
     setError('')
   }
@@ -170,7 +212,10 @@ export default function TaxonomyManager() {
       >
         <Field
           label={`افزودن ${activeAxis.singular} جدید`}
-          hint={error || `مثال: ${activeAxis.key === 'category' ? 'گبه' : activeAxis.key === 'design' ? 'ترنج' : 'پشم مرینو'}`}
+          hint={
+            error ||
+            `مثال: ${activeAxis.key === 'category' ? 'گبه' : activeAxis.key === 'design' ? 'ترنج' : 'پشم مرینو'}`
+          }
           className="flex-1"
         >
           <TextInput
@@ -181,7 +226,11 @@ export default function TaxonomyManager() {
             }}
             placeholder={`نام ${activeAxis.singular}`}
             aria-invalid={!!error}
-            className={error ? 'border-destructive focus:border-destructive focus:ring-destructive/20' : undefined}
+            className={
+              error
+                ? 'border-destructive focus:border-destructive focus:ring-destructive/20'
+                : undefined
+            }
           />
         </Field>
         <div className="flex gap-2">
@@ -215,7 +264,11 @@ export default function TaxonomyManager() {
 
       {addImage && (
         <div className="-mt-4 mb-4 flex items-center gap-2 text-xs text-muted-foreground">
-          <img src={addImage} alt="" className="h-8 w-8 rounded-lg object-cover" />
+          <img
+            src={addImage}
+            alt=""
+            className="h-8 w-8 rounded-lg object-cover"
+          />
           عکس انتخاب شد
           <button
             type="button"
@@ -256,8 +309,13 @@ export default function TaxonomyManager() {
                     </div>
                   )}
                   <div>
-                    <p className="text-sm font-semibold text-foreground">{item.name}</p>
-                    <p className="font-mono text-xs text-muted-foreground" dir="ltr">
+                    <p className="text-sm font-semibold text-foreground">
+                      {item.name}
+                    </p>
+                    <p
+                      className="font-mono text-xs text-muted-foreground"
+                      dir="ltr"
+                    >
                       {item.slug}
                     </p>
                   </div>
@@ -313,8 +371,8 @@ export default function TaxonomyManager() {
               </button>
             </div>
             <p className="mt-2 text-sm text-muted-foreground">
-              آیا از حذف «{deleteTarget.name}» مطمئن هستید؟ محصولاتی که به این مورد
-              متصل‌اند، این برچسب را از دست می‌دهند.
+              آیا از حذف «{deleteTarget.name}» مطمئن هستید؟ محصولاتی که به این
+              مورد متصل‌اند، این برچسب را از دست می‌دهند.
             </p>
             <div className="mt-5 flex justify-end gap-2">
               <button
@@ -362,7 +420,10 @@ export default function TaxonomyManager() {
             </div>
             <div className="mt-4 space-y-4">
               <Field label="نام">
-                <TextInput value={editName} onChange={(e) => setEditName(e.target.value)} />
+                <TextInput
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                />
               </Field>
               <Field label="شناسه (slug)">
                 <TextInput
@@ -375,14 +436,22 @@ export default function TaxonomyManager() {
               <Field label="عکس">
                 <div className="flex items-center gap-3">
                   {editImage ? (
-                    <img src={editImage} alt="" className="h-16 w-16 rounded-xl object-cover" />
+                    <img
+                      src={editImage}
+                      alt=""
+                      className="h-16 w-16 rounded-xl object-cover"
+                    />
                   ) : (
                     <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-muted text-muted-foreground">
                       <ImageUp className="h-5 w-5" />
                     </div>
                   )}
                   <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-border px-3.5 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary">
-                    {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ImageUp className="h-4 w-4" />}
+                    {isUploading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <ImageUp className="h-4 w-4" />
+                    )}
                     {editImage ? 'تغییر عکس' : 'انتخاب عکس'}
                     <input
                       type="file"

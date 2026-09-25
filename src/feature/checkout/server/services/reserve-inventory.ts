@@ -22,10 +22,7 @@ export function reserveFactoryInventoryQuery({
     })
     .where(
       and(
-        eq(
-          factoryInventory.factoryProductId,
-          factoryProductId,
-        ),
+        eq(factoryInventory.factoryProductId, factoryProductId),
         gte(
           sql`
             ${factoryInventory.quantity} -

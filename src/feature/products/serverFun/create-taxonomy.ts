@@ -4,7 +4,11 @@ import { categories, designs, materials } from '@/server/db/schema'
 import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
 
-const TABLES = { category: categories, design: designs, material: materials } as const
+const TABLES = {
+  category: categories,
+  design: designs,
+  material: materials,
+} as const
 
 export const createTaxonomy = createServerFn({ method: 'POST' })
   .middleware([authMiddleware])
@@ -23,7 +27,11 @@ export const createTaxonomy = createServerFn({ method: 'POST' })
 
       const [inserted] = await db
         .insert(table)
-        .values({ name: data.name, slug: data.slug, ...(data.image !== undefined ? { image: data.image } : {}) })
+        .values({
+          name: data.name,
+          slug: data.slug,
+          ...(data.image !== undefined ? { image: data.image } : {}),
+        })
         .returning({ id: table.id, name: table.name, slug: table.slug })
 
       return inserted

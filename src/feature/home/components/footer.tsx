@@ -52,8 +52,8 @@ export function Footer() {
               </span>
             </div>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
-              ارائه مستقیم زیباترین فرش‌های کاشان با قیمت کارخانه، مشاوره
-              تخصصی چیدمان و ارسال رایگان تا درب منزل.
+              ارائه مستقیم زیباترین فرش‌های کاشان با قیمت کارخانه، مشاوره تخصصی
+              چیدمان و ارسال رایگان تا درب منزل.
             </p>
             <div className="mt-4 flex items-center gap-2">
               <a

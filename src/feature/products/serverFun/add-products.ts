@@ -78,13 +78,15 @@ export const addProductsServerFn = createServerFn({ method: 'POST' })
           .insert(productVariants)
           .values({
             productId: productId!,
-            dimension: variant.dimension,
-            color: variant.color,
+            dimension: variant.dimension ?? 'نامشخص',
+            color: variant.color ?? 'نامشخص',
             colorHex: variant.colorHex,
-            sku: variant.sku,
-            price: variant.price,
-            compareAtPrice: variant.compareAtPrice,
-            stock: variant.stock,
+            sku:
+              variant.sku ||
+              `${productId}-${data.variants.indexOf(variant) + 1}`,
+            price: Number(variant.price) || 0,
+            compareAtPrice: Number(variant.compareAtPrice) || null,
+            stock: Number(variant.stock) || 0,
             isActive: variant.isActive,
           })
           .returning({ id: productVariants.id })

@@ -38,8 +38,7 @@ export async function getProductBySlug(slug: string) {
       yarn: products.yarn,
 
       pileHeightMm: products.pileHeightMm,
-      weightPerSquareMeterGrams:
-        products.weightPerSquareMeterGrams,
+      weightPerSquareMeterGrams: products.weightPerSquareMeterGrams,
 
       weavingType: products.weavingType,
       warrantyMonths: products.warrantyMonths,
@@ -48,12 +47,7 @@ export async function getProductBySlug(slug: string) {
       updatedAt: products.updatedAt,
     })
     .from(products)
-    .where(
-      and(
-        eq(products.slug, slug),
-        eq(products.isActive, true),
-      ),
-    )
+    .where(and(eq(products.slug, slug), eq(products.isActive, true)))
     .limit(1)
 
   if (!product[0]) {
@@ -76,8 +70,7 @@ export async function getProductBySlug(slug: string) {
       sku: productVariants.sku,
 
       price: productVariants.price,
-      compareAtPrice:
-        productVariants.compareAtPrice,
+      compareAtPrice: productVariants.compareAtPrice,
 
       stock: productVariants.stock,
 
@@ -121,10 +114,7 @@ export async function getProductBySlug(slug: string) {
         eq(productVariants.isActive, true),
       ),
     )
-    .orderBy(
-      asc(productVariants.price),
-      asc(productVariants.dimension),
-    )
+    .orderBy(asc(productVariants.price), asc(productVariants.dimension))
 
   // ----------------------------------------
   // Categories
@@ -137,16 +127,8 @@ export async function getProductBySlug(slug: string) {
       slug: categories.slug,
     })
     .from(productCategories)
-    .innerJoin(
-      categories,
-      eq(
-        categories.id,
-        productCategories.categoryId,
-      ),
-    )
-    .where(
-      eq(productCategories.productId, productId),
-    )
+    .innerJoin(categories, eq(categories.id, productCategories.categoryId))
+    .where(eq(productCategories.productId, productId))
 
   // ----------------------------------------
   // Designs
@@ -159,16 +141,8 @@ export async function getProductBySlug(slug: string) {
       slug: designs.slug,
     })
     .from(productDesigns)
-    .innerJoin(
-      designs,
-      eq(
-        designs.id,
-        productDesigns.designId,
-      ),
-    )
-    .where(
-      eq(productDesigns.productId, productId),
-    )
+    .innerJoin(designs, eq(designs.id, productDesigns.designId))
+    .where(eq(productDesigns.productId, productId))
 
   // ----------------------------------------
   // Materials
@@ -181,16 +155,8 @@ export async function getProductBySlug(slug: string) {
       slug: materials.slug,
     })
     .from(productMaterials)
-    .innerJoin(
-      materials,
-      eq(
-        materials.id,
-        productMaterials.materialId,
-      ),
-    )
-    .where(
-      eq(productMaterials.productId, productId),
-    )
+    .innerJoin(materials, eq(materials.id, productMaterials.materialId))
+    .where(eq(productMaterials.productId, productId))
 
   return {
     ...product[0],

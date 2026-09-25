@@ -1,8 +1,7 @@
 import { ArrowLeft, Check, Heart, Phone, Star, Truck } from 'lucide-react'
-import { getProduct, formatPrice, toFaNumber } from '@/lib/data'
+import { getProduct, formatPrice, toFaNumber, PRODUCTS } from '@/lib/data'
 import { Link } from '@tanstack/react-router'
 import { ProductCard } from './product-card'
-import { PRODUCTS } from '@/lib/data'
 import { ProductBuyBox } from './product-buy-box'
 
 export function ProductDetail({ slug }: { slug: string }) {
@@ -11,8 +10,12 @@ export function ProductDetail({ slug }: { slug: string }) {
   if (!product) {
     return (
       <div className="mx-auto max-w-6xl px-4 py-20 text-center sm:px-6">
-        <h1 className="font-heading text-2xl font-bold text-foreground">محصول یافت نشد</h1>
-        <p className="mt-2 text-sm text-muted-foreground">محصولی با این مشخصات وجود ندارد.</p>
+        <h1 className="font-heading text-2xl font-bold text-foreground">
+          محصول یافت نشد
+        </h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          محصولی با این مشخصات وجود ندارد.
+        </p>
         <Link
           to="/products"
           className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground"
@@ -32,9 +35,16 @@ export function ProductDetail({ slug }: { slug: string }) {
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
       {/* مسیر راهنما */}
       <nav className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
-        <Link to="/" className="transition-colors hover:text-foreground">خانه</Link>
+        <Link to="/" className="transition-colors hover:text-foreground">
+          خانه
+        </Link>
         <span>/</span>
-        <Link to="/products" className="transition-colors hover:text-foreground">فروشگاه</Link>
+        <Link
+          to="/products"
+          className="transition-colors hover:text-foreground"
+        >
+          فروشگاه
+        </Link>
         <span>/</span>
         <span className="text-foreground">{product.name}</span>
       </nav>
@@ -99,7 +109,7 @@ export function ProductDetail({ slug }: { slug: string }) {
           <div className="rounded-2xl border border-border bg-card p-5">
             <h2 className="mb-3 text-sm font-bold text-foreground">مشخصات</h2>
             <dl className="grid grid-cols-2 gap-3 text-sm">
-              {[ 
+              {[
                 ['ابعاد', `${product.size} متر`],
                 ['تراکم', product.density],
                 ['جنس', product.material],
@@ -117,7 +127,9 @@ export function ProductDetail({ slug }: { slug: string }) {
           {/* توضیحات */}
           <div className="rounded-2xl border border-border bg-card p-5">
             <h2 className="mb-2 text-sm font-bold text-foreground">توضیحات</h2>
-            <p className="text-sm leading-relaxed text-muted-foreground">{product.description}</p>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              {product.description}
+            </p>
           </div>
 
           {/* ویژگی‌ها */}
@@ -132,7 +144,9 @@ export function ProductDetail({ slug }: { slug: string }) {
                 className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-3"
               >
                 <item.icon className="h-4 w-4 text-accent" />
-                <span className="text-xs font-medium text-foreground">{item.text}</span>
+                <span className="text-xs font-medium text-foreground">
+                  {item.text}
+                </span>
               </div>
             ))}
           </div>
@@ -144,7 +158,9 @@ export function ProductDetail({ slug }: { slug: string }) {
                 <Phone className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">برای مشاوره و خرید تماس بگیرید</p>
+                <p className="text-sm font-medium text-foreground">
+                  برای مشاوره و خرید تماس بگیرید
+                </p>
                 <a
                   href="tel:09103584996"
                   className="text-lg font-bold text-accent hover:underline"

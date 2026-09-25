@@ -1,17 +1,8 @@
 import { CATEGORIES, toFaNumber } from '@/lib/data'
 import { Link } from '@tanstack/react-router'
-import { useState, useEffect } from 'react'
-import {
-  Menu,
-  Search,
-  ShoppingBag,
-  X,
-  LogIn,
-  LayoutDashboard,
-} from 'lucide-react'
-import { useCart } from '@/feature/home/components/cart-provider'
+import { useState } from 'react'
+import { Menu, Search, X } from 'lucide-react'
 import { CartDrawer } from '@/feature/home/components/cart-drawer'
-import { getCurrentUserFn } from '@/feature/auth/serverFn/get-user-cuemt'
 import Logo from './logo'
 import Navigation, { NAV_LINKS } from './navigation'
 import UserProfile from './user-profile'

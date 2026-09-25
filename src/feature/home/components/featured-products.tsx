@@ -122,7 +122,10 @@ function FeaturedCard({ product }: { product: HomeProduct }) {
 
 export function FeaturedProducts({ products }: { products: HomeProduct[] }) {
   return (
-    <section id="featured-products" className="border-y border-border bg-card/50 py-14 sm:py-20">
+    <section
+      id="featured-products"
+      className="border-y border-border bg-card/50 py-14 sm:py-20"
+    >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mb-10 flex items-end justify-between">
           <div>

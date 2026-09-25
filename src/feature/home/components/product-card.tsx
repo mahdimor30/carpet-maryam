@@ -1,7 +1,7 @@
-
 import { useState } from 'react'
 import { Heart, Plus, Star } from 'lucide-react'
-import { type Product, formatPrice, toFaNumber } from '@/lib/data'
+import { formatPrice, toFaNumber } from '@/lib/data'
+import type { Product } from '@/lib/data'
 import { useCart } from './cart-provider'
 import { Link } from '@tanstack/react-router'
 
@@ -30,7 +30,7 @@ export function ProductCard({ product }: { product: Product }) {
         <img
           src={product.image || '/placeholder.svg'}
           alt={product.name}
-          
+
           sizes="(max-width: 768px) 50vw, 25vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />

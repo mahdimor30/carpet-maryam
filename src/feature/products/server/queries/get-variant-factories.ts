@@ -26,8 +26,8 @@ export async function getVariantFactories(variantId: number) {
       canWeave: factoryProducts.canWeave,
       weavingDays: factoryProducts.weavingDays,
 
-      quantity: factoryInventory.quantity,
-      reservedQuantity: factoryInventory.reservedQuantity,
+      quantity: sql<number>`COALESCE(${factoryInventory.quantity}, 0)`,
+      reservedQuantity: sql<number>`COALESCE(${factoryInventory.reservedQuantity}, 0)`,
 
       availableQuantity: sql<number>`
         MAX(
@@ -39,7 +39,7 @@ export async function getVariantFactories(variantId: number) {
 
       purchasePrice: factoryQuotes.purchasePrice,
 
-      quoteUpdatedAt: factoryQuotes.updatedAt,
+      quoteUpdatedAt: factoryQuotes.createdAt,
     })
     .from(factoryProducts)
 
@@ -57,10 +57,7 @@ export async function getVariantFactories(variantId: number) {
 
     .leftJoin(
       factoryQuotes,
-      and(
-        eq(factoryQuotes.factoryProductId, factoryProducts.id),
-        eq(factoryQuotes.isActive, true),
-      ),
+      and(eq(factoryQuotes.factoryProductId, factoryProducts.id)),
     )
 
     .where(

@@ -44,7 +44,9 @@ const fallbackImage = sql<string | null>`(
   LIMIT 1
 )`
 
-const categoryImage = sql<string | null>`COALESCE(categories.image, ${fallbackImage})`
+const categoryImage = sql<
+  string | null
+>`COALESCE(categories.image, ${fallbackImage})`
 
 export async function getHomeCategories(limit = 6) {
   const db = getDb()

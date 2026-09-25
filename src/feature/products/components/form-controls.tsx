@@ -30,9 +30,7 @@ export function Field({
   )
 }
 
-export function TextInput(
-  props: React.InputHTMLAttributes<HTMLInputElement>,
-) {
+export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   const { className, ...rest } = props
   return <input className={cn(baseInput, className)} {...rest} />
 }
@@ -64,9 +62,13 @@ export function Toggle({
       className="flex w-full items-center justify-between gap-3 rounded-xl border border-border bg-background px-3.5 py-2.5 text-right transition-colors hover:bg-secondary/40"
     >
       <span>
-        <span className="block text-sm font-medium text-foreground">{label}</span>
+        <span className="block text-sm font-medium text-foreground">
+          {label}
+        </span>
         {description && (
-          <span className="block text-xs text-muted-foreground">{description}</span>
+          <span className="block text-xs text-muted-foreground">
+            {description}
+          </span>
         )}
       </span>
       <span

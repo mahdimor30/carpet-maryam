@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { Check, Minus, Plus, ShoppingBag } from 'lucide-react'
-import { type Product, formatPrice, toFaNumber } from '@/lib/data'
+import { formatPrice, toFaNumber } from '@/lib/data'
+import type { Product } from '@/lib/data'
 import { useCart } from '@/feature/home/components/cart-provider'
 
 export function ProductBuyBox({ product }: { product: Product }) {

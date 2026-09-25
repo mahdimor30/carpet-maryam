@@ -1,18 +1,13 @@
 import type { FactoryAvailability } from '../types'
 
-export type SourcingStrategy =
-  | 'lowest_price'
-  | 'fastest'
-  | 'balanced'
+export type SourcingStrategy = 'lowest_price' | 'fastest' | 'balanced'
 
 export function selectBestFactory(
   factories: FactoryAvailability[],
   strategy: SourcingStrategy = 'balanced',
 ) {
   const available = factories.filter(
-    (factory) =>
-      factory.availableQuantity > 0 ||
-      factory.canWeave,
+    (factory) => factory.availableQuantity > 0 || factory.canWeave,
   )
 
   if (available.length === 0) {
@@ -22,16 +17,10 @@ export function selectBestFactory(
   const sorted = [...available].sort((a, b) => {
     switch (strategy) {
       case 'lowest_price':
-        return (
-          (a.purchasePrice ?? Infinity) -
-          (b.purchasePrice ?? Infinity)
-        )
+        return (a.purchasePrice ?? Infinity) - (b.purchasePrice ?? Infinity)
 
       case 'fastest':
-        return (
-          (a.weavingDays ?? Infinity) -
-          (b.weavingDays ?? Infinity)
-        )
+        return (a.weavingDays ?? Infinity) - (b.weavingDays ?? Infinity)
 
       case 'balanced': {
         const aPrice = a.purchasePrice ?? Infinity

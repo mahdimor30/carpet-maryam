@@ -4,11 +4,7 @@ import { useState } from 'react'
 import { Phone, User, Mail, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-import {
-  isValidName,
-  isValidPassword,
-  isValidPhone,
-} from '../lib/auth'
+import { isValidName, isValidPassword, isValidPhone } from '../lib/auth'
 import { AuthField } from './auth-field'
 import { useLoaderData, useRouter } from '@tanstack/react-router'
 import { completeProfileFn } from '../serverFn/complete-profile'

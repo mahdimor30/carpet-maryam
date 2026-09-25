@@ -1,4 +1,5 @@
-const RUBIKA_API_BASE = 'https://botapi.rubika.ir/v3'
+const RUBIKA_API_BASE =
+  process.env.RUBIKA_API_BASE_URL || 'https://botapi.rubika.ir/v3'
 
 function token() {
   const value = process.env.RUBIKA_BOT_TOKEN

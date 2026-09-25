@@ -1,4 +1,9 @@
-import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  queryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import { getTaxonomies } from '../serverFun/get-taxonomies'
 import { createTaxonomy } from '../serverFun/create-taxonomy'
 import { deleteTaxonomy } from '../serverFun/delete-taxonomy'
@@ -14,8 +19,12 @@ export const useTaxonomies = () => useQuery(queryTaxonomies)
 export const useCreateTaxonomy = () => {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (value: { type: 'category' | 'design' | 'material'; name: string; slug: string; image?: string | null }) =>
-      createTaxonomy({ data: value }),
+    mutationFn: async (value: {
+      type: 'category' | 'design' | 'material'
+      name: string
+      slug: string
+      image?: string | null
+    }) => createTaxonomy({ data: value }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['taxonomies'] })
     },
@@ -25,8 +34,13 @@ export const useCreateTaxonomy = () => {
 export const useUpdateTaxonomy = () => {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (value: { type: 'category' | 'design' | 'material'; id: number; name: string; slug: string; image?: string | null }) =>
-      updateTaxonomy({ data: value }),
+    mutationFn: async (value: {
+      type: 'category' | 'design' | 'material'
+      id: number
+      name: string
+      slug: string
+      image?: string | null
+    }) => updateTaxonomy({ data: value }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['taxonomies'] })
     },
@@ -36,8 +50,10 @@ export const useUpdateTaxonomy = () => {
 export const useDeleteTaxonomy = () => {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (value: { type: 'category' | 'design' | 'material'; id: number }) =>
-      deleteTaxonomy({ data: value }),
+    mutationFn: async (value: {
+      type: 'category' | 'design' | 'material'
+      id: number
+    }) => deleteTaxonomy({ data: value }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['taxonomies'] })
     },

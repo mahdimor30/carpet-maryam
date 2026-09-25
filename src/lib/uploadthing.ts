@@ -19,9 +19,10 @@ export const UploadButton = generateUploadButton<UploadRouter>()
 export const UploadDropzone = generateUploadDropzone<UploadRouter>()
 
 // ─── hook برای آپلود برنامه‌نویسانه ─────────────────────────────────────────
-export const { useUploadThing, uploadFiles } = generateReactHelpers<UploadRouter>({
-  url: '/api/uploadthing',
-})
+export const { useUploadThing, uploadFiles } =
+  generateReactHelpers<UploadRouter>({
+    url: '/api/uploadthing',
+  })
 
 // ─── مثال استفاده VariantImageUploader ────────────────────────────────────
 /**

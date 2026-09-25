@@ -43,9 +43,7 @@ export const loginFn = createServerFn({ method: 'POST' })
       }
 
       const otpCode = generateOtp()
-      const otpExpiresAt = new Date(
-        Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000,
-      )
+      const otpExpiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000)
 
       if (!user) {
         // کاربر جدید با همین شماره ساخته می‌شود

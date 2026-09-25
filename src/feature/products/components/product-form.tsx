@@ -1,13 +1,6 @@
 import { useEffect } from 'react'
 import { useForm } from '@tanstack/react-form'
-import {
-  PlusCircle,
-  Layers,
-  Info,
-  Tags,
-  Check,
-  Loader2,
-} from 'lucide-react'
+import { PlusCircle, Layers, Info, Tags, Check, Loader2 } from 'lucide-react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import {
   DASH_CATEGORIES,
@@ -17,8 +10,8 @@ import {
   makeEmptyVariant,
   slugify,
   toFa,
-  type VariantInput,
 } from '@/lib/dashboard-data'
+import type { VariantInput } from '@/lib/dashboard-data'
 import { ChipSelect, Field, TextArea, TextInput, Toggle } from './form-controls'
 import { VariantEditor } from './variant-editor'
 
@@ -26,7 +19,8 @@ import type { ProductWithCategories } from '@/types/schema'
 import { useProductWithId } from '../hooks/use-get-products-withId'
 import { useAddProduct } from '../hooks/use-add-product'
 import { useUpdateProduct } from '../hooks/use-update-product'
-import { productSchema, type ProductFormValues } from '../validations/product'
+import { productSchema } from '../validations/product'
+import type { ProductFormValues } from '../validations/product'
 import SectionCard from './section-card'
 import HeaderPage from '@/components/header-page'
 
@@ -109,7 +103,7 @@ export function ProductForm({ productId }: { productId?: number }) {
     field: 'categoryIds' | 'designIds' | 'materialIds',
     id: number,
   ) => {
-    const current = form.getFieldValue(field) as number[]
+    const current = form.getFieldValue(field)
     form.setFieldValue(
       field,
       current.includes(id) ? current.filter((x) => x !== id) : [...current, id],
@@ -282,7 +276,9 @@ export function ProductForm({ productId }: { productId?: number }) {
               name="designIds"
               children={(field) => (
                 <div>
-                  <p className="mb-2 text-sm font-medium text-foreground">طرح</p>
+                  <p className="mb-2 text-sm font-medium text-foreground">
+                    طرح
+                  </p>
                   <ChipSelect
                     options={DASH_DESIGNS}
                     selected={field.state.value}
@@ -296,7 +292,9 @@ export function ProductForm({ productId }: { productId?: number }) {
               name="materialIds"
               children={(field) => (
                 <div>
-                  <p className="mb-2 text-sm font-medium text-foreground">متریال</p>
+                  <p className="mb-2 text-sm font-medium text-foreground">
+                    متریال
+                  </p>
                   <ChipSelect
                     options={DASH_MATERIALS}
                     selected={field.state.value}

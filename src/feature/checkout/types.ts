@@ -1,7 +1,4 @@
-export type CheckoutSourceType =
-  | 'store'
-  | 'factory'
-  | 'weaving'
+export type CheckoutSourceType = 'store' | 'factory' | 'weaving'
 
 export type CheckoutSource = {
   type: CheckoutSourceType

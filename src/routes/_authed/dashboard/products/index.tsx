@@ -17,9 +17,7 @@ export const Route = createFileRoute('/_authed/dashboard/products/')({
     return { products, drafts }
   },
   head: () => ({
-    meta: [
-      { title: 'مدیریت محصولات | فرش مریم' },
-    ],
+    meta: [{ title: 'مدیریت محصولات | فرش مریم' }],
   }),
 })
 
@@ -58,11 +56,16 @@ function DashboardProductsPage() {
           </span>
         </div>
         {drafts.length === 0 ? (
-          <p className="text-sm text-muted-foreground">هنوز پیش‌نویسی ساخته نشده است.</p>
+          <p className="text-sm text-muted-foreground">
+            هنوز پیش‌نویسی ساخته نشده است.
+          </p>
         ) : (
           <div className="grid gap-3 md:grid-cols-2">
             {drafts.map((draft) => (
-              <div key={draft.id} className="rounded-xl border border-border p-4">
+              <div
+                key={draft.id}
+                className="rounded-xl border border-border p-4"
+              >
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="font-semibold">{draft.title}</h3>
                   <span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs text-amber-800">
@@ -75,7 +78,8 @@ function DashboardProductsPage() {
                   </p>
                 )}
                 <div className="mt-3 text-xs text-muted-foreground">
-                  اطمینان AI: {Math.round((draft.confidence ?? 0) * 100)}٪ · Draft #{draft.id}
+                  اطمینان AI: {Math.round((draft.confidence ?? 0) * 100)}٪ ·
+                  Draft #{draft.id}
                 </div>
               </div>
             ))}

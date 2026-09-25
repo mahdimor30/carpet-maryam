@@ -17,10 +17,7 @@ export function createSeo({
   type = 'website',
   noIndex = false,
 }: SeoOptions) {
-  const fullTitle =
-    path === '/'
-      ? title
-      : `${title} | ${config.siteName}`
+  const fullTitle = path === '/' ? title : `${title} | ${config.siteName}`
 
   const url = new URL(path, config.siteUrl).toString()
   const imageUrl = new URL(image, config.siteUrl).toString()

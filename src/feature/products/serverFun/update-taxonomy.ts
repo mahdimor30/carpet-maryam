@@ -5,7 +5,11 @@ import { createServerFn } from '@tanstack/react-start'
 import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 
-const TABLES = { category: categories, design: designs, material: materials } as const
+const TABLES = {
+  category: categories,
+  design: designs,
+  material: materials,
+} as const
 
 export const updateTaxonomy = createServerFn({ method: 'POST' })
   .middleware([authMiddleware])
@@ -24,9 +28,18 @@ export const updateTaxonomy = createServerFn({ method: 'POST' })
       const table = TABLES[data.type]
       const [updated] = await db
         .update(table)
-        .set({ name: data.name, slug: data.slug, ...(data.image !== undefined ? { image: data.image } : {}) })
+        .set({
+          name: data.name,
+          slug: data.slug,
+          ...(data.image !== undefined ? { image: data.image } : {}),
+        })
         .where(eq(table.id, data.id))
-        .returning({ id: table.id, name: table.name, slug: table.slug, image: table.image })
+        .returning({
+          id: table.id,
+          name: table.name,
+          slug: table.slug,
+          image: table.image,
+        })
       return updated
     } catch (error) {
       console.log(error, '/updateTaxonomyError')

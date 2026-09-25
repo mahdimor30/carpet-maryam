@@ -11,12 +11,17 @@ import { TaxonomySkeleton } from '@/feature/dashboard/components/skeletons/taxon
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const { status, location } = useRouterState({ select: (s) => ({ status: s.status, location: s.location }) })
+  const { status, location } = useRouterState({
+    select: (s) => ({ status: s.status, location: s.location }),
+  })
   const isLoading = status === 'pending'
-  const targetPath = isLoading && location ? location.pathname.replace(/\/$/, '') || '/' : ''
+  const targetPath =
+    isLoading && location ? location.pathname.replace(/\/$/, '') || '/' : ''
 
   const Skeleton = isLoading
-    ? targetPath.startsWith('/dashboard/products/new') || targetPath.startsWith('/dashboard/products/') && !targetPath.startsWith('/dashboard/products')
+    ? targetPath.startsWith('/dashboard/products/new') ||
+      (targetPath.startsWith('/dashboard/products/') &&
+        !targetPath.startsWith('/dashboard/products'))
       ? FormSkeleton
       : targetPath.startsWith('/dashboard/products')
         ? TableSkeleton
@@ -27,7 +32,10 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-background">
-      <DashboardSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <DashboardSidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-card/80 px-4 backdrop-blur-md sm:px-6">
@@ -60,7 +68,9 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                 م
               </span>
               <div className="hidden text-right leading-tight sm:block">
-                <p className="text-xs font-semibold text-foreground">مدیر فروشگاه</p>
+                <p className="text-xs font-semibold text-foreground">
+                  مدیر فروشگاه
+                </p>
                 <p className="text-[11px] text-muted-foreground">admin</p>
               </div>
             </div>

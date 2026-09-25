@@ -10,8 +10,15 @@ export const Route = createFileRoute('/_layout/categories/$slug')({
     const category = CATEGORIES.find((item) => item.slug === params.slug)
     return {
       meta: [
-        { title: `${category ? `فرش ${category.name}` : 'دسته‌بندی'} | فرش مریم` },
-        { name: 'description', content: category ? `مشاهده و خرید مدل‌های فرش ${category.name}.` : 'دسته‌بندی محصولات فرش مریم' },
+        {
+          title: `${category ? `فرش ${category.name}` : 'دسته‌بندی'} | فرش مریم`,
+        },
+        {
+          name: 'description',
+          content: category
+            ? `مشاهده و خرید مدل‌های فرش ${category.name}.`
+            : 'دسته‌بندی محصولات فرش مریم',
+        },
       ],
     }
   },

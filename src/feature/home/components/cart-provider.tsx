@@ -7,8 +7,8 @@ import {
   useEffect,
   useMemo,
   useState,
-  type ReactNode,
 } from 'react'
+import type { ReactNode } from 'react'
 /**
  * کمترین مجموعه فیلدی که سبد خرید برای نمایش و محاسبه لازم دارد؛
  * هم محصولات دیتابیس و هم داده‌های نمونه این شکل را دارند.

@@ -70,9 +70,6 @@ export const productsRelations = relations(products, ({ many }) => ({
 // Product Variants
 // ─────────────────────────────────────────────
 
-
-
-
 export const productVariantsRelations = relations(
   productVariants,
   ({ one, many }) => ({
@@ -95,26 +92,20 @@ export const productVariantsRelations = relations(
 // Variant Images
 // ─────────────────────────────────────────────
 
-export const variantImagesRelations = relations(
-  variantImages,
-  ({ one }) => ({
-    variant: one(productVariants, {
-      fields: [variantImages.variantId],
-      references: [productVariants.id],
-    }),
+export const variantImagesRelations = relations(variantImages, ({ one }) => ({
+  variant: one(productVariants, {
+    fields: [variantImages.variantId],
+    references: [productVariants.id],
   }),
-)
+}))
 
 // ─────────────────────────────────────────────
 // Categories
 // ─────────────────────────────────────────────
 
-export const categoriesRelations = relations(
-  categories,
-  ({ many }) => ({
-    products: many(productCategories),
-  }),
-)
+export const categoriesRelations = relations(categories, ({ many }) => ({
+  products: many(productCategories),
+}))
 
 // ─────────────────────────────────────────────
 // Designs
@@ -128,12 +119,9 @@ export const designsRelations = relations(designs, ({ many }) => ({
 // Materials
 // ─────────────────────────────────────────────
 
-export const materialsRelations = relations(
-  materials,
-  ({ many }) => ({
-    products: many(productMaterials),
-  }),
-)
+export const materialsRelations = relations(materials, ({ many }) => ({
+  products: many(productMaterials),
+}))
 
 // ─────────────────────────────────────────────
 // Product Categories
@@ -158,20 +146,17 @@ export const productCategoriesRelations = relations(
 // Product Designs
 // ─────────────────────────────────────────────
 
-export const productDesignsRelations = relations(
-  productDesigns,
-  ({ one }) => ({
-    product: one(products, {
-      fields: [productDesigns.productId],
-      references: [products.id],
-    }),
-
-    design: one(designs, {
-      fields: [productDesigns.designId],
-      references: [designs.id],
-    }),
+export const productDesignsRelations = relations(productDesigns, ({ one }) => ({
+  product: one(products, {
+    fields: [productDesigns.productId],
+    references: [products.id],
   }),
-)
+
+  design: one(designs, {
+    fields: [productDesigns.designId],
+    references: [designs.id],
+  }),
+}))
 
 // ─────────────────────────────────────────────
 // Product Materials
@@ -196,18 +181,15 @@ export const productMaterialsRelations = relations(
 // Factories
 // ─────────────────────────────────────────────
 
-export const factoriesRelations = relations(
-  factories,
-  ({ many }) => ({
-    products: many(factoryProducts),
+export const factoriesRelations = relations(factories, ({ many }) => ({
+  products: many(factoryProducts),
 
-    inventory: many(factoryInventory),
+  inventory: many(factoryInventory),
 
-    quotes: many(factoryQuotes),
+  quotes: many(factoryQuotes),
 
-    orderItemSources: many(orderItemSources),
-  }),
-)
+  orderItemSources: many(orderItemSources),
+}))
 
 // ─────────────────────────────────────────────
 // Factory Products
@@ -250,20 +232,17 @@ export const factoryInventoryRelations = relations(
 // Factory Quotes
 // ─────────────────────────────────────────────
 
-export const factoryQuotesRelations = relations(
-  factoryQuotes,
-  ({ one }) => ({
-    factoryProduct: one(factoryProducts, {
-      fields: [factoryQuotes.factoryProductId],
-      references: [factoryProducts.id],
-    }),
-
-    quotedByUser: one(users, {
-      fields: [factoryQuotes.quotedByUserId],
-      references: [users.id],
-    }),
+export const factoryQuotesRelations = relations(factoryQuotes, ({ one }) => ({
+  factoryProduct: one(factoryProducts, {
+    fields: [factoryQuotes.factoryProductId],
+    references: [factoryProducts.id],
   }),
-)
+
+  quotedByUser: one(users, {
+    fields: [factoryQuotes.quotedByUserId],
+    references: [users.id],
+  }),
+}))
 
 // ─────────────────────────────────────────────
 // Orders
@@ -282,22 +261,19 @@ export const ordersRelations = relations(orders, ({ one, many }) => ({
 // Order Items
 // ─────────────────────────────────────────────
 
-export const orderItemsRelations = relations(
-  orderItems,
-  ({ one, many }) => ({
-    order: one(orders, {
-      fields: [orderItems.orderId],
-      references: [orders.id],
-    }),
-
-    variant: one(productVariants, {
-      fields: [orderItems.variantId],
-      references: [productVariants.id],
-    }),
-
-    sources: many(orderItemSources),
+export const orderItemsRelations = relations(orderItems, ({ one, many }) => ({
+  order: one(orders, {
+    fields: [orderItems.orderId],
+    references: [orders.id],
   }),
-)
+
+  variant: one(productVariants, {
+    fields: [orderItems.variantId],
+    references: [productVariants.id],
+  }),
+
+  sources: many(orderItemSources),
+}))
 
 // ─────────────────────────────────────────────
 // Order Item Sources
@@ -322,49 +298,37 @@ export const orderItemSourcesRelations = relations(
 // Inquiries
 // ─────────────────────────────────────────────
 
-export const inquiriesRelations = relations(
-  inquiries,
-  ({ one }) => ({
-    user: one(users, {
-      fields: [inquiries.userId],
-      references: [users.id],
-    }),
-
-    product: one(products, {
-      fields: [inquiries.productId],
-      references: [products.id],
-    }),
-
-    variant: one(productVariants, {
-      fields: [inquiries.variantId],
-      references: [productVariants.id],
-    }),
+export const inquiriesRelations = relations(inquiries, ({ one }) => ({
+  user: one(users, {
+    fields: [inquiries.userId],
+    references: [users.id],
   }),
-)
 
+  product: one(products, {
+    fields: [inquiries.productId],
+    references: [products.id],
+  }),
 
+  variant: one(productVariants, {
+    fields: [inquiries.variantId],
+    references: [productVariants.id],
+  }),
+}))
 
 // Carts
 
+export const cartsRelations = relations(carts, ({ many }) => ({
+  items: many(cartItems),
+}))
 
-export const cartsRelations = relations(
-  carts,
-  ({ many }) => ({
-    items: many(cartItems),
+export const cartItemsRelations = relations(cartItems, ({ one }) => ({
+  cart: one(carts, {
+    fields: [cartItems.cartId],
+    references: [carts.id],
   }),
-)
 
-export const cartItemsRelations = relations(
-  cartItems,
-  ({ one }) => ({
-    cart: one(carts, {
-      fields: [cartItems.cartId],
-      references: [carts.id],
-    }),
-
-    variant: one(productVariants, {
-      fields: [cartItems.variantId],
-      references: [productVariants.id],
-    }),
+  variant: one(productVariants, {
+    fields: [cartItems.variantId],
+    references: [productVariants.id],
   }),
-)
+}))

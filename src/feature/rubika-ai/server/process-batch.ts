@@ -26,6 +26,10 @@ export async function processRubikaBatch(batchId: number) {
   })
   if (!batch) throw new Error('Rubika batch not found')
 
+  if (batch.status === 'processing' || batch.status === 'ready') {
+    return { skipped: true, batchId }
+  }
+
   await db
     .update(rubikaIngestBatches)
     .set({ status: 'processing', updatedAt: new Date().toISOString() })
@@ -39,7 +43,9 @@ export async function processRubikaBatch(batchId: number) {
 
     const sourceUrls: string[] = []
     for (const image of images) {
-      const url = image.sourceUrl ?? (image.fileId ? await getRubikaFileUrl(image.fileId) : null)
+      const url =
+        image.sourceUrl ??
+        (image.fileId ? await getRubikaFileUrl(image.fileId) : null)
       if (!url) continue
       sourceUrls.push(url)
       if (!image.sourceUrl) {
@@ -95,7 +101,10 @@ export async function processRubikaBatch(batchId: number) {
       )
     }
 
-    if (process.env.RUBIKA_GENERATE_MARKETING_IMAGES === 'true' && storedUrls[0]) {
+    if (
+      process.env.RUBIKA_GENERATE_MARKETING_IMAGES === 'true' &&
+      storedUrls[0]
+    ) {
       const generated = await generateMarketingImages(storedUrls[0], title)
       if (generated.length) {
         await db.insert(productDraftImages).values(

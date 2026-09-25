@@ -1,10 +1,7 @@
 import { getDb } from '@/server/db'
 import { sessions, variantImages } from '@/server/db/schema'
-import {
-  createUploadthing,
-  UploadThingError,
-  type FileRouter,
-} from 'uploadthing/server'
+import { createUploadthing, UploadThingError } from 'uploadthing/server'
+import type { FileRouter } from 'uploadthing/server'
 import { jwtVerify } from 'jose'
 import { eq } from 'drizzle-orm'
 import z from 'zod'
@@ -47,7 +44,7 @@ async function resolveUserFromRequest(req: Request) {
   let payload: { sub?: string }
   try {
     const result = await jwtVerify(token, getJwtSecret())
-    payload = result.payload as { sub?: string }
+    payload = result.payload
   } catch {
     return null
   }

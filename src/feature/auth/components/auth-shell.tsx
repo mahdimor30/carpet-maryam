@@ -1,4 +1,3 @@
-
 import { Link } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 
@@ -15,7 +14,12 @@ const HIGHLIGHTS = [
   'پشتیبانی و مشاوره تخصصی خرید فرش',
 ]
 
-export function AuthShell({ title, subtitle, children, footer }: AuthShellProps) {
+export function AuthShell({
+  title,
+  subtitle,
+  children,
+  footer,
+}: AuthShellProps) {
   return (
     <main className="flex min-h-screen flex-col bg-background lg:flex-row">
       {/* پنل تصویری برند */}
@@ -23,7 +27,7 @@ export function AuthShell({ title, subtitle, children, footer }: AuthShellProps)
         <img
           src="/hero-interior.png"
           alt="فضای داخلی با فرش دستباف"
-          
+
           className="object-cover"
         />
         <div className="absolute inset-0 bg-primary/55" />
@@ -46,8 +50,8 @@ export function AuthShell({ title, subtitle, children, footer }: AuthShellProps)
               زیبایی ماندگار، زیر پای شما
             </h2>
             <p className="mt-4 leading-relaxed text-primary-foreground/80">
-              با حساب کاربری خود سفارش‌ها را دنبال کنید، لیست علاقه‌مندی بسازید و
-              از پیشنهادهای ویژه فرش مریم باخبر شوید.
+              با حساب کاربری خود سفارش‌ها را دنبال کنید، لیست علاقه‌مندی بسازید
+              و از پیشنهادهای ویژه فرش مریم باخبر شوید.
             </p>
 
             <ul className="mt-8 flex flex-col gap-3">

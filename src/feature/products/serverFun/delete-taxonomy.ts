@@ -5,7 +5,11 @@ import { createServerFn } from '@tanstack/react-start'
 import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 
-const TABLES = { category: categories, design: designs, material: materials } as const
+const TABLES = {
+  category: categories,
+  design: designs,
+  material: materials,
+} as const
 
 export const deleteTaxonomy = createServerFn({ method: 'POST' })
   .middleware([authMiddleware])

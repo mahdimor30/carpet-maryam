@@ -1,7 +1,22 @@
-import { Trash2, ImagePlus, X, ChevronDown, Upload, Loader2 } from 'lucide-react'
+import {
+  Trash2,
+  ImagePlus,
+  X,
+  ChevronDown,
+  Upload,
+  Loader2,
+} from 'lucide-react'
 import { useState, useRef } from 'react'
 import { cn } from '@/lib/utils'
-import { COLOR_PRESETS, DIMENSION_PRESETS, faToEn, formatToman, makeEmptyImage, toFa, type VariantInput } from '@/lib/dashboard-data'
+import {
+  COLOR_PRESETS,
+  DIMENSION_PRESETS,
+  faToEn,
+  formatToman,
+  makeEmptyImage,
+  toFa,
+} from '@/lib/dashboard-data'
+import type { VariantInput } from '@/lib/dashboard-data'
 import { Field, TextInput, Toggle } from './form-controls'
 
 export function VariantEditor({
@@ -39,7 +54,9 @@ export function VariantEditor({
   const updateImage = (id: string, key: 'url' | 'alt', value: string) =>
     set(
       'images',
-      variant.images.map((img) => (img.id === id ? { ...img, [key]: value } : img)),
+      variant.images.map((img) =>
+        img.id === id ? { ...img, [key]: value } : img,
+      ),
     )
 
   const removeImage = (id: string) =>
@@ -67,11 +84,15 @@ export function VariantEditor({
         })
 
         if (!res.ok) {
-          const errBody = await res.json().catch(() => ({} as Record<string, unknown>))
-          throw new Error(typeof errBody === 'object' && errBody && 'error' in errBody ? String(errBody.error) : `خطا در آپلود ${file.name}`)
+          const errBody = await res.json().catch(() => ({}))
+          throw new Error(
+            typeof errBody === 'object' && errBody && 'error' in errBody
+              ? String(errBody.error)
+              : `خطا در آپلود ${file.name}`,
+          )
         }
 
-        const data = await res.json() as { url: string }
+        const data = (await res.json()) as { url: string }
         uploaded.push(data)
       }
 
@@ -176,7 +197,9 @@ export function VariantEditor({
 
         <Field
           label="قیمت قبل از تخفیف"
-          hint={discount > 0 ? `${toFa(discount)}٪ تخفیف اعمال می‌شود` : undefined}
+          hint={
+            discount > 0 ? `${toFa(discount)}٪ تخفیف اعمال می‌شود` : undefined
+          }
         >
           <TextInput
             inputMode="numeric"
@@ -243,7 +266,10 @@ export function VariantEditor({
               گالری تصاویر ({toFa(variant.images.length)})
             </span>
             <ChevronDown
-              className={cn('h-4 w-4 transition-transform', openImages && 'rotate-180')}
+              className={cn(
+                'h-4 w-4 transition-transform',
+                openImages && 'rotate-180',
+              )}
             />
           </button>
         </div>
@@ -272,7 +298,9 @@ export function VariantEditor({
                     <div className="flex items-center gap-1 border-t border-border p-1.5">
                       <input
                         value={img.alt}
-                        onChange={(e) => updateImage(img.id, 'alt', e.target.value)}
+                        onChange={(e) =>
+                          updateImage(img.id, 'alt', e.target.value)
+                        }
                         placeholder="متن جایگزین"
                         className="min-w-0 flex-1 rounded-md border border-border bg-background px-1.5 py-1 text-[11px] text-foreground outline-none focus:border-accent"
                       />

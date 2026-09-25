@@ -29,7 +29,7 @@ async function deriveKey(
   return crypto.subtle.deriveBits(
     {
       name: 'PBKDF2',
-      salt,
+      salt: salt as unknown as BufferSource,
       iterations: ITERATIONS,
       hash: 'SHA-256',
     },
@@ -55,8 +55,7 @@ export async function verifyPassword(
   password: string,
   storedHash: string,
 ): Promise<boolean> {
-  const [algorithm, iterations, saltBase64, hashBase64] =
-    storedHash.split('$')
+  const [algorithm, iterations, saltBase64, hashBase64] = storedHash.split('$')
 
   if (
     algorithm !== 'pbkdf2-sha256' ||
@@ -71,9 +70,7 @@ export async function verifyPassword(
 
   const expectedHash = base64ToBytes(hashBase64)
 
-  const actualHash = new Uint8Array(
-    await deriveKey(password, salt),
-  )
+  const actualHash = new Uint8Array(await deriveKey(password, salt))
 
   if (actualHash.length !== expectedHash.length) {
     return false

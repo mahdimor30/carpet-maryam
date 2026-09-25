@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { useState, useRef, useEffect, useCallback } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ArrowRight, RefreshCw } from "lucide-react"
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { ArrowRight, RefreshCw } from 'lucide-react'
 
 interface OtpVerificationProps {
   phoneNumber: string
@@ -11,10 +11,14 @@ interface OtpVerificationProps {
   onVerify: () => void
 }
 
-export function OtpVerification({ phoneNumber, onBack, onVerify }: OtpVerificationProps) {
-  const [otp, setOtp] = useState(["", "", "", "", ""])
+export function OtpVerification({
+  phoneNumber,
+  onBack,
+  onVerify,
+}: OtpVerificationProps) {
+  const [otp, setOtp] = useState(['', '', '', '', ''])
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [error, setError] = useState('')
   const [countdown, setCountdown] = useState(120)
   const [canResend, setCanResend] = useState(false)
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
@@ -39,7 +43,7 @@ export function OtpVerification({ phoneNumber, onBack, onVerify }: OtpVerificati
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
-    return `${mins}:${secs.toString().padStart(2, "0")}`
+    return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
   const handleChange = (index: number, value: string) => {
@@ -48,7 +52,7 @@ export function OtpVerification({ phoneNumber, onBack, onVerify }: OtpVerificati
     const newOtp = [...otp]
     newOtp[index] = value.slice(-1)
     setOtp(newOtp)
-    setError("")
+    setError('')
 
     if (value && index < 4) {
       inputRefs.current[index + 1]?.focus()
@@ -56,60 +60,63 @@ export function OtpVerification({ phoneNumber, onBack, onVerify }: OtpVerificati
   }
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus()
     }
   }
 
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault()
-    const pastedData = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 5)
+    const pastedData = e.clipboardData
+      .getData('text')
+      .replace(/\D/g, '')
+      .slice(0, 5)
     const newOtp = [...otp]
-    pastedData.split("").forEach((char, index) => {
+    pastedData.split('').forEach((char, index) => {
       if (index < 5) newOtp[index] = char
     })
     setOtp(newOtp)
-    
+
     const focusIndex = Math.min(pastedData.length, 4)
     inputRefs.current[focusIndex]?.focus()
   }
 
   const handleSubmit = useCallback(async () => {
-    const code = otp.join("")
+    const code = otp.join('')
     if (code.length !== 5) {
-      setError("لطفاً کد ۵ رقمی را کامل وارد کنید")
+      setError('لطفاً کد ۵ رقمی را کامل وارد کنید')
       return
     }
 
     setIsLoading(true)
-    
+
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+
     // For demo purposes, accept any 5-digit code
-    if (code === "12345" || code.length === 5) {
+    if (code === '12345' || code.length === 5) {
       onVerify()
     } else {
-      setError("کد وارد شده صحیح نیست")
+      setError('کد وارد شده صحیح نیست')
     }
-    
+
     setIsLoading(false)
   }, [otp, onVerify])
 
   const handleResend = async () => {
     setCanResend(false)
     setCountdown(120)
-    setOtp(["", "", "", "", ""])
-    setError("")
+    setOtp(['', '', '', '', ''])
+    setError('')
     inputRefs.current[0]?.focus()
-    
+
     // Simulate resend
-    console.log("[v0] Resending OTP to:", phoneNumber)
+    console.log('[v0] Resending OTP to:', phoneNumber)
   }
 
   // Auto-submit when all digits are entered
   useEffect(() => {
-    if (otp.every(digit => digit !== "") && otp.join("").length === 5) {
+    if (otp.every((digit) => digit !== '') && otp.join('').length === 5) {
       handleSubmit()
     }
   }, [otp, handleSubmit])
@@ -122,8 +129,8 @@ export function OtpVerification({ phoneNumber, onBack, onVerify }: OtpVerificati
         <p className="text-muted-foreground mt-1">فروشگاه آنلاین فرش ایرانی</p>
       </div>
 
-      <Button 
-        variant="ghost" 
+      <Button
+        variant="ghost"
         onClick={onBack}
         className="gap-2 -mr-2 text-muted-foreground hover:text-foreground"
       >
@@ -132,13 +139,15 @@ export function OtpVerification({ phoneNumber, onBack, onVerify }: OtpVerificati
       </Button>
 
       <div className="space-y-2">
-        <h2 className="text-2xl font-bold text-foreground">تأیید شماره موبایل</h2>
+        <h2 className="text-2xl font-bold text-foreground">
+          تأیید شماره موبایل
+        </h2>
         <p className="text-muted-foreground">
-          کد ۵ رقمی ارسال شده به شماره{" "}
+          کد ۵ رقمی ارسال شده به شماره{' '}
           <span className="text-foreground font-medium" dir="ltr">
             {formatPhoneDisplay(phoneNumber)}
-          </span>
-          {" "}را وارد کنید
+          </span>{' '}
+          را وارد کنید
         </p>
       </div>
 
@@ -147,7 +156,9 @@ export function OtpVerification({ phoneNumber, onBack, onVerify }: OtpVerificati
           {otp.map((digit, index) => (
             <Input
               key={index}
-              ref={(el) => { inputRefs.current[index] = el }}
+              ref={(el) => {
+                inputRefs.current[index] = el
+              }}
               type="text"
               inputMode="numeric"
               maxLength={1}
@@ -165,11 +176,11 @@ export function OtpVerification({ phoneNumber, onBack, onVerify }: OtpVerificati
           <p className="text-destructive text-sm text-center">{error}</p>
         )}
 
-        <Button 
+        <Button
           type="button"
           onClick={handleSubmit}
           className="w-full h-12 text-base"
-          disabled={isLoading || otp.join("").length !== 5}
+          disabled={isLoading || otp.join('').length !== 5}
         >
           {isLoading ? (
             <div className="flex items-center gap-2">
@@ -177,14 +188,14 @@ export function OtpVerification({ phoneNumber, onBack, onVerify }: OtpVerificati
               <span>در حال بررسی...</span>
             </div>
           ) : (
-            "تأیید و ورود"
+            'تأیید و ورود'
           )}
         </Button>
 
         <div className="text-center">
           {canResend ? (
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               onClick={handleResend}
               className="gap-2 text-primary"
             >
@@ -193,9 +204,11 @@ export function OtpVerification({ phoneNumber, onBack, onVerify }: OtpVerificati
             </Button>
           ) : (
             <p className="text-muted-foreground text-sm">
-              ارسال مجدد کد تا{" "}
-              <span className="text-foreground font-medium">{formatTime(countdown)}</span>
-              {" "}دیگر
+              ارسال مجدد کد تا{' '}
+              <span className="text-foreground font-medium">
+                {formatTime(countdown)}
+              </span>{' '}
+              دیگر
             </p>
           )}
         </div>

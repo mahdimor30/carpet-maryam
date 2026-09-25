@@ -1,4 +1,3 @@
-
 import { useRef } from 'react'
 import { toEnDigits } from '../lib/auth'
 
@@ -21,7 +20,10 @@ export function OtpInput({ value, onChange, length = 6 }: OtpInputProps) {
     if (clean && index < length - 1) refs.current[index + 1]?.focus()
   }
 
-  function handleKeyDown(index: number, e: React.KeyboardEvent<HTMLInputElement>) {
+  function handleKeyDown(
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) {
     if (e.key === 'Backspace' && !digits[index] && index > 0) {
       refs.current[index - 1]?.focus()
     }

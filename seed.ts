@@ -46,12 +46,9 @@ async function seed() {
   ]
 
   for (const category of categoryData) {
-    await db
-      .insert(categories)
-      .values(category)
-      .onConflictDoNothing({
-        target: categories.slug,
-      })
+    await db.insert(categories).values(category).onConflictDoNothing({
+      target: categories.slug,
+    })
   }
 
   // --------------------------------------------------
@@ -82,12 +79,9 @@ async function seed() {
   ]
 
   for (const design of designData) {
-    await db
-      .insert(designs)
-      .values(design)
-      .onConflictDoNothing({
-        target: designs.slug,
-      })
+    await db.insert(designs).values(design).onConflictDoNothing({
+      target: designs.slug,
+    })
   }
 
   // --------------------------------------------------
@@ -114,12 +108,9 @@ async function seed() {
   ]
 
   for (const material of materialData) {
-    await db
-      .insert(materials)
-      .values(material)
-      .onConflictDoNothing({
-        target: materials.slug,
-      })
+    await db.insert(materials).values(material).onConflictDoNothing({
+      target: materials.slug,
+    })
   }
 
   // --------------------------------------------------
@@ -149,8 +140,7 @@ async function seed() {
       slug: 'afshan-cream-700',
       description:
         'فرش ماشینی طرح افشان با زمینه کرم، مناسب دکوراسیون کلاسیک و مدرن.',
-      descriptionShort:
-        'فرش افشان کرم با طراحی کلاسیک و رنگ‌بندی گرم.',
+      descriptionShort: 'فرش افشان کرم با طراحی کلاسیک و رنگ‌بندی گرم.',
       brand: 'فرش مریم',
       style: 'classic' as const,
       shaneh: 700,
@@ -168,8 +158,7 @@ async function seed() {
       slug: 'toranj-navy-700',
       description:
         'فرش طرح ترنج با زمینه سرمه‌ای و حاشیه کلاسیک، مناسب سالن پذیرایی.',
-      descriptionShort:
-        'ترنج سرمه‌ای با ظاهر رسمی و لوکس.',
+      descriptionShort: 'ترنج سرمه‌ای با ظاهر رسمی و لوکس.',
       brand: 'فرش مریم',
       style: 'classic' as const,
       shaneh: 700,
@@ -185,10 +174,8 @@ async function seed() {
     {
       name: 'فرش مدرن هندسی طوسی',
       slug: 'modern-geometric-gray',
-      description:
-        'فرش مدرن با طرح هندسی و رنگ طوسی، مناسب دکوراسیون مینیمال.',
-      descriptionShort:
-        'فرش مدرن طوسی برای خانه‌های مینیمال.',
+      description: 'فرش مدرن با طرح هندسی و رنگ طوسی، مناسب دکوراسیون مینیمال.',
+      descriptionShort: 'فرش مدرن طوسی برای خانه‌های مینیمال.',
       brand: 'فرش مریم',
       style: 'modern' as const,
       shaneh: 1200,
@@ -206,8 +193,7 @@ async function seed() {
       slug: 'vintage-gray-cream',
       description:
         'فرش وینتیج با ترکیب طوسی و کرم، مناسب دکوراسیون مدرن و نئوکلاسیک.',
-      descriptionShort:
-        'وینتیج طوسی کرم با ظاهر خاص و امروزی.',
+      descriptionShort: 'وینتیج طوسی کرم با ظاهر خاص و امروزی.',
       brand: 'فرش مریم',
       style: 'fancy' as const,
       shaneh: 1200,
@@ -225,8 +211,7 @@ async function seed() {
       slug: 'traditional-kheshti-red',
       description:
         'فرش سنتی با طرح خشتی و رنگ لاکی، مناسب دکوراسیون سنتی و کلاسیک.',
-      descriptionShort:
-        'طرح خشتی لاکی با حال‌وهوای اصیل ایرانی.',
+      descriptionShort: 'طرح خشتی لاکی با حال‌وهوای اصیل ایرانی.',
       brand: 'فرش مریم',
       style: 'traditional' as const,
       shaneh: 700,
@@ -242,10 +227,8 @@ async function seed() {
     {
       name: 'فرش کودک طرح ستاره',
       slug: 'kids-star',
-      description:
-        'فرش کودک با طراحی ساده و رنگ‌های شاد، مناسب اتاق کودک.',
-      descriptionShort:
-        'فرش کودک با طرح ستاره و رنگ‌بندی شاد.',
+      description: 'فرش کودک با طراحی ساده و رنگ‌های شاد، مناسب اتاق کودک.',
+      descriptionShort: 'فرش کودک با طرح ستاره و رنگ‌بندی شاد.',
       brand: 'فرش مریم',
       style: 'children' as const,
       shaneh: 700,
@@ -260,12 +243,9 @@ async function seed() {
   ]
 
   for (const product of productData) {
-    await db
-      .insert(products)
-      .values(product)
-      .onConflictDoNothing({
-        target: products.slug,
-      })
+    await db.insert(products).values(product).onConflictDoNothing({
+      target: products.slug,
+    })
   }
 
   // --------------------------------------------------
@@ -540,12 +520,9 @@ async function seed() {
   ]
 
   for (const factory of factoryData) {
-    await db
-      .insert(factories)
-      .values(factory)
-      .onConflictDoNothing({
-        target: factories.slug,
-      })
+    await db.insert(factories).values(factory).onConflictDoNothing({
+      target: factories.slug,
+    })
   }
 
   const factoryRows = await db.select().from(factories)
@@ -586,14 +563,12 @@ async function seed() {
       })
       .onConflictDoNothing()
 
-    await db
-      .insert(factoryQuotes)
-      .values({
-        factoryProductId: factoryProduct.id,
-        purchasePrice: Math.floor(variant.price * 0.75),
-        validFrom: new Date(),
-        notes: 'قیمت خرید نمونه',
-      })
+    await db.insert(factoryQuotes).values({
+      factoryProductId: factoryProduct.id,
+      purchasePrice: Math.floor(variant.price * 0.75),
+      validFrom: new Date(),
+      notes: 'قیمت خرید نمونه',
+    })
   }
 
   console.log('✅ Seed completed successfully')
