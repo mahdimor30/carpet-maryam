@@ -1,4 +1,4 @@
-import { UTApi } from 'uploadthing/server'
+import { UTApi, UTFile } from 'uploadthing/server'
 
 const utapi = new UTApi()
 
