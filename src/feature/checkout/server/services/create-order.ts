@@ -10,7 +10,6 @@ import {
 } from '@/server/db/schema'
 
 import { getCheckout } from '@/feature/checkout/server/queries/get-checkout'
-import { reserveFactoryInventory } from '@/feature/checkout/server/services/reserve-inventory'
 
 export async function createOrder({
   userId,
@@ -28,7 +27,6 @@ export async function createOrder({
   const db = getDb()
 
   // دوباره Checkout را محاسبه می‌کنیم
-  // چون قیمت و موجودی ممکن است تغییر کرده باشد.
   const checkout = await getCheckout(userId)
 
   if (checkout.items.length === 0) {
@@ -47,8 +45,10 @@ export async function createOrder({
     throw new Error('Cart not found')
   }
 
-  // ایجاد Order
-  const createdOrder = await db
+  const statements = []
+
+  // 1. Order
+  const orderInsert = db
     .insert(orders)
     .values({
       userId,
@@ -69,13 +69,19 @@ export async function createOrder({
       id: orders.id,
     })
 
+  statements.push(orderInsert)
+
+  const [createdOrder] = await db.batch(
+    statements as [typeof orderInsert],
+  )
+
   if (!createdOrder[0]) {
     throw new Error('Failed to create order')
   }
 
   const orderId = createdOrder[0].id
 
-  // ایجاد Order Items
+  // Order Items + Sources
   for (const item of checkout.items) {
     const createdItem = await db
       .insert(orderItems)
@@ -101,23 +107,8 @@ export async function createOrder({
       throw new Error('Failed to create order item')
     }
 
-    // رزرو موجودی کارخانه
-    if (item.source.type === 'factory') {
-      if (!item.source.factoryProductId) {
-        throw new Error(
-          `Factory product not found for ${item.variantSku}`,
-        )
-      }
-
-      await reserveFactoryInventory({
-        factoryProductId: item.source.factoryProductId,
-        quantity: item.quantity,
-      })
-    }
-
-    // ثبت Source
     await db.insert(orderItemSources).values({
-      orderItemId: createdItem[0].id,
+    orderItemId: createdItem[0].id,
 
       sourceType: item.source.type,
 
@@ -131,7 +122,7 @@ export async function createOrder({
     })
   }
 
-  // خالی کردن Cart
+  // Clear cart
   await db
     .delete(cartItems)
     .where(eq(cartItems.cartId, cart[0].id))
@@ -145,7 +136,6 @@ export async function createOrder({
 
   return {
     orderId,
-
     subtotal: checkout.subtotal,
     shipping: checkout.shipping,
     discount: checkout.discount,

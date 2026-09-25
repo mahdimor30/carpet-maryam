@@ -3,6 +3,7 @@
 import { Minus, Plus, ShoppingBag, Trash2, X } from 'lucide-react'
 import { formatPrice, toFaNumber } from '@/lib/data'
 import { useCart } from './cart-provider'
+import { Link } from '@tanstack/react-router'
 
 export function CartDrawer({
   open,
@@ -82,9 +83,11 @@ export function CartDrawer({
                         <h3 className="text-sm font-semibold text-foreground">
                           {product.name}
                         </h3>
-                        <p className="mt-0.5 text-xs text-muted-foreground">
-                          {product.size} متر
-                        </p>
+                        {product.size && (
+                          <p className="mt-0.5 text-xs text-muted-foreground">
+                            {toFaNumber(product.size)}
+                          </p>
+                        )}
                       </div>
                       <button
                         onClick={() => remove(product.id)}
@@ -139,9 +142,13 @@ export function CartDrawer({
                 </span>
               </span>
             </div>
-            <button className="w-full rounded-xl bg-primary py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">
+            <Link
+              to="/checkout"
+              onClick={onClose}
+              className="block w-full rounded-xl bg-primary py-3 text-center text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            >
               تکمیل خرید
-            </button>
+            </Link>
           </div>
         )}
       </aside>

@@ -1,7 +1,6 @@
 import { ArrowLeft } from 'lucide-react'
-import { PRODUCTS } from '@/lib/data'
+import { CATEGORIES, PRODUCTS } from '@/lib/data'
 import { Link } from '@tanstack/react-router'
-import { useCategories } from '@/feature/products/hooks/use-categories'
 
 // تصویر نماینده برای هر دسته از روی محصولات
 function categoryImage(slug: string) {
@@ -11,7 +10,6 @@ function categoryImage(slug: string) {
 }
 
 export function CategoryGrid() {
-  const { data } = useCategories()
   return (
     <section id="categories" className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
       <div className="mb-8 flex items-end justify-between">
@@ -24,7 +22,7 @@ export function CategoryGrid() {
           </p>
         </div>
         <Link
-          to="/products"
+          to="/categories"
           className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           همه دسته‌ها
@@ -35,11 +33,11 @@ export function CategoryGrid() {
         <div>{item.name}</div>
       ))} */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        {data?.map((cat) => (
+        {CATEGORIES.map((cat) => (
           <Link
             key={cat.slug}
-            to="/products"
-            search={{ cat: cat.slug }}
+            to="/categories/$slug"
+            params={{ slug: cat.slug }}
             className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg"
           >
             <div className="relative aspect-square overflow-hidden">

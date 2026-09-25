@@ -18,7 +18,12 @@ import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as ApiTempUploadRouteImport } from './routes/api/temp-upload'
 import { Route as ApiUploadthingRouteImport } from './routes/api/uploadthing'
 import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
+import { Route as AuthedDashboardInquiriesRouteImport } from './routes/_authed/dashboard/inquiries'
+import { Route as AuthedDashboardOrdersRouteImport } from './routes/_authed/dashboard/orders'
 import { Route as AuthedDashboardTaxonomyRouteImport } from './routes/_authed/dashboard/taxonomy'
+import { Route as AuthedDashboardUsersRouteImport } from './routes/_authed/dashboard/users'
+import { Route as LayoutCategoriesIndexRouteImport } from './routes/_layout/categories/index'
+import { Route as LayoutCategoriesSlugRouteImport } from './routes/_layout/categories/$slug'
 import { Route as LayoutProductsIndexRouteImport } from './routes/_layout/products/index'
 import { Route as LayoutProductsSlugRouteImport } from './routes/_layout/products/$slug'
 import { Route as ApiRubikaWebhookRouteImport } from './routes/api/rubika/webhook'
@@ -69,10 +74,36 @@ const AuthedDashboardIndexRoute = AuthedDashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthedDashboardRouteRoute,
 } as any)
+const AuthedDashboardInquiriesRoute =
+  AuthedDashboardInquiriesRouteImport.update({
+    id: '/inquiries',
+    path: '/inquiries',
+    getParentRoute: () => AuthedDashboardRouteRoute,
+  } as any)
+const AuthedDashboardOrdersRoute = AuthedDashboardOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => AuthedDashboardRouteRoute,
+} as any)
 const AuthedDashboardTaxonomyRoute = AuthedDashboardTaxonomyRouteImport.update({
   id: '/taxonomy',
   path: '/taxonomy',
   getParentRoute: () => AuthedDashboardRouteRoute,
+} as any)
+const AuthedDashboardUsersRoute = AuthedDashboardUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthedDashboardRouteRoute,
+} as any)
+const LayoutCategoriesIndexRoute = LayoutCategoriesIndexRouteImport.update({
+  id: '/categories/',
+  path: '/categories/',
+  getParentRoute: () => LayoutRouteRoute,
+} as any)
+const LayoutCategoriesSlugRoute = LayoutCategoriesSlugRouteImport.update({
+  id: '/categories/$slug',
+  path: '/categories/$slug',
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
 const LayoutProductsIndexRoute = LayoutProductsIndexRouteImport.update({
   id: '/products/',
@@ -115,10 +146,15 @@ export interface FileRoutesByFullPath {
   '/complete-profile': typeof AuthedCompleteProfileRoute
   '/api/temp-upload': typeof ApiTempUploadRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
+  '/dashboard/inquiries': typeof AuthedDashboardInquiriesRoute
+  '/dashboard/orders': typeof AuthedDashboardOrdersRoute
   '/dashboard/taxonomy': typeof AuthedDashboardTaxonomyRoute
+  '/dashboard/users': typeof AuthedDashboardUsersRoute
+  '/categories/$slug': typeof LayoutCategoriesSlugRoute
   '/products/$slug': typeof LayoutProductsSlugRoute
   '/api/rubika/webhook': typeof ApiRubikaWebhookRoute
   '/dashboard/': typeof AuthedDashboardIndexRoute
+  '/categories/': typeof LayoutCategoriesIndexRoute
   '/products/': typeof LayoutProductsIndexRoute
   '/dashboard/products/$id': typeof AuthedDashboardProductsIdRoute
   '/dashboard/products/': typeof AuthedDashboardProductsIndexRoute
@@ -130,10 +166,15 @@ export interface FileRoutesByTo {
   '/complete-profile': typeof AuthedCompleteProfileRoute
   '/api/temp-upload': typeof ApiTempUploadRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
+  '/dashboard/inquiries': typeof AuthedDashboardInquiriesRoute
+  '/dashboard/orders': typeof AuthedDashboardOrdersRoute
   '/dashboard/taxonomy': typeof AuthedDashboardTaxonomyRoute
+  '/dashboard/users': typeof AuthedDashboardUsersRoute
+  '/categories/$slug': typeof LayoutCategoriesSlugRoute
   '/products/$slug': typeof LayoutProductsSlugRoute
   '/api/rubika/webhook': typeof ApiRubikaWebhookRoute
   '/dashboard': typeof AuthedDashboardIndexRoute
+  '/categories': typeof LayoutCategoriesIndexRoute
   '/products': typeof LayoutProductsIndexRoute
   '/dashboard/products/$id': typeof AuthedDashboardProductsIdRoute
   '/dashboard/products': typeof AuthedDashboardProductsIndexRoute
@@ -149,10 +190,15 @@ export interface FileRoutesById {
   '/api/temp-upload': typeof ApiTempUploadRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
   '/_layout/': typeof LayoutIndexRoute
+  '/_authed/dashboard/inquiries': typeof AuthedDashboardInquiriesRoute
+  '/_authed/dashboard/orders': typeof AuthedDashboardOrdersRoute
   '/_authed/dashboard/taxonomy': typeof AuthedDashboardTaxonomyRoute
+  '/_authed/dashboard/users': typeof AuthedDashboardUsersRoute
+  '/_layout/categories/$slug': typeof LayoutCategoriesSlugRoute
   '/_layout/products/$slug': typeof LayoutProductsSlugRoute
   '/api/rubika/webhook': typeof ApiRubikaWebhookRoute
   '/_authed/dashboard/': typeof AuthedDashboardIndexRoute
+  '/_layout/categories/': typeof LayoutCategoriesIndexRoute
   '/_layout/products/': typeof LayoutProductsIndexRoute
   '/_authed/dashboard/products/$id': typeof AuthedDashboardProductsIdRoute
   '/_authed/dashboard/products/': typeof AuthedDashboardProductsIndexRoute
@@ -167,10 +213,15 @@ export interface FileRouteTypes {
     | '/complete-profile'
     | '/api/temp-upload'
     | '/api/uploadthing'
+    | '/dashboard/inquiries'
+    | '/dashboard/orders'
     | '/dashboard/taxonomy'
+    | '/dashboard/users'
+    | '/categories/$slug'
     | '/products/$slug'
     | '/api/rubika/webhook'
     | '/dashboard/'
+    | '/categories/'
     | '/products/'
     | '/dashboard/products/$id'
     | '/dashboard/products/'
@@ -182,10 +233,15 @@ export interface FileRouteTypes {
     | '/complete-profile'
     | '/api/temp-upload'
     | '/api/uploadthing'
+    | '/dashboard/inquiries'
+    | '/dashboard/orders'
     | '/dashboard/taxonomy'
+    | '/dashboard/users'
+    | '/categories/$slug'
     | '/products/$slug'
     | '/api/rubika/webhook'
     | '/dashboard'
+    | '/categories'
     | '/products'
     | '/dashboard/products/$id'
     | '/dashboard/products'
@@ -200,10 +256,15 @@ export interface FileRouteTypes {
     | '/api/temp-upload'
     | '/api/uploadthing'
     | '/_layout/'
+    | '/_authed/dashboard/inquiries'
+    | '/_authed/dashboard/orders'
     | '/_authed/dashboard/taxonomy'
+    | '/_authed/dashboard/users'
+    | '/_layout/categories/$slug'
     | '/_layout/products/$slug'
     | '/api/rubika/webhook'
     | '/_authed/dashboard/'
+    | '/_layout/categories/'
     | '/_layout/products/'
     | '/_authed/dashboard/products/$id'
     | '/_authed/dashboard/products/'
@@ -284,12 +345,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedDashboardIndexRouteImport
       parentRoute: typeof AuthedDashboardRouteRoute
     }
+    '/_authed/dashboard/inquiries': {
+      id: '/_authed/dashboard/inquiries'
+      path: '/inquiries'
+      fullPath: '/dashboard/inquiries'
+      preLoaderRoute: typeof AuthedDashboardInquiriesRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/orders': {
+      id: '/_authed/dashboard/orders'
+      path: '/orders'
+      fullPath: '/dashboard/orders'
+      preLoaderRoute: typeof AuthedDashboardOrdersRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
     '/_authed/dashboard/taxonomy': {
       id: '/_authed/dashboard/taxonomy'
       path: '/taxonomy'
       fullPath: '/dashboard/taxonomy'
       preLoaderRoute: typeof AuthedDashboardTaxonomyRouteImport
       parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/users': {
+      id: '/_authed/dashboard/users'
+      path: '/users'
+      fullPath: '/dashboard/users'
+      preLoaderRoute: typeof AuthedDashboardUsersRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_layout/categories/': {
+      id: '/_layout/categories/'
+      path: '/categories'
+      fullPath: '/categories/'
+      preLoaderRoute: typeof LayoutCategoriesIndexRouteImport
+      parentRoute: typeof LayoutRouteRoute
+    }
+    '/_layout/categories/$slug': {
+      id: '/_layout/categories/$slug'
+      path: '/categories/$slug'
+      fullPath: '/categories/$slug'
+      preLoaderRoute: typeof LayoutCategoriesSlugRouteImport
+      parentRoute: typeof LayoutRouteRoute
     }
     '/_layout/products/': {
       id: '/_layout/products/'
@@ -338,13 +434,17 @@ declare module '@tanstack/react-router' {
 
 interface LayoutRouteRouteChildren {
   LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutCategoriesSlugRoute: typeof LayoutCategoriesSlugRoute
   LayoutProductsSlugRoute: typeof LayoutProductsSlugRoute
+  LayoutCategoriesIndexRoute: typeof LayoutCategoriesIndexRoute
   LayoutProductsIndexRoute: typeof LayoutProductsIndexRoute
 }
 
 const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
   LayoutIndexRoute: LayoutIndexRoute,
+  LayoutCategoriesSlugRoute: LayoutCategoriesSlugRoute,
   LayoutProductsSlugRoute: LayoutProductsSlugRoute,
+  LayoutCategoriesIndexRoute: LayoutCategoriesIndexRoute,
   LayoutProductsIndexRoute: LayoutProductsIndexRoute,
 }
 
@@ -353,7 +453,10 @@ const LayoutRouteRouteWithChildren = LayoutRouteRoute._addFileChildren(
 )
 
 interface AuthedDashboardRouteRouteChildren {
+  AuthedDashboardInquiriesRoute: typeof AuthedDashboardInquiriesRoute
+  AuthedDashboardOrdersRoute: typeof AuthedDashboardOrdersRoute
   AuthedDashboardTaxonomyRoute: typeof AuthedDashboardTaxonomyRoute
+  AuthedDashboardUsersRoute: typeof AuthedDashboardUsersRoute
   AuthedDashboardIndexRoute: typeof AuthedDashboardIndexRoute
   AuthedDashboardProductsIdRoute: typeof AuthedDashboardProductsIdRoute
   AuthedDashboardProductsIndexRoute: typeof AuthedDashboardProductsIndexRoute
@@ -361,7 +464,10 @@ interface AuthedDashboardRouteRouteChildren {
 }
 
 const AuthedDashboardRouteRouteChildren: AuthedDashboardRouteRouteChildren = {
+  AuthedDashboardInquiriesRoute: AuthedDashboardInquiriesRoute,
+  AuthedDashboardOrdersRoute: AuthedDashboardOrdersRoute,
   AuthedDashboardTaxonomyRoute: AuthedDashboardTaxonomyRoute,
+  AuthedDashboardUsersRoute: AuthedDashboardUsersRoute,
   AuthedDashboardIndexRoute: AuthedDashboardIndexRoute,
   AuthedDashboardProductsIdRoute: AuthedDashboardProductsIdRoute,
   AuthedDashboardProductsIndexRoute: AuthedDashboardProductsIndexRoute,

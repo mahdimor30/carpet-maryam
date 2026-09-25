@@ -13,23 +13,12 @@ import { useCart } from '@/feature/home/components/cart-provider'
 import { CartDrawer } from '@/feature/home/components/cart-drawer'
 import { getCurrentUserFn } from '@/feature/auth/serverFn/get-user-cuemt'
 import Logo from './logo'
-import Navigation from './navigation'
+import Navigation, { NAV_LINKS } from './navigation'
+import UserProfile from './user-profile'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
-  const [user, setUser] = useState<
-    { id: number; name?: string | null; role: string } | null | undefined
-  >(undefined)
-  const { count } = useCart()
-
-  useEffect(() => {
-    getCurrentUserFn()
-      .then(setUser)
-      .catch(() => setUser(null))
-  }, [])
-
-  const isLoggedIn = user != null
 
   return (
     <>
@@ -47,7 +36,7 @@ export default function Navbar() {
             >
               <Search className="h-5 w-5" />
             </Link>
-            <button
+            {/* <button
               onClick={() => setCartOpen(true)}
               aria-label="سبد خرید"
               className="relative flex h-10 w-10 items-center justify-center rounded-lg text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
@@ -58,25 +47,9 @@ export default function Navbar() {
                   {toFaNumber(count)}
                 </span>
               )}
-            </button>
+            </button> */}
 
-            {isLoggedIn ? (
-              <Link
-                to="/dashboard"
-                aria-label="داشبورد"
-                className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
-              >
-                <LayoutDashboard className="h-5 w-5" />
-              </Link>
-            ) : (
-              <Link
-                to="/login"
-                aria-label="ورود"
-                className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
-              >
-                <LogIn className="h-5 w-5" />
-              </Link>
-            )}
+            <UserProfile />
 
             <button
               onClick={() => setMobileOpen((v) => !v)}
@@ -110,8 +83,8 @@ export default function Navbar() {
               {CATEGORIES.map((cat) => (
                 <Link
                   key={cat.slug}
-                  to="/products"
-                  search={{ cat: cat.slug }}
+                  to="/categories/$slug"
+                  params={{ slug: cat.slug }}
                   onClick={() => setMobileOpen(false)}
                   className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-secondary"
                 >

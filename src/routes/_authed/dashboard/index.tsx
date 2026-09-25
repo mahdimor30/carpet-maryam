@@ -1,11 +1,15 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { getProducts } from '@/feature/products/serverFun/get-products'
+import { getDashboardData } from '@/feature/dashboard/serverFn/get-dashboard-data'
 
 export const Route = createFileRoute('/_authed/dashboard/')({
   component: DashboardPage,
   async loader() {
-    const products = await getProducts()
-    return { products }
+    const [products, dashboard] = await Promise.all([
+      getProducts(),
+      getDashboardData(),
+    ])
+    return { products, stats: dashboard.stats }
   },
   head: () => ({
     meta: [
@@ -18,15 +22,15 @@ import { Package, Layers, ShoppingCart, MessageSquare, PlusCircle, ArrowLeft } f
 import { ProductsTable } from '@/feature/products/components/products-table'
 import { toFa } from '@/lib/dashboard-data'
 
-const STATS = [
-  { label: 'کل محصولات', value: 312, icon: Package, accent: 'text-chart-2 bg-chart-2/10' },
-  { label: 'تنوع فعال', value: 1184, icon: Layers, accent: 'text-accent bg-accent/15' },
-  { label: 'سفارش‌های امروز', value: 27, icon: ShoppingCart, accent: 'text-chart-4 bg-chart-4/15' },
-  { label: 'استعلام جدید', value: 9, icon: MessageSquare, accent: 'text-chart-5 bg-chart-5/15' },
-]
+const STAT_META = [
+  { key: 'products', label: 'کل محصولات', icon: Package, accent: 'text-chart-2 bg-chart-2/10' },
+  { key: 'activeVariants', label: 'تنوع فعال', icon: Layers, accent: 'text-accent bg-accent/15' },
+  { key: 'todayOrders', label: 'سفارش‌های امروز', icon: ShoppingCart, accent: 'text-chart-4 bg-chart-4/15' },
+  { key: 'newInquiries', label: 'استعلام جدید', icon: MessageSquare, accent: 'text-chart-5 bg-chart-5/15' },
+] as const
 
 function DashboardPage() {
-  const { products } = Route.useLoaderData()
+  const { products, stats } = Route.useLoaderData()
   return (
     <div className="mx-auto max-w-6xl">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -46,7 +50,7 @@ function DashboardPage() {
       </div>
 
       <div className="mb-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-        {STATS.map((s) => {
+        {STAT_META.map((s) => {
           const Icon = s.icon
           return (
             <div
@@ -59,7 +63,7 @@ function DashboardPage() {
                 <Icon className="h-5 w-5" />
               </span>
               <p className="mt-3 font-heading text-2xl font-bold text-foreground">
-                {toFa(s.value)}
+                {toFa(stats[s.key])}
               </p>
               <p className="text-sm text-muted-foreground">{s.label}</p>
             </div>

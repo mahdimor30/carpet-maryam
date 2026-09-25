@@ -75,4 +75,4 @@ export const getCurrentUserFn = createServerFn({ method: 'GET' }).handler(
   },
 )
 
-createMiddleware
+

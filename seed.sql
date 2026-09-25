@@ -10,37 +10,53 @@ PRAGMA foreign_keys = ON;
 -- Categories
 -- ============================================================
 
-INSERT OR IGNORE INTO categories (name, slug)
+INSERT OR IGNORE INTO categories (name, slug,
+  created_at)
 VALUES
-  ('فرش کلاسیک', 'classic'),
-  ('فرش مدرن', 'modern'),
-  ('فرش سنتی', 'traditional'),
-  ('فرش اتاق کودک', 'children');
+  ('فرش کلاسیک', 'classic',
+  strftime('%s','now')),
+  ('فرش مدرن', 'modern',
+  strftime('%s','now')),
+  ('فرش سنتی', 'traditional',
+  strftime('%s','now')),
+  ('فرش اتاق کودک', 'children',
+  strftime('%s','now'));
 
 
 -- ============================================================
 -- Designs
 -- ============================================================
 
-INSERT OR IGNORE INTO designs (name, slug)
+INSERT OR IGNORE INTO designs (name, slug,
+  created_at)
 VALUES
-  ('افشان', 'afshan'),
-  ('ترنج', 'toranj'),
-  ('خشتی', 'kheshti'),
-  ('وینتیج', 'vintage'),
-  ('هندسی', 'geometric');
+  ('افشان', 'afshan',
+  strftime('%s','now')),
+  ('ترنج', 'toranj',
+  strftime('%s','now')),
+  ('خشتی', 'kheshti',
+  strftime('%s','now')),
+  ('وینتیج', 'vintage',
+  strftime('%s','now')),
+  ('هندسی', 'geometric',
+  strftime('%s','now'));
 
 
 -- ============================================================
 -- Materials
 -- ============================================================
 
-INSERT OR IGNORE INTO materials (name, slug)
+INSERT OR IGNORE INTO materials (name, slug,
+  created_at)
 VALUES
-  ('اکریلیک هیت‌ست', 'acrylic-heatset'),
-  ('پلی‌استر', 'polyester'),
-  ('پلی‌پروپیلن', 'polypropylene'),
-  ('پشم', 'wool');
+  ('اکریلیک هیت‌ست', 'acrylic-heatset',
+  strftime('%s','now')),
+  ('پلی‌استر', 'polyester',
+  strftime('%s','now')),
+  ('پلی‌پروپیلن', 'polypropylene',
+  strftime('%s','now')),
+  ('پشم', 'wool',
+  strftime('%s','now'));
 
 
 -- ============================================================
@@ -61,8 +77,9 @@ INSERT OR IGNORE INTO products (
   weight_per_square_meter_grams,
   weaving_type,
   warranty_months,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 VALUES
 
 (
@@ -80,7 +97,9 @@ VALUES
   'ماشینی',
   60,
   1
-),
+,
+  strftime('%s','now'),
+  strftime('%s','now')),
 
 (
   'فرش ماشینی ترنج سرمه‌ای',
@@ -97,7 +116,9 @@ VALUES
   'ماشینی',
   60,
   1
-),
+,
+  strftime('%s','now'),
+  strftime('%s','now')),
 
 (
   'فرش مدرن هندسی طوسی',
@@ -114,7 +135,9 @@ VALUES
   'ماشینی',
   60,
   1
-),
+,
+  strftime('%s','now'),
+  strftime('%s','now')),
 
 (
   'فرش وینتیج طوسی کرم',
@@ -131,7 +154,9 @@ VALUES
   'ماشینی',
   36,
   1
-),
+,
+  strftime('%s','now'),
+  strftime('%s','now')),
 
 (
   'فرش سنتی خشتی لاکی',
@@ -148,7 +173,9 @@ VALUES
   'ماشینی',
   60,
   1
-),
+,
+  strftime('%s','now'),
+  strftime('%s','now')),
 
 (
   'فرش کودک طرح ستاره',
@@ -165,7 +192,9 @@ VALUES
   'ماشینی',
   36,
   1
-);
+,
+  strftime('%s','now'),
+  strftime('%s','now'));
 
 
 -- ============================================================
@@ -427,8 +456,9 @@ INSERT OR IGNORE INTO product_variants (
   price,
   compare_at_price,
   stock,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 SELECT
   p.id,
   '6 متری',
@@ -438,7 +468,9 @@ SELECT
   12500000,
   14500000,
   0,
-  1
+  1,
+  strftime('%s','now'),
+  strftime('%s','now')
 FROM products p
 WHERE p.slug = 'afshan-cream-700';
 
@@ -452,8 +484,9 @@ INSERT OR IGNORE INTO product_variants (
   price,
   compare_at_price,
   stock,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 SELECT
   p.id,
   '9 متری',
@@ -463,7 +496,9 @@ SELECT
   18500000,
   21000000,
   0,
-  1
+  1,
+  strftime('%s','now'),
+  strftime('%s','now')
 FROM products p
 WHERE p.slug = 'afshan-cream-700';
 
@@ -477,8 +512,9 @@ INSERT OR IGNORE INTO product_variants (
   price,
   compare_at_price,
   stock,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 SELECT
   p.id,
   '12 متری',
@@ -488,7 +524,9 @@ SELECT
   24500000,
   28000000,
   0,
-  1
+  1,
+  strftime('%s','now'),
+  strftime('%s','now')
 FROM products p
 WHERE p.slug = 'afshan-cream-700';
 
@@ -502,8 +540,9 @@ INSERT OR IGNORE INTO product_variants (
   price,
   compare_at_price,
   stock,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 SELECT
   p.id,
   '6 متری',
@@ -513,7 +552,9 @@ SELECT
   13000000,
   15000000,
   0,
-  1
+  1,
+  strftime('%s','now'),
+  strftime('%s','now')
 FROM products p
 WHERE p.slug = 'toranj-navy-700';
 
@@ -527,8 +568,9 @@ INSERT OR IGNORE INTO product_variants (
   price,
   compare_at_price,
   stock,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 SELECT
   p.id,
   '9 متری',
@@ -538,7 +580,9 @@ SELECT
   19200000,
   22000000,
   0,
-  1
+  1,
+  strftime('%s','now'),
+  strftime('%s','now')
 FROM products p
 WHERE p.slug = 'toranj-navy-700';
 
@@ -552,8 +596,9 @@ INSERT OR IGNORE INTO product_variants (
   price,
   compare_at_price,
   stock,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 SELECT
   p.id,
   '6 متری',
@@ -563,7 +608,9 @@ SELECT
   15500000,
   17500000,
   0,
-  1
+  1,
+  strftime('%s','now'),
+  strftime('%s','now')
 FROM products p
 WHERE p.slug = 'modern-geometric-gray';
 
@@ -577,8 +624,9 @@ INSERT OR IGNORE INTO product_variants (
   price,
   compare_at_price,
   stock,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 SELECT
   p.id,
   '9 متری',
@@ -588,7 +636,9 @@ SELECT
   22500000,
   25000000,
   0,
-  1
+  1,
+  strftime('%s','now'),
+  strftime('%s','now')
 FROM products p
 WHERE p.slug = 'modern-geometric-gray';
 
@@ -602,8 +652,9 @@ INSERT OR IGNORE INTO product_variants (
   price,
   compare_at_price,
   stock,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 SELECT
   p.id,
   '6 متری',
@@ -613,7 +664,9 @@ SELECT
   14000000,
   16500000,
   0,
-  1
+  1,
+  strftime('%s','now'),
+  strftime('%s','now')
 FROM products p
 WHERE p.slug = 'vintage-gray-cream';
 
@@ -627,8 +680,9 @@ INSERT OR IGNORE INTO product_variants (
   price,
   compare_at_price,
   stock,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 SELECT
   p.id,
   '6 متری',
@@ -638,7 +692,9 @@ SELECT
   12800000,
   15000000,
   0,
-  1
+  1,
+  strftime('%s','now'),
+  strftime('%s','now')
 FROM products p
 WHERE p.slug = 'traditional-kheshti-red';
 
@@ -652,8 +708,9 @@ INSERT OR IGNORE INTO product_variants (
   price,
   compare_at_price,
   stock,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 SELECT
   p.id,
   '9 متری',
@@ -663,7 +720,9 @@ SELECT
   19000000,
   21500000,
   0,
-  1
+  1,
+  strftime('%s','now'),
+  strftime('%s','now')
 FROM products p
 WHERE p.slug = 'traditional-kheshti-red';
 
@@ -677,8 +736,9 @@ INSERT OR IGNORE INTO product_variants (
   price,
   compare_at_price,
   stock,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 SELECT
   p.id,
   '4 متری',
@@ -688,7 +748,9 @@ SELECT
   7500000,
   8500000,
   0,
-  1
+  1,
+  strftime('%s','now'),
+  strftime('%s','now')
 FROM products p
 WHERE p.slug = 'kids-star';
 
@@ -707,8 +769,9 @@ INSERT OR IGNORE INTO factories (
   city,
   region,
   notes,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 VALUES
 (
   'کارخانه نمونه آران',
@@ -721,7 +784,9 @@ VALUES
   'اصفهان',
   'تأمین‌کننده نمونه برای تست سیستم',
   1
-),
+,
+  strftime('%s','now'),
+  strftime('%s','now')),
 (
   'کارخانه نمونه کاشان',
   'kashan-sample-factory',
@@ -733,7 +798,9 @@ VALUES
   'اصفهان',
   'مناسب تولید سفارشی',
   1
-);
+,
+  strftime('%s','now'),
+  strftime('%s','now'));
 
 
 -- ============================================================
@@ -746,18 +813,27 @@ INSERT OR IGNORE INTO factory_products (
   can_weave,
   weaving_days,
   notes,
-  is_active
-)
+  is_active,
+  created_at,
+  updated_at)
 SELECT
   f.id,
   v.id,
   1,
   7,
   'تأمین و تولید سفارشی',
-  1
+  1,
+  strftime('%s','now'),
+  strftime('%s','now')
 FROM factories f
 CROSS JOIN product_variants v
-WHERE f.slug = 'aran-sample-factory';
+WHERE f.slug = 'aran-sample-factory'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM factory_products fp
+    WHERE fp.factory_id = f.id
+      AND fp.variant_id = v.id
+  );
 
 
 -- ============================================================
@@ -771,18 +847,26 @@ INSERT OR IGNORE INTO factory_inventory (
   quantity,
   reserved_quantity,
   checked_at,
-  notes
-)
+  notes,
+  created_at,
+  updated_at)
 SELECT
   fp.id,
   2,
   0,
-  CURRENT_TIMESTAMP,
-  'موجودی اولیه Seed'
+  strftime('%s','now'),
+  'موجودی اولیه Seed',
+  strftime('%s','now'),
+  strftime('%s','now')
 FROM factory_products fp
 JOIN factories f
   ON f.id = fp.factory_id
-WHERE f.slug = 'aran-sample-factory';
+WHERE f.slug = 'aran-sample-factory'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM factory_inventory fi
+    WHERE fi.factory_product_id = fp.id
+  );
 
 
 -- ============================================================
@@ -793,18 +877,243 @@ INSERT OR IGNORE INTO factory_quotes (
   factory_product_id,
   purchase_price,
   valid_from,
-  notes
-)
+  notes,
+  created_at)
 SELECT
   fp.id,
   CAST(v.price * 0.75 AS INTEGER),
-  CURRENT_TIMESTAMP,
-  'قیمت خرید نمونه'
+  strftime('%s','now'),
+  'قیمت خرید نمونه',
+  strftime('%s','now')
 FROM factory_products fp
 JOIN factories f
   ON f.id = fp.factory_id
 JOIN product_variants v
   ON v.id = fp.variant_id
-WHERE f.slug = 'aran-sample-factory';
+WHERE f.slug = 'aran-sample-factory'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM factory_quotes fq
+    WHERE fq.factory_product_id = fp.id
+  );
 
+
+-- ============================================================
+-- Variant Images
+-- ============================================================
+
+INSERT OR IGNORE INTO variant_images (
+  variant_id,
+  url,
+  alt,
+  type,
+  sort_order,
+  is_primary,
+  created_at
+)
+SELECT
+  v.id,
+  '/carpets/3d-pardis.png',
+  NULL,
+  'gallery',
+  1,
+  0,
+  strftime('%s','now')
+FROM product_variants v
+WHERE v.sku = 'FM-AFSHAN-700-6M'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM variant_images vi
+    WHERE vi.variant_id = v.id
+      AND vi.url = '/carpets/3d-pardis.png'
+  );
+
+
+INSERT OR IGNORE INTO variant_images (
+  variant_id,
+  url,
+  alt,
+  type,
+  sort_order,
+  is_primary,
+  created_at
+)
+SELECT
+  v.id,
+  '/carpets/cream-golestan.png',
+  NULL,
+  'main',
+  0,
+  1,
+  strftime('%s','now')
+FROM product_variants v
+WHERE v.sku = 'FM-AFSHAN-700-6M'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM variant_images vi
+    WHERE vi.variant_id = v.id
+      AND vi.url = '/carpets/cream-golestan.png'
+  );
+
+
+INSERT OR IGNORE INTO variant_images (
+  variant_id,
+  url,
+  alt,
+  type,
+  sort_order,
+  is_primary,
+  created_at
+)
+SELECT
+  v.id,
+  '/carpets/plain-saadi.png',
+  NULL,
+  'gallery',
+  1,
+  0,
+  strftime('%s','now')
+FROM product_variants v
+WHERE v.sku = 'FM-TORANJ-700-6M'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM variant_images vi
+    WHERE vi.variant_id = v.id
+      AND vi.url = '/carpets/plain-saadi.png'
+  );
+
+
+INSERT OR IGNORE INTO variant_images (
+  variant_id,
+  url,
+  alt,
+  type,
+  sort_order,
+  is_primary,
+  created_at
+)
+SELECT
+  v.id,
+  '/carpets/classic-darya.png',
+  NULL,
+  'main',
+  0,
+  1,
+  strftime('%s','now')
+FROM product_variants v
+WHERE v.sku = 'FM-TORANJ-700-6M'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM variant_images vi
+    WHERE vi.variant_id = v.id
+      AND vi.url = '/carpets/classic-darya.png'
+  );
+
+
+INSERT OR IGNORE INTO variant_images (
+  variant_id,
+  url,
+  alt,
+  type,
+  sort_order,
+  is_primary,
+  created_at
+)
+SELECT
+  v.id,
+  '/carpets/modern-mahoor.png',
+  NULL,
+  'main',
+  0,
+  1,
+  strftime('%s','now')
+FROM product_variants v
+WHERE v.sku = 'FM-GEO-1200-6M'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM variant_images vi
+    WHERE vi.variant_id = v.id
+      AND vi.url = '/carpets/modern-mahoor.png'
+  );
+
+
+INSERT OR IGNORE INTO variant_images (
+  variant_id,
+  url,
+  alt,
+  type,
+  sort_order,
+  is_primary,
+  created_at
+)
+SELECT
+  v.id,
+  '/carpets/patine-negin.png',
+  NULL,
+  'main',
+  0,
+  1,
+  strftime('%s','now')
+FROM product_variants v
+WHERE v.sku = 'FM-VINTAGE-1200-6M'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM variant_images vi
+    WHERE vi.variant_id = v.id
+      AND vi.url = '/carpets/patine-negin.png'
+  );
+
+
+INSERT OR IGNORE INTO variant_images (
+  variant_id,
+  url,
+  alt,
+  type,
+  sort_order,
+  is_primary,
+  created_at
+)
+SELECT
+  v.id,
+  '/carpets/classic-arta.png',
+  NULL,
+  'main',
+  0,
+  1,
+  strftime('%s','now')
+FROM product_variants v
+WHERE v.sku = 'FM-KHESHTI-700-6M'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM variant_images vi
+    WHERE vi.variant_id = v.id
+      AND vi.url = '/carpets/classic-arta.png'
+  );
+
+
+INSERT OR IGNORE INTO variant_images (
+  variant_id,
+  url,
+  alt,
+  type,
+  sort_order,
+  is_primary,
+  created_at
+)
+SELECT
+  v.id,
+  '/carpets/fantasy-shabnam.png',
+  NULL,
+  'main',
+  0,
+  1,
+  strftime('%s','now')
+FROM product_variants v
+WHERE v.sku = 'FM-KIDS-STAR-4M'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM variant_images vi
+    WHERE vi.variant_id = v.id
+      AND vi.url = '/carpets/fantasy-shabnam.png'
+  );
 

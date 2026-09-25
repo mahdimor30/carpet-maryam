@@ -11,7 +11,7 @@ export function ProductBuyBox({ product }: { product: Product }) {
   const [added, setAdded] = useState(false)
 
   function handleAdd() {
-    for (let i = 0; i < qty; i++) add(product)
+    add(product, qty)
     setAdded(true)
     setTimeout(() => setAdded(false), 1800)
   }

@@ -1,0 +1,21 @@
+{
+  "claudeCode.environmentVariables": [
+    {
+      "name": "ANTHROPIC_AUTH_TOKEN",
+      "value": "YOUR_AGENTROUTER_API_KEY"
+    },
+    {
+      "name": "ANTHROPIC_BASE_URL",
+      "value": "https://agentrouter.org"
+    },
+    {
+      "name": "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY",
+      "value": "1"
+    },
+    {
+      "name": "ANTHROPIC_MODEL",
+      "value": "deepseek-v4-flash"
+    }
+  ],
+  "claudeCode.disableLoginPrompt": true
+}

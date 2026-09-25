@@ -2,7 +2,7 @@ import { getCurrentUserFn } from '@/feature/auth/serverFn/get-user-cuemt'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authed')({
-    beforeLoad: async ({ location }) => {
+  beforeLoad: async ({ location }) => {
     const user = await getCurrentUserFn()
 
     if (!user) {

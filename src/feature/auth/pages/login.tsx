@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
-import { AuthShell } from './auth-shell'
-import { LoginForm } from './login-form'
+import { AuthShell } from '../components/auth-shell'
+import { LoginForm } from '../components/login-form'
 
 export default function LoginPage() {
   return (

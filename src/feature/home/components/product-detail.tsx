@@ -3,6 +3,7 @@ import { getProduct, formatPrice, toFaNumber } from '@/lib/data'
 import { Link } from '@tanstack/react-router'
 import { ProductCard } from './product-card'
 import { PRODUCTS } from '@/lib/data'
+import { ProductBuyBox } from './product-buy-box'
 
 export function ProductDetail({ slug }: { slug: string }) {
   const product = getProduct(slug)
@@ -91,6 +92,8 @@ export function ProductDetail({ slug }: { slug: string }) {
               )}
             </div>
           </div>
+
+          <ProductBuyBox product={product} />
 
           {/* مشخصات */}
           <div className="rounded-2xl border border-border bg-card p-5">
