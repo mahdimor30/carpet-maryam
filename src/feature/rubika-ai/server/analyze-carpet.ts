@@ -1,4 +1,6 @@
-import { utapi } from '@/server/uploadthing'
+import { UTApi } from 'uploadthing/server'
+
+const utapi = new UTApi()
 
 export type CarpetAnalysis = {
   sameProduct: boolean
