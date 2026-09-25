@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { and, desc, eq, gte } from 'drizzle-orm'
+import { and, desc, eq } from 'drizzle-orm'
 import { getDb } from '@/server/db'
-import { productDrafts, rubikaIngestBatches, rubikaIngestImages } from '@/server/db/schema'
+import { rubikaIngestBatches, rubikaIngestImages } from '@/server/db/schema'
 import { extractRubikaMessage, isAnalyzeCommand } from '@/feature/rubika-ai/server/extract-update'
-import { getRubikaFileUrl, sendRubikaMessage } from '@/feature/rubika-ai/server/rubika-client'
+import { sendRubikaMessage } from '@/feature/rubika-ai/server/rubika-client'
 import { processRubikaBatch } from '@/feature/rubika-ai/server/process-batch'
 
 function json(data: unknown, status = 200) {
@@ -25,7 +25,7 @@ export const Route = createFileRoute('/api/rubika/webhook')({
         }
 
         const update = (await request.json()) as Record<string, any>
-        const { message, text, fileId, chatId, messageId } = extractRubikaMessage(update)
+        const { text, fileId, chatId, messageId } = extractRubikaMessage(update)
 
         if (!chatId) return json({ ok: true, ignored: 'no-chat-id' })
 
@@ -85,7 +85,7 @@ export const Route = createFileRoute('/api/rubika/webhook')({
             .where(eq(rubikaIngestBatches.id, batch.id))
         }
 
-        const sourceUrl = fileId ? await getRubikaFileUrl(fileId) : null
+        const sourceUrl = null
 
         await db.insert(rubikaIngestImages).values({
           batchId: batch.id,
