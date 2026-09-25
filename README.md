@@ -224,3 +224,38 @@ Files prefixed with `demo` can be safely deleted. They are there to provide a st
 You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
 
 For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+
+
+## Rubika AI carpet ingestion
+
+The Rubika flow can receive carpet images from a Rubika bot, group recent images into a batch, upload them to the existing UploadThing storage, analyze all images together with OpenAI vision, and create a product draft for dashboard review.
+
+Required secrets:
+
+```env
+OPENAI_API_KEY=
+OPENAI_VISION_MODEL=gpt-4.1-mini
+OPENAI_IMAGE_MODEL=gpt-image-1
+
+RUBIKA_BOT_TOKEN=
+RUBIKA_CHANNEL_ID=
+RUBIKA_WEBHOOK_SECRET=
+RUBIKA_API_BASE_URL=https://botapi.rubika.ir/v3
+RUBIKA_AUTO_ANALYZE_AFTER=0
+RUBIKA_GENERATE_MARKETING_IMAGES=false
+```
+
+Webhook URL:
+
+```text
+https://YOUR_DOMAIN/api/rubika/webhook?secret=YOUR_RUBIKA_WEBHOOK_SECRET
+```
+
+MVP behavior:
+1. Send multiple carpet images to the configured Rubika chat/channel.
+2. Images are collected into a 10-minute pending batch.
+3. Send `/analyze` (or `تحلیل`) to start analysis, unless RUBIKA_AUTO_ANALYZE_AFTER is set to a positive number.
+4. AI creates a reviewable product draft. It does not publish a product automatically.
+5. The dashboard product page shows the latest AI drafts.
+
+If RUBIKA_GENERATE_MARKETING_IMAGES=true, the pipeline also asks GPT Image for product, interior, and advertising variants and stores the resulting URLs in product_draft_images.
