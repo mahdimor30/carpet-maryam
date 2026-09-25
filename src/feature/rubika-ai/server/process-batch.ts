@@ -1,6 +1,7 @@
 import { eq, asc } from 'drizzle-orm'
 import { getDb } from '@/server/db'
 import {
+  productDraftImages,
   productDrafts,
   rubikaIngestBatches,
   rubikaIngestImages,
@@ -73,13 +74,25 @@ export async function processRubikaBatch(batchId: number) {
       .values({
         batchId,
         title,
-        slug: slugify(title) || `carpet-${Date.now()}`,
+        slug: `${slugify(title) || 'carpet'}-${Date.now()}`,
         description: analysis.description,
         analysisJson: JSON.stringify(analysis),
         status: 'review',
         confidence: analysis.confidence,
       })
       .returning({ id: productDrafts.id })
+
+    if (storedUrls.length) {
+      await db.insert(productDraftImages).values(
+        storedUrls.map((url, index) => ({
+          draftId: draft.id,
+          url,
+          kind: 'source' as const,
+          alt: title,
+          sortOrder: index,
+        })),
+      )
+    }
 
     await db
       .update(rubikaIngestBatches)
