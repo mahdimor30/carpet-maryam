@@ -17,6 +17,7 @@ import { Route as AuthedDashboardRouteRouteImport } from './routes/_authed/dashb
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as ApiTempUploadRouteImport } from './routes/api/temp-upload'
 import { Route as ApiUploadthingRouteImport } from './routes/api/uploadthing'
+import { Route as ApiRubikaWebhookRouteImport } from './routes/api/rubika/webhook'
 import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
 import { Route as AuthedDashboardTaxonomyRouteImport } from './routes/_authed/dashboard/taxonomy'
 import { Route as LayoutProductsIndexRouteImport } from './routes/_layout/products/index'
@@ -61,6 +62,11 @@ const ApiTempUploadRoute = ApiTempUploadRouteImport.update({
 const ApiUploadthingRoute = ApiUploadthingRouteImport.update({
   id: '/api/uploadthing',
   path: '/api/uploadthing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiRubikaWebhookRoute = ApiRubikaWebhookRouteImport.update({
+  id: '/api/rubika/webhook',
+  path: '/api/rubika/webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthedDashboardIndexRoute = AuthedDashboardIndexRouteImport.update({
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/complete-profile': typeof AuthedCompleteProfileRoute
   '/api/temp-upload': typeof ApiTempUploadRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
+  '/api/rubika/webhook': typeof ApiRubikaWebhookRoute
   '/dashboard/taxonomy': typeof AuthedDashboardTaxonomyRoute
   '/products/$slug': typeof LayoutProductsSlugRoute
   '/dashboard/': typeof AuthedDashboardIndexRoute
