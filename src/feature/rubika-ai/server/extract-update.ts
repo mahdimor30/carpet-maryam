@@ -2,16 +2,24 @@ type AnyRecord = Record<string, any>
 
 function walk(value: unknown, visit: (key: string, value: unknown) => void) {
   if (!value || typeof value !== 'object') return
-
   if (Array.isArray(value)) {
     for (const item of value) walk(item, visit)
     return
   }
-
   for (const [key, child] of Object.entries(value as AnyRecord)) {
     visit(key, child)
     walk(child, visit)
   }
+}
+
+function findStringByKey(value: unknown, keys: RegExp) {
+  let found: string | null = null
+  walk(value, (key, child) => {
+    if (!found && keys.test(key) && typeof child === 'string' && child) {
+      found = child
+    }
+  })
+  return found
 }
 
 export function extractRubikaMessage(update: AnyRecord) {
@@ -23,31 +31,33 @@ export function extractRubikaMessage(update: AnyRecord) {
         ? message.caption
         : ''
 
-  let fileId: string | null = null
-  walk(message, (key, value) => {
-    if (
-      !fileId &&
-      /file[_-]?id/i.test(key) &&
-      typeof value === 'string' &&
-      value.length > 4
-    ) {
-      fileId = value
-    }
-  })
+  const fileId =
+    findStringByKey(message, /^file[_-]?id$/i) ||
+    findStringByKey(message, /^(photo|image|media)$/i)
 
   const chatId =
-    String(update.chat_id ?? message.chat_id ?? '') || null
-  const messageId =
-    String(message.message_id ?? update.message_id ?? '') || null
+    update.chat_id ??
+    message.chat_id ??
+    update.object_guid ??
+    message.object_guid ??
+    findStringByKey(message, /^(chat_id|chatId|object_guid|object_guid_id)$/i) ||
+    null
 
-  return { message, text, fileId, chatId, messageId }
+  const messageId =
+    update.message_id ??
+    message.message_id ??
+    message.id ??
+    null
+
+  return {
+    message,
+    text,
+    fileId,
+    chatId: typeof chatId === 'string' && chatId ? chatId : null,
+    messageId: typeof messageId === 'string' ? messageId : messageId == null ? null : String(messageId),
+  }
 }
 
 export function isAnalyzeCommand(text: string) {
-  return /^\\/(analyze|ai|ثبت|تحلیل)\\b/i.test(text.trim())
-}
-
-export function isRubikaImageMessage(message: AnyRecord) {
-  const fileId = message.file_id ?? message.file?.file_id ?? message.image?.file_id
-  return Boolean(fileId)
+  return /^(?:\\/|#)?(?:analyze|ai|ثبت|تحلیل)(?:\\s|$)/i.test(text.trim())
 }
